@@ -3,7 +3,7 @@ import "@testing-library/jest-dom/extend-expect";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { TextDecoder, TextEncoder } from "util";
-import React from "react";
+import * as React from "react";
 import { lightTheme } from "@deskpro/deskpro-ui";
 import { mockClient } from "./testing";
 
@@ -54,4 +54,5 @@ jest.mock("@deskpro/app-sdk", () => ({
   },
   useDeskproAppTheme: () => ({ theme: lightTheme }),
   proxyFetch: async () => fetch,
+  LoadingSpinner: () => <>Loading...</>,
 }));

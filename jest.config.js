@@ -24,7 +24,7 @@ module.exports = {
   resolver: "<rootDir>/custom-jest-resolver",
   maxWorkers: "75%",
   modulePaths: ["<rootDir>/src/"],
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.tsx"],
   transform: {
     "^.+\\.(t|j)sx?$": [
       "@swc/jest",
