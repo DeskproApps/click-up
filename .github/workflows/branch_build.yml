@@ -1,0 +1,162 @@
+name: Branch Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deskpro_app_test_and_build:
+    permissions:
+      contents: write
+    name: Test / Build
+    timeout-minutes: 30
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: git fetch --no-tags --depth=1 origin master
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - name: Clone repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v2.2.4
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --strict-peer-dependencies
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Type check
+        run: pnpm tsc --noemit
+
+      - name: Run tests
+        run: pnpm test:coverage
+
+      - name: Get previous commit hash
+        run: |
+          PREV_COMMIT=$(git log -1 --pretty=format:%H -- manifest.json)
+          echo "Previous commit hash is $PREV_COMMIT"
+        id: get-commit-hash
+
+      - name: Get version number
+        run: |
+          VERSION=$(git show ${{ steps.get-commit-hash.outputs.PREV_COMMIT }}:manifest.json | grep version | awk -F'"' '{print $4}')
+          echo "Version number is $VERSION"
+        id: get-version
+
+      - name: Get version labels
+        id: labels
+        run: |
+          commit_sha=$(git rev-parse HEAD)
+
+          pull_request_number=$(git log --format='%s' -n 1 | grep -oP '(?<=Merge pull request #)\d+' || true)
+
+          milestone=""
+
+          if [[ -n "$pull_request_number" ]]; then
+            pull_request_info=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${pull_request_number}")
+
+            milestone=$(echo "$pull_request_info" | jq -r '.labels[].name' | grep -E 'major-version|minor-version' | head -1)
+          fi
+
+          echo "::set-output name=milestone::${milestone}"
+
+      - name: Bump Version
+        run: |
+          git config --global user.name "git log -1 --pretty=format:%an"
+          git config --global user.email "$(git log -1 --pretty=format:%ae)"
+
+          if [ "$(git log -1 --pretty=format:%ae)" = "noreply@github.com" ]; then
+            echo "Skipping workflow run because previous commit was not made by workflow."
+            exit 0
+          fi
+
+          if [[ "${{ steps.labels.outputs.milestone }}" == "major-version" ]]; then
+            pnpm run bumpManifestVer major ${{ steps.get-version.outputs.VERSION }}
+          elif [[ "${{ steps.labels.outputs.milestone }}" == "minor-version" ]]; then
+            pnpm run bumpManifestVer minor ${{ steps.get-version.outputs.VERSION }}
+          else
+            pnpm run bumpManifestVer patch ${{ steps.get-version.outputs.VERSION }}
+          fi
+
+          pnpm prettier --write manifest.json
+
+          git add manifest.json
+
+          git commit -m "Updated Manifest"
+
+          git push origin master
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Package app zip
+        working-directory: dist
+        run: |
+          zip -rq ../app.zip *
+          mv ../app.zip .
+      - name: Read manifest
+        id: read_manifest
+        run: |
+          content=`cat ./manifest.json`
+          content="${content//'%'/'%25'}"
+          content="${content//$'\n'/'%0A'}"
+          content="${content//$'\r'/'%0D'}"
+          echo "::set-output name=manifest::$content"
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ fromJson(steps.read_manifest.outputs.manifest).version }}
+          release_name: ${{ fromJson(steps.read_manifest.outputs.manifest).version }}
+          draft: false
+          prerelease: false
+
+      - name: Add app asset to release
+        id: add_app_asset_to_release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/app.zip
+          asset_name: app.zip
+          asset_content_type: application/zip
+
+      - name: Add app manifest to release
+        id: add_app_manifest_to_release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/manifest.json
+          asset_name: manifest.json
+          asset_content_type: application/json
