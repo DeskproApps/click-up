@@ -1,26 +1,25 @@
 {
-  "name": "@deskpro-apps/my-app",
-  "title": "My App",
-  "description": "My Deskpro app",
+  "name": "@deskpro-apps/click-up",
+  "title": "ClickUp",
+  "description": "",
   "version": "0.0.0",
   "scope": "agent",
   "isSingleInstall": false,
   "hasDevMode": true,
   "targets": [{ "target": "ticket_sidebar", "entrypoint": "index.html" }],
-  "settings": {
-    "example": {
-      "title": "Example Setting",
-      "description": "Example backend only setting",
-      "type": "string",
-      "isRequired": false,
-      "isBackendOnly": true
+  "entityAssociations": {
+    "linkedClickUpTask": {
+      "title": "Linked ClickUp Task",
+      "entity": "ticket",
+      "type": "external_id"
     }
   },
+  "settings": {},
   "proxy": {
     "whitelist": [
       {
-        "url": "https://jsonplaceholder.typicode.com/.*",
-        "methods": ["GET"],
+        "url": "https://api.clickup.com/api/v2/.*",
+        "methods": ["GET", "POST", "PUT", "DELETE"],
         "timeout": 20
       }
     ]
