@@ -11,7 +11,8 @@ const queryClient = new QueryClient({
 });
 
 enum QueryKey {
-  //...
+  WORKSPACES = "workspaces",
+  TASKS_BY_WORKSPACE = "tasksByWorkspace",
 }
 
 export { queryClient, QueryKey };

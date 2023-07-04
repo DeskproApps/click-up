@@ -9,6 +9,7 @@ import {
 import { isNavigatePayload } from "./utils";
 import {
   HomePage,
+  LinkPage,
   LoginPage,
   LoadingAppPage,
   AdminCallbackPage,
@@ -51,6 +52,7 @@ const App: FC = () => {
         <Route path="/admin/callback" element={<AdminCallbackPage/>}/>)
         <Route path="/login" element={<LoginPage/>}/>
         <Route path="/home" element={<HomePage/>}/>
+        <Route path="/link" element={<LinkPage/>} />
         <Route index element={<LoadingAppPage/>} />
       </Routes>
       <br/><br/><br/>
