@@ -1,32 +1,27 @@
-import has from "lodash/has";
-// import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
-import { proxyFetch, adminGenericProxyFetch } from "@deskpro/app-sdk";
-import { BASE_URL/*, placeholders*/ } from "../../constants";
+import { proxyFetch } from "@deskpro/app-sdk";
+import { BASE_URL, placeholders } from "../../constants";
 import { getQueryParams } from "../../utils";
 import { ClickUpError } from "./ClickUpError";
 import type { Request } from "../../types";
 
 const baseRequest: Request = async (client, {
   url,
-  rawUrl,
   data = {},
   method = "GET",
   queryParams = {},
-  settings = {},
   headers: customHeaders,
 }) => {
-  const dpFetch = await (has(settings, ["access_tokens"]) ? adminGenericProxyFetch : proxyFetch)(client);
+  const dpFetch = await proxyFetch(client);
 
-  const baseUrl = rawUrl ? rawUrl : `${BASE_URL}${url}`;
+  const baseUrl = `${BASE_URL}${url}`;
   const params = getQueryParams(queryParams);
-  // const accessTokens = get(settings, ["access_tokens"], placeholders.ACCESS_TOKEN);
 
-  const requestUrl = `${baseUrl}${params}`;
+  const requestUrl = `${baseUrl}?${params}`;
   const options: RequestInit = {
     method,
     headers: {
-      // "Authorization": `Bearer ${accessTokens}`,
+      "Authorization": placeholders.TOKEN,
       ...customHeaders,
     },
   };

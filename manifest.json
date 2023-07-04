@@ -14,7 +14,30 @@
       "type": "external_id"
     }
   },
-  "settings": {},
+  "settings": {
+    "client_id": {
+      "title": "Client ID",
+      "type": "string",
+      "isRequired": true,
+      "isBackendOnly": false,
+      "order": 10
+    },
+    "client_secret": {
+      "title": "Client Secret",
+      "type": "string",
+      "isRequired": true,
+      "isBackendOnly": true,
+      "order": 20
+    },
+    "callback_url": {
+      "title": "Callback URL",
+      "type": "app_embedded",
+      "options": { "entrypoint": "#/admin/callback" },
+      "isRequired": false,
+      "isBackendOnly": true,
+      "order": 30
+    }
+  },
   "proxy": {
     "whitelist": [
       {

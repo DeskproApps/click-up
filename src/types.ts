@@ -19,24 +19,23 @@ export type DateTime = string;
 export type ApiRequestMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 export type RequestParams = {
-  url?: string,
-  rawUrl?: string,
+  url: string,
   method?: ApiRequestMethod,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: any,
   headers?: Dict<string>,
   queryParams?: string|Dict<string>|ParamKeyValuePair[],
-  settings?: Maybe<Settings>,
 };
 
 export type Request = <T>(
   client: IDeskproClient,
   params: RequestParams,
-) => Promise<{ data: T }>;
+) => Promise<T>;
 
 /** Deskpro types */
 export type Settings = {
-  //..
+  client_id?: string,
+  client_secret?: string,
 };
 
 export type TicketData = object;

@@ -10,7 +10,7 @@ class ClickUpError extends Error {
   data: ClickUpAPIError;
 
   constructor({ status, data }: InitData) {
-    const message = "Asana Api Error";
+    const message = "ClickUp Api Error";
     super(message);
 
     this.data = data;
