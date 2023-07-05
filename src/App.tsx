@@ -6,6 +6,7 @@ import {
   useDeskproAppClient,
   useDeskproAppEvents,
 } from "@deskpro/app-sdk";
+import { useLogout } from "./hooks";
 import { isNavigatePayload } from "./utils";
 import {
   HomePage,
@@ -20,6 +21,9 @@ import type { EventPayload } from "./types";
 const App: FC = () => {
   const navigate = useNavigate();
   const { client } = useDeskproAppClient();
+  const { logout, isLoading: isLoadingLogout } = useLogout();
+
+  const isLoading = [isLoadingLogout].some((isLoading) => isLoading);
 
   const debounceElementEvent = useDebouncedCallback((_, __, payload: EventPayload) => {
     return match(payload.type)
@@ -28,6 +32,7 @@ const App: FC = () => {
           navigate(payload.path);
         }
       })
+      .with("logout", logout)
       .run();
   }, 500);
 
@@ -40,7 +45,7 @@ const App: FC = () => {
     onElementEvent: debounceElementEvent,
   }, [client]);
 
-  if (!client) {
+  if (!client || isLoading) {
     return (
       <LoadingSpinner/>
     );
