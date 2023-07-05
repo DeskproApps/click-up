@@ -1,0 +1,73 @@
+{
+  "teams": [
+    {
+      "id": "team001",
+      "name": "Apps Lab Workspace",
+      "color": "#3498DB",
+      "avatar": null,
+      "members": [
+        {
+          "user": {
+            "id": 67353918,
+            "username": "Daria",
+            "email": "daria.lyamceva@icloud.com",
+            "color": "#8ac34a",
+            "profilePicture": null,
+            "initials": "D",
+            "role": 3,
+            "custom_role": null,
+            "last_active": "1688399995864",
+            "date_joined": "1688399875425",
+            "date_invited": "1688399655315"
+          },
+          "invited_by": {
+            "id": 1234567890,
+            "username": "ilia makarov",
+            "color": "#757380",
+            "email": "ilia.makarov@me.com",
+            "initials": "IM",
+            "profilePicture": "https://attachments.clickup.com/profilePictures/1234567890_jjp.jpg"
+          }
+        },
+        {
+          "user": {
+            "id": 1234567890,
+            "username": "ilia makarov",
+            "email": "ilia.makarov@me.com",
+            "color": "#757380",
+            "profilePicture": "https://attachments.clickup.com/profilePictures/1234567890_jjp.jpg",
+            "initials": "IM",
+            "role": 1,
+            "custom_role": null,
+            "last_active": "1688485261301",
+            "date_joined": "1688105674576",
+            "date_invited": "1688105674576"
+          }
+        }
+      ]
+    },
+    {
+      "id": "team002",
+      "name": "My ToDo Workspace",
+      "color": "#757380",
+      "avatar": null,
+      "members": [
+        {
+          "user": {
+            "id": 1234567890,
+            "username": "ilia makarov",
+            "email": "ilia.makarov@me.com",
+            "color": "#757380",
+            "profilePicture": "https://attachments.clickup.com/profilePictures/1234567890_jjp.jpg",
+            "initials": "IM",
+            "role": 1,
+            "custom_role": null,
+            "last_active": "1688485261301",
+            "date_joined": "1688376548924",
+            "date_invited": "1688376548924"
+          }
+        }
+      ]
+    }
+  ]
+}

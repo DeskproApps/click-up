@@ -1,0 +1,13 @@
+{
+  "user": {
+    "id": 1234567890,
+    "username": "ilia makarov",
+    "email": "ilia.makarov@me.com",
+    "color": "#757380",
+    "profilePicture": "https://attachments.clickup.com/profilePictures/1234567890_jjp.jpg",
+    "initials": "IM",
+    "week_start_day": null,
+    "global_font_support": true,
+    "timezone": "Europe/Kiev"
+  }
+}
