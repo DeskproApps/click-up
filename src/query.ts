@@ -13,6 +13,8 @@ const queryClient = new QueryClient({
 enum QueryKey {
   WORKSPACES = "workspaces",
   TASKS_BY_WORKSPACE = "tasksByWorkspace",
+  LINKED_TASKS = "linkedTasks",
+  TASK = "task",
 }
 
 export { queryClient, QueryKey };
