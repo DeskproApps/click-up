@@ -13,3 +13,4 @@ export { DeskproTickets } from "./DeskproTickets";
 export { Status } from "./Status";
 export { Tag } from "./Tag";
 export { Member } from "./Member";
+export { Comment } from "./Comment";

@@ -1,6 +1,5 @@
-import isValid from "date-fns/isValid";
-import parse from "date-fns/parse";
 import { default as fnsFormat } from "date-fns/format";
+import { parse } from "./parse";
 import { DATE_FORMAT } from "../../constants";
 import type { Maybe, Timestamp } from "../../types";
 
@@ -9,13 +8,9 @@ const format = (date: Maybe<Timestamp>, pattern = DATE_FORMAT): string => {
         return "-";
     }
 
-    const thisDate = parse(date, "T", new Date());
+    const thisDate = parse(date);
 
-    if (!isValid(thisDate)) {
-      return "-";
-    }
-
-    return fnsFormat(thisDate as Date, pattern);
+    return !thisDate ? "-" : fnsFormat(thisDate as Date, pattern);
 };
 
 export { format };
