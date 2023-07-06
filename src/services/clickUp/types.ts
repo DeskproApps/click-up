@@ -90,6 +90,13 @@ export type Subtask = {
   linked_tasks: [],
 };
 
+export type Project = {
+  id: string,
+  name: string,
+  hidden: boolean,
+  access: boolean,
+};
+
 export type Task = {
   id: string,
   custom_id: Maybe<string>,
@@ -127,18 +134,8 @@ export type Task = {
     name: string,
     access: boolean,
   },
-  project: { // { "id": "90020674555", "name": "Projects", "hidden": false, "access": true }
-    id: string,
-    name: string,
-    hidden: boolean,
-    access: boolean,
-  },
-  folder: { // { "id": "90020674555", "name": "Projects", "hidden": false, "access": true }
-    id: string,
-    name: string,
-    hidden: boolean,
-    access: boolean,
-  },
+  project: Project, // { "id": "90020674555", "name": "Projects", "hidden": false, "access": true }
+  folder: Project,  // { "id": "90020674555", "name": "Projects", "hidden": false, "access": true }
   space: { id: string },
 };
 

@@ -4,6 +4,7 @@ import find from "lodash/find";
 import size from "lodash/size";
 import { Stack } from "@deskpro/deskpro-ui";
 import { Title } from "@deskpro/app-sdk";
+import { useExternalLink } from "../../hooks";
 import { format } from "../../utils/date";
 import {
   Tag,
@@ -12,6 +13,7 @@ import {
   Member,
   Property,
   ClickUpLogo,
+  TextWithLink,
   TwoProperties,
   DeskproTickets,
 } from "../common";
@@ -25,6 +27,7 @@ type Props = {
 };
 
 const TaskItem: FC<Props> = ({ task, workspaces, onClickTitle }) => {
+  const { getWorkspaceUrl, getProjectUrl } = useExternalLink();
   const tags = useMemo(() => (get(task, ["tags"], []) || []), [task]);
   const assignees = useMemo(() => (get(task, ["assignees"], []) || []), [task]);
   const workspace = useMemo(() => {
@@ -49,9 +52,19 @@ const TaskItem: FC<Props> = ({ task, workspaces, onClickTitle }) => {
       />
       <TwoProperties
         leftLabel="Workspace"
-        leftText={get(workspace, ["name"], "-")}
+        leftText={(
+          <TextWithLink
+            text={get(workspace, ["name"], "-")}
+            link={getWorkspaceUrl(get(task, ["team_id"]))}
+          />
+        )}
         rightLabel="Project"
-        rightText={get(task, ["project", "name"], "-")}
+        rightText={(
+          <TextWithLink
+            text={get(task, ["project", "name"], "-")}
+            link={getProjectUrl(get(task, ["team_id"]), get(task, ["project", "id"]))}
+          />
+        )}
       />
       <TwoProperties
         leftLabel="Status"

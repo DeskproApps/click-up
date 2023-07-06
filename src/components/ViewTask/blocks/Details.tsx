@@ -1,10 +1,18 @@
 import { useMemo } from "react";
 import get from "lodash/get";
 import find from "lodash/find";
-import { Stack, P5 } from "@deskpro/deskpro-ui";
+import { P5, Stack } from "@deskpro/deskpro-ui";
 import { Title } from "@deskpro/app-sdk";
+import { useExternalLink } from "../../../hooks";
 import { format } from "../../../utils/date";
-import { Property, ClickUpLogo, Member, Status, Tag } from "../../common";
+import {
+  Tag,
+  Status,
+  Member,
+  Property,
+  ClickUpLogo,
+  TextWithLink,
+} from "../../common";
 import type { FC } from "react";
 import type { Maybe } from "../../../types";
 import type { Task, Workspace } from "../../../services/clickUp/types";
@@ -15,6 +23,7 @@ type Props = {
 }
 
 const Details: FC<Props> = ({ task, workspaces }) => {
+  const { getWorkspaceUrl, getProjectUrl } = useExternalLink();
   const workspace = useMemo(() => {
     return find(workspaces, { id: get(task, ["team_id"]) });
   }, [workspaces, task]);
@@ -31,11 +40,21 @@ const Details: FC<Props> = ({ task, workspaces }) => {
       />
       <Property
         label="Workspace"
-        text={get(workspace, ["name"], "-")}
+        text={(
+          <TextWithLink
+            text={get(workspace, ["name"], "-")}
+            link={getWorkspaceUrl(get(task, ["team_id"], ""))}
+          />
+        )}
       />
       <Property
         label="Project"
-        text={get(task, ["project", "name"], "-")}
+        text={(
+          <TextWithLink
+            text={get(task, ["project", "name"], "-")}
+            link={getProjectUrl(get(task, ["team_id"], ""), get(task, ["project", "id"], ""))}
+          />
+        )}
       />
       <Property
         label="Description"
