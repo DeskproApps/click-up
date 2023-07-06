@@ -2,7 +2,7 @@
   "name": "@deskpro-apps/click-up",
   "title": "ClickUp",
   "description": "",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "scope": "agent",
   "isSingleInstall": false,
   "hasDevMode": true,
