@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
 import get from "lodash/get";
-import noop from "lodash/noop";
 import isEmpty from "lodash/isEmpty";
 import { useNavigate } from "react-router-dom";
 import {
@@ -8,18 +7,20 @@ import {
   useDeskproLatestAppContext,
 } from "@deskpro/app-sdk";
 import { deleteEntityService } from "../services/deskpro";
+import { useAsyncError } from "./useAsyncError";
 import type { TicketContext } from "../types";
 import type { Task } from "../services/clickUp/types";
 
-type UseUnlinkTask = () => {
+export type Result = {
   isLoading: boolean,
   unlink: (task: Task) => void,
 };
 
-const useUnlinkTask: UseUnlinkTask = () => {
+const useUnlinkTask = (): Result => {
   const navigate = useNavigate();
   const { client } = useDeskproAppClient();
   const { context } = useDeskproLatestAppContext() as { context: TicketContext };
+  const { asyncErrorHandler } = useAsyncError();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const ticketId = get(context, ["data", "ticket", "id"]);
 
@@ -36,8 +37,8 @@ const useUnlinkTask: UseUnlinkTask = () => {
         setIsLoading(false);
         navigate("/home");
       })
-      .catch(noop);
-  }, [client, ticketId, navigate]);
+      .catch(asyncErrorHandler);
+  }, [client, ticketId, navigate, asyncErrorHandler]);
 
   return { isLoading, unlink };
 };

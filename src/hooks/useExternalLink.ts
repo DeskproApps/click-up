@@ -2,12 +2,12 @@ import { useCallback } from "react";
 import { CLICK_UP_URL } from "../constants";
 import type { Workspace, Project } from "../services/clickUp/types";
 
-type UseExternalLink = () => {
+export type Result = {
   getWorkspaceUrl: (workspaceId: Workspace["id"]) => string,
   getProjectUrl: (workspaceId: Workspace["id"], projectId: Project["id"]) => string,
 };
 
-const useExternalLink: UseExternalLink = () => {
+const useExternalLink = (): Result => {
   const getWorkspaceUrl = useCallback((workspaceId: Workspace["id"]) => {
     if (!workspaceId) {
       return "";
