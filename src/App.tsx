@@ -1,3 +1,4 @@
+import get from "lodash/get";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useDebouncedCallback } from "use-debounce";
 import { match } from "ts-pattern";
@@ -6,7 +7,7 @@ import {
   useDeskproAppClient,
   useDeskproAppEvents,
 } from "@deskpro/app-sdk";
-import { useLogout } from "./hooks";
+import { useLogout, useUnlinkTask } from "./hooks";
 import { isNavigatePayload } from "./utils";
 import {
   HomePage,
@@ -23,8 +24,9 @@ const App: FC = () => {
   const navigate = useNavigate();
   const { client } = useDeskproAppClient();
   const { logout, isLoading: isLoadingLogout } = useLogout();
+  const { unlink, isLoading: isLoadingUnlink } = useUnlinkTask();
 
-  const isLoading = [isLoadingLogout].some((isLoading) => isLoading);
+  const isLoading = [isLoadingLogout, isLoadingUnlink].some((isLoading) => isLoading);
 
   const debounceElementEvent = useDebouncedCallback((_, __, payload: EventPayload) => {
     return match(payload.type)
@@ -34,6 +36,7 @@ const App: FC = () => {
         }
       })
       .with("logout", logout)
+      .with("unlink", () => unlink(get(payload, ["task"])))
       .run();
   }, 500);
 
