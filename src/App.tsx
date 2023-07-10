@@ -15,6 +15,7 @@ import {
   LoginPage,
   ViewTaskPage,
   LoadingAppPage,
+  CreateTaskPage,
   AdminCallbackPage,
 } from "./pages";
 import type { FC } from "react";
@@ -63,6 +64,7 @@ const App: FC = () => {
         <Route path="/home" element={<HomePage/>}/>
         <Route path="/link" element={<LinkPage/>} />
         <Route path="/view/:taskId" element={<ViewTaskPage/>} />
+        <Route path="/create" element={<CreateTaskPage/>} />
         <Route index element={<LoadingAppPage/>} />
       </Routes>
       <br/><br/><br/>

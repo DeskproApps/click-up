@@ -5,3 +5,8 @@ export { getWorkspacesService } from "./getWorkspacesService";
 export { getTasksByWorkspaceIdService } from "./getTasksByWorkspaceIdService";
 export { getTaskService } from "./getTaskService";
 export { getTaskCommentsService } from "./getTaskCommentsService";
+export { getSpacesService } from "./getSpacesService";
+export { getFoldersService } from "./getFoldersService";
+export { getFolderlessListsService } from "./getFolderlessListsService";
+export { getTagsService } from "./getTagsService";
+export { createTaskService } from "./createTaskService";

@@ -4,3 +4,4 @@ export { LoginPage } from "./LoginPage";
 export { HomePage } from "./HomePage";
 export { LinkPage } from "./LinkPage";
 export { ViewTaskPage } from "./ViewTaskPage";
+export { CreateTaskPage } from "./CreateTaskPage";

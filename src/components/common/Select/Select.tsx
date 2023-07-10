@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import get from "lodash/get";
 import size from "lodash/size";
+import trim from "lodash/trim";
 import isString from "lodash/isString";
 import toLower from "lodash/toLower";
 import isEmpty from "lodash/isEmpty";
@@ -123,7 +124,7 @@ const Select = <T,>({
           error={error}
           ref={targetRef}
           {...targetProps}
-          value={isString(displayValue) ? displayValue : (
+          value={isString(displayValue) ? trim(displayValue) : (
             <Stack gap={6} wrap="wrap" style={{ marginBottom: 6 }}>{displayValue}</Stack>
           )}
           style={{ paddingRight: 0, cursor: !disabled ? "pointer" : "not-allowed" }}

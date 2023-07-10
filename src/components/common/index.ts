@@ -15,3 +15,6 @@ export { Tag } from "./Tag";
 export { Member } from "./Member";
 export { Comment } from "./Comment";
 export { TextWithLink } from "./TextWithLink";
+export { Navigation } from "./Navigation";
+export { TextArea } from "./TextArea";
+export { DateInput } from "./DateInput";
