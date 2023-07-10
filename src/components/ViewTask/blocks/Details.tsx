@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import get from "lodash/get";
+import size from "lodash/size";
 import find from "lodash/find";
 import { P5, Stack } from "@deskpro/deskpro-ui";
 import { Title } from "@deskpro/app-sdk";
@@ -87,7 +88,7 @@ const Details: FC<Props> = ({ task, workspaces }) => {
       />
       <Property
         label="Assignee(s)"
-        text={(
+        text={!size(assignees) ? "-" : (
           <Stack gap={6} wrap="wrap">
             {assignees.map((assignee) => (
               <Member
@@ -101,7 +102,7 @@ const Details: FC<Props> = ({ task, workspaces }) => {
       />
       <Property
         label="Tags"
-        text={(
+        text={!size(tags) ? "-" : (
           <Stack gap={6} wrap="wrap">
             {tags.map((tag) => (<Tag key={get(tag, ["name"])} tag={tag} />))}
           </Stack>
