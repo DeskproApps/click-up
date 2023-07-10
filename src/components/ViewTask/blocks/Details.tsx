@@ -93,7 +93,7 @@ const Details: FC<Props> = ({ task, workspaces }) => {
             {assignees.map((assignee) => (
               <Member
                 key={get(assignee, ["id"])}
-                name={get(assignee, ["username"])}
+                name={get(assignee, ["username"]) || get(assignee, ["email"])}
                 avatarUrl={get(assignee, ["profilePicture"])}
               />
             ))}

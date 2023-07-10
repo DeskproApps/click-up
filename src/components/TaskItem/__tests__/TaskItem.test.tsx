@@ -31,4 +31,21 @@ describe("TaskItem", () => {
     expect(await findByText(/development/i)).toBeInTheDocument();
     expect(await findByText(/development/i)).toBeInTheDocument();
   });
+
+  test("should display email if there is no user name", async () => {
+    const task = mockTasks.tasks[3];
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    delete task.assignees[0].username;
+
+    const { findByText } = render((
+      <TaskItem
+        task={mockTasks.tasks[3] as never}
+        workspaces={mockWorkspaces.teams as never}
+      />
+    ), { wrappers: { appSdk: true } });
+
+    expect(await findByText(/ilia.makarov@me.com/i)).toBeInTheDocument();
+    expect(await findByText(/Daria/i)).toBeInTheDocument();
+  });
 });
