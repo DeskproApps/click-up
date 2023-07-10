@@ -29,6 +29,20 @@ const Details: FC<Props> = ({ task, workspaces }) => {
   }, [workspaces, task]);
   const assignees = useMemo(() => (get(task, ["assignees"], []) || []), [task]);
   const tags = useMemo(() => (get(task, ["tags"], []) || []), [task]);
+  const folder = useMemo(() => {
+    if (get(task, ["folder", "hidden"])) {
+      return "-";
+    }
+
+    const name = get(task, ["folder", "name"]);
+
+    return !name ? "-" : (
+      <TextWithLink
+        text={get(task, ["folder", "name"], "-")}
+        link={getProjectUrl(get(task, ["team_id"], ""), get(task, ["folder", "id"], ""))}
+      />
+    );
+  }, [task, getProjectUrl]);
 
   return (
     <>
@@ -49,18 +63,13 @@ const Details: FC<Props> = ({ task, workspaces }) => {
       />
       <Property
         label="Project"
-        text={(
-          <TextWithLink
-            text={get(task, ["project", "name"], "-")}
-            link={getProjectUrl(get(task, ["team_id"], ""), get(task, ["project", "id"], ""))}
-          />
-        )}
+        text={folder}
       />
       <Property
         label="Description"
         text={(
           <P5 style={{ whiteSpace: "pre-wrap" }}>
-            {get(task, ["description"], "-")}
+            {get(task, ["description"], "-") || "-"}
           </P5>
         )}
       />
