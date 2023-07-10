@@ -13,13 +13,14 @@ type Props = FormProps & {
 const CreateTask: FC<Props> = ({
   error,
   onSubmit,
+  onCancel,
   onNavigateToLinkTask,
 }) => {
   return (
     <>
       <Container>
         <Navigation selected="two" onOneNavigate={onNavigateToLinkTask} />
-        <TaskForm onSubmit={onSubmit} error={error} />
+        <TaskForm onSubmit={onSubmit} onCancel={onCancel} error={error} />
       </Container>
     </>
   );

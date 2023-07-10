@@ -23,7 +23,7 @@ type UseFormDeps = (workspaceId?: Workspace["id"], spaceId?: Space["id"]) => {
   workspaceOptions: Array<Option<Workspace["id"]>>,
   spaceOptions: Array<Option<Space["id"]>>,
   listOptions: Array<Option<List["id"]>>,
-  statusOptions: Array<Option<Status["id"]>>,
+  statusOptions: Array<Option<Status["status"]>>,
   userOptions: Array<Option<User["id"]>>,
   tagOptions: Array<Option<TagType["name"]>>,
 };
@@ -95,7 +95,7 @@ const useFormDeps: UseFormDeps = (workspaceId, spaceId) => {
         return (get(folderlessLists, ["data", "lists"], []) || []).map((list: List) => getOption(list.id, list.name));
       }, [folderlessLists]) as Array<Option<List["id"]>>,
     ],
-    statusOptions: statuses.map((status: Status) => getOption(status.id, status.status)),
+    statusOptions: statuses.map((status: Status) => getOption(status.status, status.status)),
     userOptions: users.map((user: User) => {
       const label = createElement(Member, {
         name: get(user, ["username"], ""),

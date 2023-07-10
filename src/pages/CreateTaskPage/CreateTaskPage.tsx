@@ -26,14 +26,16 @@ const CreateTaskPage: FC = () => {
 
   const onNavigateToLinkTask = useCallback(() => navigate("/link"), [navigate]);
 
-  const onSubmit = useCallback((value: FormValidationSchema) => {
+  const onCancel = useCallback(() => navigate("/home"), [navigate]);
+
+  const onSubmit = useCallback((values: FormValidationSchema) => {
     if (!client || !ticketId) {
       return Promise.resolve();
     }
 
     setError(null);
 
-    const { listId, ...taskValues } = getTaskValues(value);
+    const { listId, ...taskValues } = getTaskValues(values);
 
     return createTaskService(client, listId, taskValues)
       .then((task) => Promise.all([
@@ -66,6 +68,7 @@ const CreateTaskPage: FC = () => {
     <CreateTask
       onSubmit={onSubmit}
       error={error}
+      onCancel={onCancel}
       onNavigateToLinkTask={onNavigateToLinkTask}
     />
   );
