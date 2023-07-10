@@ -9,11 +9,11 @@ Once you've logged in, click on your avatar at the bottom left of the screen and
 
 [![](./docs/assets/setup/clickup-setup-02.png)](/docs/assets/setup/clickup-setup-02.png)
 
-You'll see a link __"+ Create an App"__, click it to create the App.
+Then navigate to the "ClickUp API" section on the left sidebar. Here you'll see a link __"+ Create an App"__, click it to create the App.
 
 [![](./docs/assets/setup/clickup-setup-03.png)](/docs/assets/setup/clickup-setup-03.png)
 
-Give the app name - this can be anything, something like "Deskpro App" will do. And enter your Deskpro URL in the "Redirect URL(s)" field (You can copy it in the ClickUp settings on the settings tab).
+Give the app name - this can be anything, something like "Deskpro App" will do. And enter your Deskpro URL in the "Redirect URL(s)" field (You can copy this from the ClickUp settings tab in this admin drawer in Deskpro).
 
 [![](./docs/assets/setup/clickup-setup-04.png)](/docs/assets/setup/clickup-setup-04.png)
 
