@@ -2,7 +2,7 @@
   "name": "@deskpro-apps/click-up",
   "title": "ClickUp",
   "description": "View your ClickUp tasks linked with Deskpro tickets to streamline communication with users.",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "scope": "agent",
   "isSingleInstall": false,
   "hasDevMode": true,
