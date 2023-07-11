@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import get from "lodash/get";
+import size from "lodash/size";
 import find from "lodash/find";
 import { P5, Stack } from "@deskpro/deskpro-ui";
 import { Title } from "@deskpro/app-sdk";
@@ -29,6 +30,20 @@ const Details: FC<Props> = ({ task, workspaces }) => {
   }, [workspaces, task]);
   const assignees = useMemo(() => (get(task, ["assignees"], []) || []), [task]);
   const tags = useMemo(() => (get(task, ["tags"], []) || []), [task]);
+  const folder = useMemo(() => {
+    if (get(task, ["folder", "hidden"])) {
+      return "-";
+    }
+
+    const name = get(task, ["folder", "name"]);
+
+    return !name ? "-" : (
+      <TextWithLink
+        text={get(task, ["folder", "name"], "-")}
+        link={getProjectUrl(get(task, ["team_id"], ""), get(task, ["folder", "id"], ""))}
+      />
+    );
+  }, [task, getProjectUrl]);
 
   return (
     <>
@@ -49,18 +64,13 @@ const Details: FC<Props> = ({ task, workspaces }) => {
       />
       <Property
         label="Project"
-        text={(
-          <TextWithLink
-            text={get(task, ["project", "name"], "-")}
-            link={getProjectUrl(get(task, ["team_id"], ""), get(task, ["project", "id"], ""))}
-          />
-        )}
+        text={folder}
       />
       <Property
         label="Description"
         text={(
           <P5 style={{ whiteSpace: "pre-wrap" }}>
-            {get(task, ["description"], "-")}
+            {get(task, ["description"], "-") || "-"}
           </P5>
         )}
       />
@@ -78,12 +88,12 @@ const Details: FC<Props> = ({ task, workspaces }) => {
       />
       <Property
         label="Assignee(s)"
-        text={(
+        text={!size(assignees) ? "-" : (
           <Stack gap={6} wrap="wrap">
             {assignees.map((assignee) => (
               <Member
                 key={get(assignee, ["id"])}
-                name={get(assignee, ["username"])}
+                name={get(assignee, ["username"]) || get(assignee, ["email"])}
                 avatarUrl={get(assignee, ["profilePicture"])}
               />
             ))}
@@ -92,7 +102,7 @@ const Details: FC<Props> = ({ task, workspaces }) => {
       />
       <Property
         label="Tags"
-        text={(
+        text={!size(tags) ? "-" : (
           <Stack gap={6} wrap="wrap">
             {tags.map((tag) => (<Tag key={get(tag, ["name"])} tag={tag} />))}
           </Stack>

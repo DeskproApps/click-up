@@ -7,7 +7,10 @@ import {
   useDeskproLatestAppContext,
   useInitialisedDeskproAppClient,
 } from "@deskpro/app-sdk";
-import { setAccessTokenService } from "../../services/deskpro";
+import {
+  getEntityListService,
+  setAccessTokenService,
+} from "../../services/deskpro";
 import {
   getAccessTokenService,
   getCurrentUserService,
@@ -15,6 +18,7 @@ import {
 import { getQueryParams } from "../../utils";
 import { useAsyncError } from "../../hooks";
 import type { TicketContext } from "../../types";
+import size from "lodash/size";
 
 type UseLogin = () => {
   poll: () => void,
@@ -31,6 +35,7 @@ const useLogin: UseLogin = () => {
   const { client } = useDeskproAppClient();
   const { asyncErrorHandler } = useAsyncError();
   const clientId = useMemo(() => get(context, ["settings", "client_id"]), [context]);
+  const ticketId = get(context, ["data", "ticket", "id"]);
 
   useInitialisedDeskproAppClient(
     (client) => {
@@ -67,9 +72,10 @@ const useLogin: UseLogin = () => {
       .then(({ statePathPlaceholder }) => getAccessTokenService(client, statePathPlaceholder))
       .then(({ access_token }) => setAccessTokenService(client, access_token))
       .then(() => getCurrentUserService(client))
-      .then(({ user }) => get(user, ["id"]) && navigate("/home"))
+      .then(() => getEntityListService(client, ticketId))
+      .then((entityIds) => navigate(size(entityIds) ? "/home" : "/link"))
       .catch(asyncErrorHandler);
-  }, [client, callback, navigate, asyncErrorHandler]);
+  }, [client, callback, navigate, asyncErrorHandler, ticketId]);
 
   return { authUrl, poll, isLoading };
 };

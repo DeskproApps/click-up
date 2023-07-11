@@ -33,6 +33,20 @@ const TaskItem: FC<Props> = ({ task, workspaces, onClickTitle }) => {
   const workspace = useMemo(() => {
     return find(workspaces, { id: get(task, ["team_id"]) });
   }, [workspaces, task]);
+  const folder = useMemo(() => {
+    if (get(task, ["folder", "hidden"])) {
+      return "-";
+    }
+
+    const name = get(task, ["folder", "name"]);
+
+    return !name ? "-" : (
+      <TextWithLink
+        text={name}
+        link={getProjectUrl(get(task, ["team_id"]), get(task, ["folder", "id"]))}
+      />
+    );
+  }, [task, getProjectUrl]);
 
   const onClick = useCallback((e: MouseEvent) => {
     e.preventDefault();
@@ -59,12 +73,7 @@ const TaskItem: FC<Props> = ({ task, workspaces, onClickTitle }) => {
           />
         )}
         rightLabel="Project"
-        rightText={(
-          <TextWithLink
-            text={get(task, ["project", "name"], "-")}
-            link={getProjectUrl(get(task, ["team_id"]), get(task, ["project", "id"]))}
-          />
-        )}
+        rightText={folder}
       />
       <TwoProperties
         leftLabel="Status"
@@ -84,7 +93,7 @@ const TaskItem: FC<Props> = ({ task, workspaces, onClickTitle }) => {
               {assignees.map((assignee) => (
                 <Member
                   key={get(assignee, ["id"])}
-                  name={get(assignee, ["username"])}
+                  name={get(assignee, ["username"]) || get(assignee, ["email"])}
                   avatarUrl={get(assignee, ["profilePicture"])}
                 />
               ))}
