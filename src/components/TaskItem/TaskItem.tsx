@@ -4,6 +4,7 @@ import find from "lodash/find";
 import size from "lodash/size";
 import { Stack } from "@deskpro/deskpro-ui";
 import { Title } from "@deskpro/app-sdk";
+import { useExternalLink } from "../../hooks";
 import { format } from "../../utils/date";
 import {
   Tag,
@@ -12,6 +13,7 @@ import {
   Member,
   Property,
   ClickUpLogo,
+  TextWithLink,
   TwoProperties,
   DeskproTickets,
 } from "../common";
@@ -25,11 +27,26 @@ type Props = {
 };
 
 const TaskItem: FC<Props> = ({ task, workspaces, onClickTitle }) => {
+  const { getWorkspaceUrl, getProjectUrl } = useExternalLink();
   const tags = useMemo(() => (get(task, ["tags"], []) || []), [task]);
   const assignees = useMemo(() => (get(task, ["assignees"], []) || []), [task]);
   const workspace = useMemo(() => {
     return find(workspaces, { id: get(task, ["team_id"]) });
   }, [workspaces, task]);
+  const folder = useMemo(() => {
+    if (get(task, ["folder", "hidden"])) {
+      return "-";
+    }
+
+    const name = get(task, ["folder", "name"]);
+
+    return !name ? "-" : (
+      <TextWithLink
+        text={name}
+        link={getProjectUrl(get(task, ["team_id"]), get(task, ["folder", "id"]))}
+      />
+    );
+  }, [task, getProjectUrl]);
 
   const onClick = useCallback((e: MouseEvent) => {
     e.preventDefault();
@@ -49,9 +66,14 @@ const TaskItem: FC<Props> = ({ task, workspaces, onClickTitle }) => {
       />
       <TwoProperties
         leftLabel="Workspace"
-        leftText={get(workspace, ["name"], "-")}
+        leftText={(
+          <TextWithLink
+            text={get(workspace, ["name"], "-")}
+            link={getWorkspaceUrl(get(task, ["team_id"]))}
+          />
+        )}
         rightLabel="Project"
-        rightText={get(task, ["project", "name"], "-")}
+        rightText={folder}
       />
       <TwoProperties
         leftLabel="Status"
@@ -71,7 +93,7 @@ const TaskItem: FC<Props> = ({ task, workspaces, onClickTitle }) => {
               {assignees.map((assignee) => (
                 <Member
                   key={get(assignee, ["id"])}
-                  name={get(assignee, ["username"])}
+                  name={get(assignee, ["username"]) || get(assignee, ["email"])}
                   avatarUrl={get(assignee, ["profilePicture"])}
                 />
               ))}

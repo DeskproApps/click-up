@@ -1,0 +1,309 @@
+{
+  "id": "task001",
+  "custom_id": null,
+  "name": "Link page",
+  "text_content": "Oh this is linking page\nitem 1\nitem 2\nitem 3\n<p>text</p>",
+  "description": "Oh this is linking page\nitem 1\nitem 2\nitem 3\n<p>text</p>",
+  "status": {
+    "id": "subcatlist-001_subcat901000341025_sc188337185_7vFViXX3",
+    "status": "in progress",
+    "color": "#04A9F4",
+    "orderindex": 1,
+    "type": "custom"
+  },
+  "orderindex": "39862587.00000000000000000000000000000000",
+  "date_created": "1688105682866",
+  "date_updated": "1688566222554",
+  "date_closed": null,
+  "date_done": null,
+  "archived": false,
+  "creator": {
+    "id": 123456,
+    "username": "ilia makarov",
+    "color": "#757380",
+    "email": "ilia.makarov@me.com",
+    "profilePicture": "https://attachments.clickup.com/profilePictures/123456_jjp.jpg"
+  },
+  "assignees": [
+    {
+      "id": 123456,
+      "username": "ilia makarov",
+      "color": "#757380",
+      "initials": "IM",
+      "email": "ilia.makarov@me.com",
+      "profilePicture": "https://attachments.clickup.com/profilePictures/123456_jjp.jpg"
+    },
+    {
+      "id": 654321,
+      "username": "Daria",
+      "color": "#8ac34a",
+      "initials": "D",
+      "email": "daria.lyamceva@icloud.com",
+      "profilePicture": null
+    }
+  ],
+  "watchers": [
+    {
+      "id": 123456,
+      "username": "ilia makarov",
+      "color": "#757380",
+      "initials": "IM",
+      "email": "ilia.makarov@me.com",
+      "profilePicture": "https://attachments.clickup.com/profilePictures/123456_jjp.jpg"
+    },
+    {
+      "id": 654321,
+      "username": "Daria",
+      "color": "#8ac34a",
+      "initials": "D",
+      "email": "daria.lyamceva@icloud.com",
+      "profilePicture": null
+    }
+  ],
+  "checklists": [
+    {
+      "id": "checklist001",
+      "task_id": "task001",
+      "name": "Checklist",
+      "date_created": "1688455796614",
+      "orderindex": 1,
+      "creator": 123456,
+      "resolved": 1,
+      "unresolved": 1,
+      "items": [
+        {
+          "id": "checklist-item-001",
+          "name": "checklist item1",
+          "orderindex": 0,
+          "assignee": null,
+          "group_assignee": null,
+          "resolved": false,
+          "parent": null,
+          "date_created": "1688455814587",
+          "children": []
+        },
+        {
+          "id": "checklist-item-002",
+          "name": "checklist item2",
+          "orderindex": 1,
+          "assignee": null,
+          "group_assignee": null,
+          "resolved": true,
+          "parent": null,
+          "date_created": "1688455817388",
+          "children": []
+        }
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "development",
+      "tag_fg": "#E50000",
+      "tag_bg": "#ff7800",
+      "creator": 123456
+    },
+    {
+      "name": "mvp",
+      "tag_fg": "#800000",
+      "tag_bg": "#2ecd6f",
+      "creator": 123456
+    }
+  ],
+  "parent": null,
+  "priority": null,
+  "due_date": "1691283600000",
+  "start_date": null,
+  "points": null,
+  "time_estimate": null,
+  "time_spent": 0,
+  "custom_fields": [],
+  "dependencies": [],
+  "linked_tasks": [],
+  "team_id": "team001",
+  "url": "https://app.clickup.com/t/task001",
+  "sharing": {
+    "public": false,
+    "public_share_expires_on": null,
+    "public_fields": [
+      "assignees",
+      "priority",
+      "due_date",
+      "content",
+      "comments",
+      "attachments",
+      "customFields",
+      "subtasks",
+      "tags",
+      "checklists",
+      "coverimage"
+    ],
+    "token": null,
+    "seo_optimized": false
+  },
+  "permission_level": "create",
+  "list": {
+    "id": "list-001",
+    "name": "MVP",
+    "access": true
+  },
+  "project": {
+    "id": "project-001",
+    "name": "Projects",
+    "hidden": false,
+    "access": true
+  },
+  "folder": {
+    "id": "project-001",
+    "name": "Projects",
+    "hidden": false,
+    "access": true
+  },
+  "space": {
+    "id": "90020292664"
+  },
+  "subtasks": [
+    {
+      "id": "subtask-001",
+      "name": "search tasks",
+      "status": {
+        "status": "done",
+        "orderindex": 2,
+        "color": "#2ecd6f",
+        "type": "done"
+      },
+      "orderindex": "33952522.00000000000000000000000000000000",
+      "date_created": "1688455735915",
+      "date_updated": "1688456403310",
+      "date_closed": null,
+      "archived": false,
+      "creator": {
+        "id": 123456,
+        "username": "ilia makarov",
+        "color": "#757380",
+        "email": "ilia.makarov@me.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/123456_jjp.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [],
+      "parent": "task001",
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "url": "https://app.clickup.com/t/subtask-001"
+    },
+    {
+      "id": "subtask-002",
+      "name": "linking tasks to the ticket",
+      "status": {
+        "status": "in progress",
+        "orderindex": 1,
+        "color": "#04A9F4",
+        "type": "custom"
+      },
+      "orderindex": "33952523.00000000000000000000000000000000",
+      "date_created": "1688455742636",
+      "date_updated": "1688456406526",
+      "date_closed": null,
+      "date_done": null,
+      "archived": false,
+      "creator": {
+        "id": 123456,
+        "username": "ilia makarov",
+        "color": "#757380",
+        "email": "ilia.makarov@me.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/123456_jjp.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [],
+      "parent": "task001",
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "url": "https://app.clickup.com/t/subtask-002"
+    },
+    {
+      "id": "subtask-003",
+      "name": "logout",
+      "status": {
+        "status": "to do",
+        "orderindex": 0,
+        "color": "#b5bcc2",
+        "type": "open"
+      },
+      "orderindex": "33952524.00000000000000000000000000000000",
+      "date_created": "1688455744004",
+      "date_updated": "1688456412244",
+      "date_closed": null,
+      "date_done": null,
+      "archived": false,
+      "creator": {
+        "id": 123456,
+        "username": "ilia makarov",
+        "color": "#757380",
+        "email": "ilia.makarov@me.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/123456_jjp.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [],
+      "parent": "task001",
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "url": "https://app.clickup.com/t/subtask-003"
+    },
+    {
+      "id": "subtask-004",
+      "name": "filtering",
+      "status": {
+        "status": "complete",
+        "orderindex": 3,
+        "color": "#6bc950",
+        "type": "closed"
+      },
+      "orderindex": "33952525.00000000000000000000000000000000",
+      "date_created": "1688456427594",
+      "date_updated": "1688563862197",
+      "archived": false,
+      "creator": {
+        "id": 123456,
+        "username": "ilia makarov",
+        "color": "#757380",
+        "email": "ilia.makarov@me.com",
+        "profilePicture": "https://attachments.clickup.com/profilePictures/123456_jjp.jpg"
+      },
+      "assignees": [],
+      "watchers": [],
+      "checklists": [],
+      "tags": [],
+      "parent": "task001",
+      "due_date": null,
+      "start_date": null,
+      "points": null,
+      "time_estimate": null,
+      "custom_fields": [],
+      "dependencies": [],
+      "linked_tasks": [],
+      "url": "https://app.clickup.com/t/subtask-004"
+    }
+  ],
+  "attachments": []
+}

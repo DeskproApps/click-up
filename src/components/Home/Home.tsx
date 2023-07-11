@@ -9,9 +9,10 @@ import type { Task, Workspace } from "../../services/clickUp/types";
 type Props = {
   tasks: Task[],
   workspaces: Workspace[],
+  onNavigateToTask: (taskId: Task["id"]) => void,
 };
 
-const Home: FC<Props> = ({ tasks, workspaces }) => {
+const Home: FC<Props> = ({ tasks, workspaces, onNavigateToTask }) => {
   return (
     <Container>
       {!Array.isArray(tasks)
@@ -20,7 +21,11 @@ const Home: FC<Props> = ({ tasks, workspaces }) => {
           ? <NoFound text="No ClickUp tasks found"/>
           : tasks.map((task) => (
             <Fragment key={task.id}>
-              <TaskItem task={task} workspaces={workspaces}/>
+              <TaskItem
+                task={task}
+                workspaces={workspaces}
+                onClickTitle={() => onNavigateToTask(task.id)}
+              />
               <HorizontalDivider style={{ marginTop: 10, marginBottom: 10 }}/>
             </Fragment>
           ))

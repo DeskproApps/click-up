@@ -4,3 +4,4 @@ export { getCurrentUserService } from "./getCurrentUserService";
 export { getWorkspacesService } from "./getWorkspacesService";
 export { getTasksByWorkspaceIdService } from "./getTasksByWorkspaceIdService";
 export { getTaskService } from "./getTaskService";
+export { getTaskCommentsService } from "./getTaskCommentsService";

@@ -8,6 +8,7 @@ const getTaskService = (
 ) => {
   return baseRequest<Task>(client, {
     url: `/task/${taskId}`,
+    queryParams: { include_subtasks: `${true}` }
   });
 };
 

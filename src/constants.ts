@@ -6,6 +6,8 @@ export const DATE_FORMAT = "dd MMM, yyyy";
 
 export const TIME_FORMAT = "H:mm";
 
+export const API_DATE_FORMAT = "T";
+
 /** Deskpro */
 export const APP_PREFIX = "click-up";
 
@@ -21,3 +23,5 @@ export const placeholders = {
 
 /** ClickUp */
 export const BASE_URL = "https://api.clickup.com/api/v2";
+
+export const CLICK_UP_URL = "https://app.clickup.com";
