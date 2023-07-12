@@ -1,10 +1,8 @@
 import type { Maybe, Timestamp } from "../../types";
 
 export type ClickUpAPIError = {
-  error: {
-    code: number,
-    message: string,
-  }
+  ECODE: string, // "INPUT_005"
+  err: string, // "Task name invalid"
 };
 
 export type AccessToken = {
@@ -35,16 +33,61 @@ export type Workspace = {
       custom_role: null,
       last_active: Timestamp,
       date_joined: Timestamp,
-      date_invited: Timestamp, //"1688105674576"
+      date_invited: Timestamp,
     }>,
   }
 };
 
 export type Status = {
+  id: string,
   status: string,
   color: string,
   type: "done"|"open"|"closed"|"custom",
   orderindex: number,
+};
+
+export type List = {
+  id: string,
+  name: string,
+  orderindex: number,
+  content: string,
+  status: Maybe<Status>,
+  assignee: Maybe<User>,
+  task_count: number,
+  due_date: Maybe<Timestamp>,
+  start_date: Maybe<Timestamp>,
+  folder?: Pick<Folder, "id"|"name"|"hidden"> & { access: boolean },
+  space: Pick<Space, "id"|"name"> & { access: true },
+  archived: boolean,
+  override_statuses: boolean,
+  permission_level: string, // "create"
+};
+
+export type Folder = {
+  id: string,
+  name: string,
+  orderindex: number,
+  override_statuses: boolean,
+  hidden: boolean,
+  space: Pick<Space, "id" | "name">,
+  task_count: string,
+  archived: boolean,
+  statuses: Status[],
+  lists: List[],
+  permission_level: string, // "create"
+};
+
+export type Space = {
+  id: string,
+  name: string,
+  color: string, // "#03A2FD",
+  private: boolean,
+  admin_can_manage: boolean,
+  avatar: null,
+  statuses: Status[],
+  multiple_assignees: boolean,
+  features: object,
+  archived: boolean,
 };
 
 export type Tag = {
@@ -147,3 +190,5 @@ export type Comment = {
   reactions: [],
   date: Maybe<Timestamp>,
 };
+
+

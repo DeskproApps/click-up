@@ -27,6 +27,7 @@ describe("LinkTask", () => {
         selectedWorkspaceId="team001"
         workspaces={mockWorkspaces.teams as never}
         tasks={mockTasks.tasks as never}
+        onNavigateToCreateTask={jest.fn()}
       />
     ), { wrappers: { theme: true } });
 

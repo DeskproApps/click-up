@@ -35,6 +35,8 @@ const LinkPage: FC = () => {
 
   const onCancel = useCallback(() => navigate("/home"), [navigate]);
 
+  const onNavigateToCreateTask = useCallback(() => navigate("/create"), [navigate]);
+
   const onChangeSelectedTask = useCallback((task: Task) => {
     let newSelectedTasks = cloneDeep(selectedTasks);
 
@@ -90,6 +92,7 @@ const LinkPage: FC = () => {
       selectedWorkspaceId={selectedWorkspaceId}
       onChangeWorkspace={setSelectedWorkspaceId}
       onChangeSelectedTask={onChangeSelectedTask}
+      onNavigateToCreateTask={onNavigateToCreateTask}
     />
   );
 };

@@ -1,11 +1,13 @@
 import "regenerator-runtime/runtime";
 import "@testing-library/jest-dom/extend-expect";
+import { useQuery } from "@tanstack/react-query";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { TextDecoder, TextEncoder } from "util";
 import * as React from "react";
 import { lightTheme } from "@deskpro/deskpro-ui";
 import { mockClient } from "./testing";
+import type { IDeskproClient } from "@deskpro/app-sdk";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
@@ -57,4 +59,9 @@ jest.mock("@deskpro/app-sdk", () => ({
   useDeskproAppTheme: () => ({ theme: lightTheme }),
   proxyFetch: async () => fetch,
   LoadingSpinner: () => <>Loading...</>,
+  useQueryWithClient: (
+    queryKey: string[],
+    queryFn: (client: IDeskproClient) => Promise<void>,
+    options: object,
+  ) => useQuery(queryKey, () => queryFn(mockClient as never), options),
 }));

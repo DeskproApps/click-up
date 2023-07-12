@@ -1,5 +1,5 @@
 import { HorizontalDivider } from "@deskpro/app-sdk";
-import { Container, Search } from "../common";
+import { Container, Search, Navigation } from "../common";
 import { Filters, Buttons, Tasks } from "./blocks";
 import type { FC, Dispatch } from "react";
 import type { Maybe } from "../../types";
@@ -17,6 +17,7 @@ type Props = {
   onChangeWorkspace: Dispatch<Workspace["id"]>,
   tasks: Task[],
   onChangeSelectedTask: (task: Task) => void,
+  onNavigateToCreateTask: () => void,
 };
 
 const LinkTasks: FC<Props> = ({
@@ -31,10 +32,12 @@ const LinkTasks: FC<Props> = ({
   tasks,
   isLoading,
   onChangeSelectedTask,
+  onNavigateToCreateTask,
 }) => {
   return (
     <>
       <Container>
+        <Navigation selected="one" onTwoNavigate={onNavigateToCreateTask}/>
         <Search onChange={onChangeSearch}/>
         <Filters
           workspaces={workspaces}
