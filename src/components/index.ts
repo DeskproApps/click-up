@@ -6,3 +6,4 @@ export { Home } from "./Home";
 export { ViewTask } from "./ViewTask";
 export { CreateTask } from "./CreateTask";
 export { TaskForm } from "./TaskForm";
+export { EditTask } from "./EditTask";

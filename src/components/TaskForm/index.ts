@@ -1,3 +1,8 @@
 export { TaskForm } from "./TaskForm";
-export { getTaskValues } from "./utils";
+export {
+  getListId,
+  getTaskValues,
+  getTagsToUpdate,
+  getAssigneesToUpdate,
+} from "./utils";
 export type { Props, FormValidationSchema } from "./types";

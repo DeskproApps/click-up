@@ -37,9 +37,9 @@ const DateInput: FC<Props> = ({
     <Flatpickr
       options={{
         position: "auto",
-        dateFormat: "j F Y",
+        dateFormat: "j M Y",
         ...(!enableTime ? {} : {
-          dateFormat: "j F Y H:i",
+          dateFormat: "j M Y H:i",
           minuteIncrement: 5,
           enableTime: true,
           time_24hr: true,

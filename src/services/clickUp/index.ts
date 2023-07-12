@@ -10,3 +10,7 @@ export { getFoldersService } from "./getFoldersService";
 export { getFolderlessListsService } from "./getFolderlessListsService";
 export { getTagsService } from "./getTagsService";
 export { createTaskService } from "./createTaskService";
+export { addTagToTaskService } from "./addTagToTaskService";
+export { removeTagFromTaskService } from "./removeTagFromTaskService";
+export { updateTaskService } from "./updateTaskService";
+export { updateTaskTagsService } from "./updateTaskTagsService";

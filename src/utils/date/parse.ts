@@ -3,15 +3,15 @@ import isValid from "date-fns/isValid";
 import { API_DATE_FORMAT } from "../../constants";
 import type { Maybe } from "../../types";
 
-const parse = (date: Maybe<string>, pattern = API_DATE_FORMAT): Maybe<Date> => {
+const parse = (date: Maybe<string>, pattern = API_DATE_FORMAT): Date|undefined => {
   if (!date) {
-    return null;
+    return undefined;
   }
 
   const thisDate = fnsParse(date, pattern, new Date());
 
   if (!isValid(thisDate)) {
-    return null;
+    return undefined;
   }
 
   return thisDate;

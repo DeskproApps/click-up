@@ -11,7 +11,7 @@ import { setEntityService } from "../../services/deskpro";
 import { useSetTitle } from "../../hooks";
 import { useAsyncError } from "../../hooks";
 import { CreateTask } from "../../components";
-import { getTaskValues } from "../../components/TaskForm";
+import { getTaskValues, getListId } from "../../components/TaskForm";
 import type { FC } from "react";
 import type { Maybe, TicketContext } from "../../types";
 import type { FormValidationSchema } from "../../components/TaskForm";
@@ -35,9 +35,7 @@ const CreateTaskPage: FC = () => {
 
     setError(null);
 
-    const { listId, ...taskValues } = getTaskValues(values);
-
-    return createTaskService(client, listId, taskValues)
+    return createTaskService(client, getListId(values), getTaskValues(values))
       .then((task) => Promise.all([
         setEntityService(client, ticketId, task.id),
       ]))

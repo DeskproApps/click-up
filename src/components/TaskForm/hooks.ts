@@ -98,13 +98,14 @@ const useFormDeps: UseFormDeps = (workspaceId, spaceId) => {
     statusOptions: statuses.map((status: Status) => getOption(status.status, status.status)),
     userOptions: users.map((user: User) => {
       const label = createElement(Member, {
+        key: get(user, ["id"]),
         name: get(user, ["username"], ""),
         avatarUrl: get(user, ["profilePicture"], ""),
       });
       return getOption(user.id, label, get(user, ["username"], ""));
     }) as Array<Option<User["id"]>>,
     tagOptions: (get(tags, ["data", "tags"], []) || []).map((tag: TagType) => {
-      return getOption(tag.name, createElement(Tag, { tag }), tag.name);
+      return getOption(tag.name, createElement(Tag, { tag, key: tag.name }), tag.name);
     }),
   };
 };

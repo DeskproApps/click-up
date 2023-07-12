@@ -10,7 +10,7 @@ describe("TaskForm", () => {
         name: "",
         description: "",
         status: "",
-        assignee: undefined,
+        assignees: [],
         dueDate: undefined,
         tags: [],
       });
