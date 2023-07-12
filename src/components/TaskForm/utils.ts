@@ -1,13 +1,20 @@
+import { createElement } from "react";
 import get from "lodash/get";
 import map from "lodash/map";
 import size from "lodash/size";
+import flatten from "lodash/flatten";
 import difference from "lodash/difference";
 import isDate from "date-fns/isDate";
 import getTime from "date-fns/getTime";
 import { z } from "zod";
+import { nbsp } from "../../constants";
 import { parse } from "../../utils/date";
+import { getOption } from "../../utils";
+import { Member, Tag } from "../common";
+import type { Option } from "../../types";
 import type { FormValidationSchema, TaskValues } from "./types";
-import type { List, Tag, Task, User } from "../../services/clickUp/types";
+import type {List, Tag as TagType, Task, User, Status, Folder, Workspace} from "../../services/clickUp/types";
+import {Space} from "../../services/clickUp/types";
 
 const validationSchema = z.object({
   workspace: z.string().nonempty(),
@@ -77,8 +84,8 @@ const getTagsToUpdate = (
   task: Task,
   values: FormValidationSchema,
 ): {
-  add: Array<Tag["name"]>,
-  rem: Array<Tag["name"]>,
+  add: Array<TagType["name"]>,
+  rem: Array<TagType["name"]>,
 } => {
   const taskTagIds = map(get(task, ["tags"], []), "name");
   const tagIds = get(values, ["tags"], []);
@@ -89,11 +96,91 @@ const getTagsToUpdate = (
   };
 };
 
+const getTagOptions = (tags?: TagType[]): Array<Option<TagType["name"]>> => {
+  if (!Array.isArray(tags) || !size(tags)) {
+    return [];
+  }
+
+  return tags.map((tag: TagType) => {
+    return getOption(tag.name, createElement(Tag, { tag, key: tag.name }), tag.name);
+  });
+};
+
+const getUserOptions = (users?: User[]): Array<Option<User["id"]>> => {
+  if (!Array.isArray(users) || !size(users)) {
+    return [];
+  }
+
+  return users.map((user) => {
+    const name = get(user, ["username"]) || get(user, ["email"], "");
+    const label = createElement(Member, {
+      key: get(user, ["id"]),
+      name,
+      avatarUrl: get(user, ["profilePicture"], ""),
+    });
+    return getOption(user.id, label, name);
+  });
+};
+
+const getStatusOptions = (statuses?: Status[]) => {
+  if (!Array.isArray(statuses) || !size(statuses)) {
+    return [];
+  }
+
+  return statuses.map((status: Status) => getOption(status.status, status.status));
+};
+
+const getListFromFolders = (folders?: Folder[]): Array<Option<List["id"]>> => {
+  if (!Array.isArray(folders) || !size(folders)) {
+    return [];
+  }
+
+  return flatten(folders.map((folder: Folder) => {
+      return [
+        { type: "header", label: folder.name },
+        ...(get(folder, ["lists"], []) || []).map((list) => {
+          return getOption(list.id, `${nbsp}${nbsp}${nbsp}${list.name}`)
+        })
+      ];
+    })) as Array<Option<List["id"]>>;
+};
+
+const getListOptions = (lists?: List[]): Array<Option<List["id"]>> => {
+  if (!Array.isArray(lists) || !size(lists)) {
+    return [];
+  }
+
+  return lists.map((list: List) => getOption(list.id, list.name));
+};
+
+const getSpaceOptions = (spaces?: Space[]): Array<Option<Space["id"]>> => {
+  if (!Array.isArray(spaces) || !size(spaces)) {
+    return [];
+  }
+
+  return spaces.map((space: Space) => getOption(space.id, space.name));
+};
+
+const getWorkspaceOptions = (workspaces?: Workspace[]) => {
+  if (!Array.isArray(workspaces) || !size(workspaces)) {
+    return [];
+  }
+
+  return workspaces.map((workspace: Workspace) => getOption(workspace.id, workspace.name))
+};
+
 export {
   getListId,
   getInitValues,
   getTaskValues,
+  getTagOptions,
+  getUserOptions,
+  getListOptions,
   getTagsToUpdate,
+  getSpaceOptions,
+  getStatusOptions,
   validationSchema,
+  getListFromFolders,
+  getWorkspaceOptions,
   getAssigneesToUpdate,
 };
