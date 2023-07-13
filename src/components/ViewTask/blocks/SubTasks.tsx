@@ -1,7 +1,7 @@
 import size from "lodash/size";
 import { Checkbox, Stack } from "@deskpro/deskpro-ui";
 import { Title } from "@deskpro/app-sdk";
-import { NoFound } from "../../common";
+import { NoFound, Container } from "../../common";
 import type { FC } from "react";
 import type { Maybe } from "../../../types";
 import type { Subtask } from "../../../services/clickUp/types";
@@ -26,7 +26,7 @@ const Subtask: FC<Subtask> = ({ id, name, status }) => {
 
 const SubTasks: FC<Props> = ({ subTasks }) => {
   return (
-    <>
+    <Container>
       <Title title="Subtasks" />
 
       <Stack vertical gap={10}>
@@ -37,7 +37,7 @@ const SubTasks: FC<Props> = ({ subTasks }) => {
           ))
         }
       </Stack>
-    </>
+    </Container>
   );
 };
 

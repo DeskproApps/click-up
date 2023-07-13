@@ -5,7 +5,7 @@ describe("TaskForm", () => {
   describe("getTaskValues", () => {
     test("should return required values", () => {
       expect(getTaskValues({ list: "list-001", name: "Test task" } as never))
-        .toEqual({ name: "Test task" });
+        .toEqual({ name: "Test task", description: " " });
     });
 
     test("should return full task values", () => {

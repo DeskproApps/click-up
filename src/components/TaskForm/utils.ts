@@ -55,7 +55,7 @@ const getTaskValues = (values: FormValidationSchema): TaskValues => {
 
   return {
     name: get(values, ["name"]),
-    ...(!description ? {} : { description }),
+    description: description || " ",
     ...(!status ? {} : { status }),
     ...(!size(assignees) ? {} : { assignees }),
     ...(!isDate(dueDate) ? {} : { due_date: `${getTime(dueDate as Date)}` }),

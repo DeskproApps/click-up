@@ -97,6 +97,18 @@ export type Tag = {
   tag_fg: string, // "#E50000"
 };
 
+export type CheckListItem = {
+  id: string,
+  name: string,
+  orderindex: number,
+  assignee: Maybe<User>,
+  group_assignee: null,
+  resolved: boolean,
+  parent: null,
+  date_created: Timestamp,
+  children: unknown,
+};
+
 export type CheckList = {
   id: string,
   task_id: Task["id"],
@@ -104,8 +116,9 @@ export type CheckList = {
   date_created: Timestamp,
   orderindex: number,
   creator: User["id"],
-  resolved: 0,
-  unresolved: 3,
+  resolved: number,
+  unresolved: number,
+  items: CheckListItem[],
 };
 
 export type Subtask = {

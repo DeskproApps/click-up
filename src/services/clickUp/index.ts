@@ -14,3 +14,4 @@ export { addTagToTaskService } from "./addTagToTaskService";
 export { removeTagFromTaskService } from "./removeTagFromTaskService";
 export { updateTaskService } from "./updateTaskService";
 export { updateTaskTagsService } from "./updateTaskTagsService";
+export { editChecklistItemService } from "./editChecklistItemService";

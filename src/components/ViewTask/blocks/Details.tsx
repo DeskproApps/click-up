@@ -11,6 +11,7 @@ import {
   Status,
   Member,
   Property,
+  Container,
   ClickUpLogo,
   TextWithLink,
 } from "../../common";
@@ -46,7 +47,7 @@ const Details: FC<Props> = ({ task, workspaces }) => {
   }, [task, getProjectUrl]);
 
   return (
-    <>
+    <Container>
       <Title
         title={get(task, ["name"], "-")}
         icon={<ClickUpLogo/>}
@@ -108,7 +109,7 @@ const Details: FC<Props> = ({ task, workspaces }) => {
           </Stack>
         )}
       />
-    </>
+    </Container>
   );
 };
 

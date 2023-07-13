@@ -10,8 +10,8 @@ const CardBase = styled.div`
 
 const CardMedia = styled.div``;
 
-const CardBody = styled.div`
-  width: calc(100% - 12px - 8px);
+const CardBody = styled.div<{ size?: number }>`
+  width: ${({ size = 14 }) => `calc(100% - ${size}px - 8px);`}
 `;
 
 type CardType = typeof CardBase & {

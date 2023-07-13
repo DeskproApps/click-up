@@ -62,17 +62,17 @@
   ],
   "checklists": [
     {
-      "id": "checklist001",
+      "id": "checklist-001",
       "task_id": "task001",
-      "name": "Checklist",
+      "name": "BOXES",
       "date_created": "1688455796614",
       "orderindex": 1,
-      "creator": 123456,
+      "creator": 67347116,
       "resolved": 1,
       "unresolved": 1,
       "items": [
         {
-          "id": "checklist-item-001",
+          "id": "checklist-001-item-1",
           "name": "checklist item1",
           "orderindex": 0,
           "assignee": null,
@@ -83,7 +83,7 @@
           "children": []
         },
         {
-          "id": "checklist-item-002",
+          "id": "checklist-001-item-2",
           "name": "checklist item2",
           "orderindex": 1,
           "assignee": null,
@@ -91,6 +91,51 @@
           "resolved": true,
           "parent": null,
           "date_created": "1688455817388",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "checklist-002",
+      "task_id": "task001",
+      "name": "FOXES",
+      "date_created": "1689171100262",
+      "orderindex": 2,
+      "creator": 67347116,
+      "resolved": 1,
+      "unresolved": 2,
+      "items": [
+        {
+          "id": "checklist-002-item-1",
+          "name": "second checklist 1",
+          "orderindex": 0,
+          "assignee": null,
+          "group_assignee": null,
+          "resolved": false,
+          "parent": null,
+          "date_created": "1689171290485",
+          "children": []
+        },
+        {
+          "id": "checklist-002-item-2",
+          "name": "second checklist 2",
+          "orderindex": 1,
+          "assignee": null,
+          "group_assignee": null,
+          "resolved": true,
+          "parent": null,
+          "date_created": "1689171293487",
+          "children": []
+        },
+        {
+          "id": "f82b1eff-62c0-4460-94e7-10bf04ab8c9f",
+          "name": "second checklist 3",
+          "orderindex": 2,
+          "assignee": null,
+          "group_assignee": null,
+          "resolved": false,
+          "parent": null,
+          "date_created": "1689171296251",
           "children": []
         }
       ]
