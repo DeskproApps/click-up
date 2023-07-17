@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ReactTimeAgo from "react-time-ago";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { Avatar, TSpan, P11, Stack } from "@deskpro/deskpro-ui";
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 import type { AnyIcon } from "@deskpro/deskpro-ui";
 import type { Maybe } from "../../../types";
 
@@ -40,7 +40,7 @@ const Body = styled(TSpan)`
 
 type Props = {
   name: string,
-  text: string,
+  text: string|ReactNode,
   date?: Maybe<Date>,
   avatarUrl?: string,
 };

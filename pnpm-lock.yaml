@@ -20,6 +20,7 @@ specifiers:
   '@types/react': ^18.2.14
   '@types/react-dom': ^18.2.6
   '@types/react-flatpickr': ^3.8.8
+  '@types/showdown': ^2.0.1
   '@types/styled-components': ^5.1.26
   '@types/testing-library__jest-dom': ^5.14.6
   '@types/uuid': ^9.0.2
@@ -51,6 +52,7 @@ specifiers:
   react-time-ago: ^7.2.1
   rimraf: ^3.0.2
   rollup-plugin-copy: 3.4.0
+  showdown: ^2.1.0
   slugify: ^1.6.5
   styled-components: ^5.3.6
   ts-jest: ^29.1.0
@@ -81,6 +83,7 @@ dependencies:
   react-is: 18.2.0
   react-router-dom: 6.14.0_biqbaboplfbrettd7655fr4n2y
   react-time-ago: 7.2.1_eqoz6kcnf5na464z2zfynejspu
+  showdown: 2.1.0
   ts-pattern: 4.3.0
   use-debounce: 9.0.4_react@18.2.0
   uuid: 9.0.0
@@ -100,6 +103,7 @@ devDependencies:
   '@types/react': 18.2.14
   '@types/react-dom': 18.2.6
   '@types/react-flatpickr': 3.8.8
+  '@types/showdown': 2.0.1
   '@types/styled-components': 5.1.26
   '@types/testing-library__jest-dom': 5.14.6
   '@types/uuid': 9.0.2
@@ -1586,6 +1590,10 @@ packages:
     resolution: {integrity: sha512-G8hZ6XJiHnuhQKR7ZmysCeJWE08o8T0AXtk5darsCaTVsYZhhgUrq53jizaR2FvsoeCwJhlmwTjkXBY5Pn/ZHw==}
     dev: true
 
+  /@types/showdown/2.0.1:
+    resolution: {integrity: sha512-xdnAw2nFqomkaL0QdtEk0t7yz26UkaVPl4v1pYJvtE1T0fmfQEH3JaxErEhGByEAl3zUZrkNBlneuJp0WJGqEA==}
+    dev: true
+
   /@types/stack-utils/2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
 
@@ -2160,6 +2168,11 @@ packages:
     dependencies:
       delayed-stream: 1.0.0
     dev: true
+
+  /commander/9.5.0:
+    resolution: {integrity: sha512-KRs7WVDKg86PWiuAqhDrAQnTXZKraVcCc6vFdL14qrZ/DcWwuRo7VoiYXalXO7S5GKpqYiVEwCbgFDfxNHKJBQ==}
+    engines: {node: ^12.20.0 || >=14}
+    dev: false
 
   /concat-map/0.0.1:
     resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
@@ -4969,6 +4982,13 @@ packages:
 
   /shortcut-buttons-flatpickr/0.4.0:
     resolution: {integrity: sha512-JKmT4my3Hm1e18OvG4Q6RcFhN4WRqqpTMkHrvZ7fup/dp6aTIWGVCHdRYtASkp/FCzDlJh6iCLQ/VcwwNpAMoQ==}
+    dev: false
+
+  /showdown/2.1.0:
+    resolution: {integrity: sha512-/6NVYu4U819R2pUIk79n67SYgJHWCce0a5xTP979WbNp0FL9MN1I1QK662IDU1b6JzKTvmhgI7T7JYIxBi3kMQ==}
+    hasBin: true
+    dependencies:
+      commander: 9.5.0
     dev: false
 
   /side-channel/1.0.4:

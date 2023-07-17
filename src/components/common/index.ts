@@ -18,3 +18,4 @@ export { TextWithLink } from "./TextWithLink";
 export { Navigation } from "./Navigation";
 export { TextArea } from "./TextArea";
 export { DateInput } from "./DateInput";
+export { Markdown } from "./Markdown";

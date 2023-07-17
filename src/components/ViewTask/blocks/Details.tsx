@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import get from "lodash/get";
 import size from "lodash/size";
 import find from "lodash/find";
-import { P5, Stack } from "@deskpro/deskpro-ui";
+import { Stack } from "@deskpro/deskpro-ui";
 import { Title } from "@deskpro/app-sdk";
 import { useExternalLink } from "../../../hooks";
 import { format } from "../../../utils/date";
@@ -11,6 +11,7 @@ import {
   Status,
   Member,
   Property,
+  Markdown,
   Container,
   ClickUpLogo,
   TextWithLink,
@@ -70,9 +71,7 @@ const Details: FC<Props> = ({ task, workspaces }) => {
       <Property
         label="Description"
         text={(
-          <P5 style={{ whiteSpace: "pre-wrap" }}>
-            {get(task, ["description"], "-") || "-"}
-          </P5>
+          <Markdown text={get(task, ["description"], "-") || "-"}/>
         )}
       />
       <Property
