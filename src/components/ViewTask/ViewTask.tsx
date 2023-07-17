@@ -15,6 +15,7 @@ type Props = {
     itemId: CheckListItem["id"],
     resolved: boolean,
   ) => Promise<unknown>,
+  onNavigateToAddComment: () => void,
 };
 
 const ViewTask: FC<Props> = ({
@@ -23,6 +24,7 @@ const ViewTask: FC<Props> = ({
   statuses,
   workspaces,
   onCompleteChecklist,
+  onNavigateToAddComment,
 }) => {
   return (
     <>
@@ -35,7 +37,7 @@ const ViewTask: FC<Props> = ({
         onCompleteChecklist={onCompleteChecklist}
       />
       <HorizontalDivider/>
-      <Comments comments={comments} />
+      <Comments comments={comments} onNavigateToAddComment={onNavigateToAddComment} />
     </>
   );
 };

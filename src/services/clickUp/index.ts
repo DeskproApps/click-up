@@ -16,3 +16,4 @@ export { updateTaskService } from "./updateTaskService";
 export { updateTaskTagsService } from "./updateTaskTagsService";
 export { editChecklistItemService } from "./editChecklistItemService";
 export { getSpaceService } from "./getSpaceService";
+export { createTaskCommentService } from "./createTaskCommentService";

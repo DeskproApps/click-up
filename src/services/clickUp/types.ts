@@ -204,4 +204,8 @@ export type Comment = {
   date: Maybe<Timestamp>,
 };
 
-
+export type CreatedComment = {
+  id: number,
+  date: Timestamp,
+  hist_id: string,
+};
