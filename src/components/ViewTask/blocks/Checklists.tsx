@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import size from "lodash/size";
 import { Checkbox, P7, P5, Stack, Spinner } from "@deskpro/deskpro-ui";
 import { Title } from "@deskpro/app-sdk";

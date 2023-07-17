@@ -16,6 +16,7 @@ enum QueryKey {
   LINKED_TASKS = "linkedTasks",
   TASK = "task",
   TASK_COMMENTS = "taskComments",
+  SPACE = "space",
   SPACES = "spaces",
   FOLDERS = "folders",
   FOLDERLESS_LISTS = "folderlessLists",

@@ -5,7 +5,7 @@ import type { Task, User, Status } from "./types";
 type Data = {
   name?: Task["name"],
   description?: Task["description"]
-  status?: Status["id"],
+  status?: Status["status"],
   assignees?: {
     add: Array<User["id"]>,
     rem: Array<User["id"]>,

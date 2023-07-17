@@ -12,7 +12,7 @@ describe("ViewTask", () => {
 
     test("render", async () => {
       const { findByText } = render((
-        <SubTasks subTasks={mockTask.subtasks as never}/>
+        <SubTasks subTasks={mockTask.subtasks as never} statuses={[]}/>
       ), { wrappers: { theme: true } });
 
       expect(await findByText(/search tasks/i)).toBeInTheDocument();
@@ -20,7 +20,5 @@ describe("ViewTask", () => {
       expect(await findByText(/logout/i)).toBeInTheDocument();
       expect(await findByText(/filtering/i)).toBeInTheDocument();
     });
-
-    test.todo("should trigger update subtask status");
   });
 });

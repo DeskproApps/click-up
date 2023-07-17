@@ -1,30 +1,55 @@
+import { Fragment } from "react";
+import get from "lodash/get";
 import size from "lodash/size";
-import { Checkbox, Stack } from "@deskpro/deskpro-ui";
-import { Title } from "@deskpro/app-sdk";
-import { NoFound, Container } from "../../common";
+import { Stack } from "@deskpro/deskpro-ui";
+import { Title, HorizontalDivider } from "@deskpro/app-sdk";
+import {
+  NoFound,
+  Container,
+  Status,
+  Member,
+  ClickUpLogo,
+  TwoProperties,
+} from "../../common";
 import type { FC } from "react";
 import type { Maybe } from "../../../types";
-import type { Subtask } from "../../../services/clickUp/types";
+import type { Subtask, Status as StatusType } from "../../../services/clickUp/types";
 
 type Props = {
   subTasks: Maybe<Array<Subtask>>,
+  statuses: StatusType[],
 };
 
-const Subtask: FC<Subtask> = ({ id, name, status }) => {
+const Subtask: FC<{ subTask: Subtask, statuses: StatusType[] }> = ({ subTask }) => {
+  const assignees = get(subTask, ["assignees"], []) || [];
+
   return (
-    <Checkbox
-      id={id}
-      key={id}
-      size={14}
-      label={name}
-      containerStyle={{ alignSelf: "start", marginTop: 3, marginRight: 4 }}
-      disabled={true}
-      checked={["done", "closed"].some((type) => type === status.type)}
-    />
+    <div style={{ width: "100%" }}>
+      <Title
+        title={get(subTask, ["name"], "-")}
+        icon={<ClickUpLogo/>} link={get(subTask, ["url"], "#") || "#"}
+      />
+      <TwoProperties
+        leftLabel="Status"
+        leftText={<Status status={get(subTask, ["status"])} />}
+        rightLabel="Assignee"
+        rightText={!size(assignees) ? "-" : (
+          <Stack gap={6} wrap="wrap">
+            {assignees.map((assignee) => (
+              <Member
+                key={get(assignee, ["id"])}
+                name={get(assignee, ["username"]) || get(assignee, ["email"])}
+                avatarUrl={get(assignee, ["profilePicture"])}
+              />
+            ))}
+          </Stack>
+        )}
+      />
+    </div>
   );
 };
 
-const SubTasks: FC<Props> = ({ subTasks }) => {
+const SubTasks: FC<Props> = ({ subTasks, statuses }) => {
   return (
     <Container>
       <Title title="Subtasks" />
@@ -32,8 +57,11 @@ const SubTasks: FC<Props> = ({ subTasks }) => {
       <Stack vertical gap={10}>
         {(!Array.isArray(subTasks) || !size(subTasks))
           ? <NoFound text="No subtasks found"/>
-          : subTasks.map((subTask) => (
-            <Subtask key={subTask.id} {...subTask} />
+          : subTasks.map((subTask, index) => (
+            <Fragment key={subTask.id}>
+              <Subtask subTask={subTask} statuses={statuses} />
+              {(size(subTasks) !== index + 1) && <HorizontalDivider style={{ width: "100%" }}/>}
+            </Fragment>
           ))
         }
       </Stack>
