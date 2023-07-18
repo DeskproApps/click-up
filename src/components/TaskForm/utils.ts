@@ -3,6 +3,7 @@ import get from "lodash/get";
 import map from "lodash/map";
 import size from "lodash/size";
 import flatten from "lodash/flatten";
+import startCase from "lodash/startCase";
 import difference from "lodash/difference";
 import isDate from "date-fns/isDate";
 import getTime from "date-fns/getTime";
@@ -127,7 +128,7 @@ const getStatusOptions = (statuses?: Status[]) => {
     return [];
   }
 
-  return statuses.map((status: Status) => getOption(status.status, status.status));
+  return statuses.map((status: Status) => getOption(status.status, startCase(status.status)));
 };
 
 const getListFromFolders = (folders?: Folder[]): Array<Option<List["id"]>> => {
