@@ -2,7 +2,8 @@ import { useMemo } from "react";
 import get from "lodash/get";
 import size from "lodash/size";
 import find from "lodash/find";
-import { Stack } from "@deskpro/deskpro-ui";
+import { faFile } from "@fortawesome/free-regular-svg-icons";
+import { Stack, AttachmentTag } from "@deskpro/deskpro-ui";
 import { Title } from "@deskpro/app-sdk";
 import { useExternalLink } from "../../../hooks";
 import { format } from "../../../utils/date";
@@ -17,6 +18,7 @@ import {
   TextWithLink,
 } from "../../common";
 import type { FC } from "react";
+import type { AnyIcon } from "@deskpro/deskpro-ui";
 import type { Maybe } from "../../../types";
 import type { Task, Workspace } from "../../../services/clickUp/types";
 
@@ -32,6 +34,7 @@ const Details: FC<Props> = ({ task, workspaces }) => {
   }, [workspaces, task]);
   const assignees = useMemo(() => (get(task, ["assignees"], []) || []), [task]);
   const tags = useMemo(() => (get(task, ["tags"], []) || []), [task]);
+  const attachments = useMemo(() => (get(task, ["attachments"], []) || []), [task])
   const folder = useMemo(() => {
     if (get(task, ["folder", "hidden"])) {
       return "-";
@@ -105,6 +108,22 @@ const Details: FC<Props> = ({ task, workspaces }) => {
         text={!size(tags) ? "-" : (
           <Stack gap={6} wrap="wrap">
             {tags.map((tag) => (<Tag key={get(tag, ["name"])} tag={tag} />))}
+          </Stack>
+        )}
+      />
+      <Property
+        label="Attachments"
+        text={!size(attachments) ? "-" : (
+          <Stack gap={6} wrap="wrap">
+            {attachments.map((attach) => (
+              <AttachmentTag
+                key={attach.id}
+                href={attach.url}
+                filename={attach.title}
+                fileSize={get(attach, ["size"], 0)}
+                icon={faFile as AnyIcon}
+              />
+            ))}
           </Stack>
         )}
       />

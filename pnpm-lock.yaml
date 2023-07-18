@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@deskpro/app-sdk': 1.2.14
   '@deskpro/deskpro-ui': 4.7.0
+  '@fortawesome/free-regular-svg-icons': ^6.4.0
   '@fortawesome/free-solid-svg-icons': ^6.4.0
   '@heroicons/react': 1.0.6
   '@hookform/resolvers': ^3.1.1
@@ -66,6 +67,7 @@ specifiers:
 dependencies:
   '@deskpro/app-sdk': 1.2.14_oowhjnfhxlpclnhoodjmy2uhye
   '@deskpro/deskpro-ui': 4.7.0_4qizki3r2dfxuhg3y6cbh3gjye
+  '@fortawesome/free-regular-svg-icons': 6.4.0
   '@fortawesome/free-solid-svg-icons': 6.4.0
   '@heroicons/react': 1.0.6_react@18.2.0
   '@hookform/resolvers': 3.1.1_react-hook-form@7.45.1
@@ -574,7 +576,7 @@ packages:
       '@deskpro/deskpro-ui': 4.7.0_4qizki3r2dfxuhg3y6cbh3gjye
       '@fortawesome/fontawesome-svg-core': 6.2.1
       '@fortawesome/free-brands-svg-icons': 6.2.1
-      '@fortawesome/free-regular-svg-icons': 6.2.1
+      '@fortawesome/free-regular-svg-icons': 6.4.0
       '@fortawesome/free-solid-svg-icons': 6.4.0
       '@fortawesome/react-fontawesome': 0.1.19_z27bm67dtmuyyvss23ckjdrcuy
       '@tanstack/react-query': 4.29.19_biqbaboplfbrettd7655fr4n2y
@@ -791,12 +793,12 @@ packages:
       '@fortawesome/fontawesome-common-types': 6.2.1
     dev: false
 
-  /@fortawesome/free-regular-svg-icons/6.2.1:
-    resolution: {integrity: sha512-wiqcNDNom75x+pe88FclpKz7aOSqS2lOivZeicMV5KRwOAeypxEYWAK/0v+7r+LrEY30+qzh8r2XDaEHvoLsMA==}
+  /@fortawesome/free-regular-svg-icons/6.4.0:
+    resolution: {integrity: sha512-ZfycI7D0KWPZtf7wtMFnQxs8qjBXArRzczABuMQqecA/nXohquJ5J/RCR77PmY5qGWkxAZDxpnUFVXKwtY/jPw==}
     engines: {node: '>=6'}
     requiresBuild: true
     dependencies:
-      '@fortawesome/fontawesome-common-types': 6.2.1
+      '@fortawesome/fontawesome-common-types': 6.4.0
     dev: false
 
   /@fortawesome/free-solid-svg-icons/6.4.0:

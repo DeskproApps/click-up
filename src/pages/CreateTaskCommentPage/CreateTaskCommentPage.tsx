@@ -1,10 +1,16 @@
 import { useState, useCallback } from "react";
 import get from "lodash/get";
+import size from "lodash/size";
+import isEmpty from "lodash/isEmpty";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSetTitle, useAsyncError } from "../../hooks";
-import { createTaskCommentService } from "../../services/clickUp";
+import { createTaskCommentService, createTaskAttachmentService } from "../../services/clickUp";
 import { CreateTaskComment } from "../../components";
-import { getValues } from "../../components/TaskCommentForm";
+import {
+  getValues,
+  getAttachments,
+  getAttachFormData,
+} from "../../components/TaskCommentForm";
 import {
   useDeskproElements,
   useDeskproAppClient,
@@ -29,9 +35,17 @@ const CreateTaskCommentPage: FC = () => {
       return Promise.resolve();
     }
 
+    const values = getValues(data);
+    const attachments = getAttachments(data);
+
     setError(null);
 
-    return createTaskCommentService(client, taskId, getValues(data))
+    return Promise.all([
+      !isEmpty(values.comment_text) ? createTaskCommentService(client, taskId, values) : Promise.resolve(),
+      ...(!size(attachments) ? [Promise.resolve()] : attachments.map(({ file }) => {
+        return createTaskAttachmentService(client, taskId, getAttachFormData(file))
+      }))
+    ])
       .then(() => navigate(`/view/${taskId}`))
       .catch((err) => {
         const error = get(err, ["data", "err"]);

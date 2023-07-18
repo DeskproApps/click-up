@@ -16,6 +16,7 @@ describe("TaskCommentForm", () => {
 
     waitFor(async () => {
       expect(await findByText("New comment")).toBeInTheDocument();
+      expect(await findByText("Attachments")).toBeInTheDocument();
       expect(await findByText("Create")).toBeVisible();
       expect(await findByText("Cancel")).toBeVisible();
     });
