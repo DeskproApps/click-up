@@ -9,7 +9,7 @@ describe("date", () => {
     test.each([
       undefined, null, "", 0, true, false, {}, "-"]
     )("wrong value: %p", (value) => {
-      expect(parse(value as never)).toBeNull();
+      expect(parse(value as never)).toBeUndefined();
     });
   });
 });

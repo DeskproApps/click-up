@@ -4,10 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input, Stack } from "@deskpro/deskpro-ui";
 import { LoadingSpinner } from "@deskpro/app-sdk";
 import { useFormDeps } from "./hooks";
-import {
-  getInitValues,
-  validationSchema,
-} from "./utils";
+import { getInitValues, validationSchema } from "./utils";
 import {
   Label,
   Select,
@@ -20,7 +17,7 @@ import type { FC } from "react";
 import type { Workspace, Space, List, Status, User } from "../../services/clickUp/types";
 import type { Props, FormValidationSchema } from "./types";
 
-const TaskForm: FC<Props> = ({ onSubmit, onCancel, isEditMode, error }) => {
+const TaskForm: FC<Props> = ({ onSubmit, onCancel, isEditMode, error, task }) => {
   const {
     watch,
     register,
@@ -28,7 +25,7 @@ const TaskForm: FC<Props> = ({ onSubmit, onCancel, isEditMode, error }) => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<FormValidationSchema>({
-    defaultValues: getInitValues(),
+    defaultValues: getInitValues(task),
     resolver: zodResolver(validationSchema),
   });
   const {
@@ -54,6 +51,7 @@ const TaskForm: FC<Props> = ({ onSubmit, onCancel, isEditMode, error }) => {
       <Label htmlFor="workspace" label="Workspace" required>
         <Select<Workspace["id"]>
           id="workspace"
+          disabled={isEditMode}
           value={watch("workspace")}
           options={workspaceOptions}
           onChange={({ value }) => {
@@ -68,6 +66,7 @@ const TaskForm: FC<Props> = ({ onSubmit, onCancel, isEditMode, error }) => {
       <Label htmlFor="space" label="Space" required>
         <Select<Space["id"]>
           id="space"
+          disabled={isEditMode}
           value={watch("space")}
           options={spaceOptions}
           onChange={({ value }) => {
@@ -81,6 +80,7 @@ const TaskForm: FC<Props> = ({ onSubmit, onCancel, isEditMode, error }) => {
       <Label htmlFor="list" label="List" required>
         <Select<List["id"]>
           id="folder"
+          disabled={isEditMode}
           value={watch("list")}
           options={listOptions}
           onChange={({ value }) => {
@@ -127,14 +127,26 @@ const TaskForm: FC<Props> = ({ onSubmit, onCancel, isEditMode, error }) => {
         />
       </Label>
 
-      <Label htmlFor="assignee" label="Assignee">
+      <Label htmlFor="assignees" label="Assignees">
         <Select<User["id"]>
-          id="assignee"
-          value={watch("assignee")}
+          id="assignees"
+          value={watch("assignees")}
           showInternalSearch
+          closeOnSelect={false}
           options={userOptions}
-          error={has(errors, ["assignee", "message"])}
-          onChange={(option) => setValue("assignee", option.value)}
+          error={has(errors, ["assignees", "message"])}
+          onChange={(o) => {
+            const assignees = watch("assignees");
+
+            if (o.value) {
+              const selectedAssignees = Array.isArray(assignees) ? assignees : [];
+              const newValue = selectedAssignees.includes(o.value)
+                ? selectedAssignees.filter((assignee) => assignee !== o.value)
+                : [...selectedAssignees, o.value];
+
+              setValue("assignees", newValue);
+            }
+          }}
         />
       </Label>
 

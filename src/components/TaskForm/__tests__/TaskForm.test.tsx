@@ -25,7 +25,7 @@ describe("LinkTasks", () => {
     expect(await findByText("Task name")).toBeInTheDocument();
     expect(await findByText("Description")).toBeInTheDocument();
     expect(await findByText("Status")).toBeInTheDocument();
-    expect(await findByText("Assignee")).toBeInTheDocument();
+    expect(await findByText("Assignees")).toBeInTheDocument();
     expect(await findByText("Due date")).toBeInTheDocument();
     expect(await findByText("Tags")).toBeInTheDocument();
 

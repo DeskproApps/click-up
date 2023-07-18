@@ -1,12 +1,11 @@
 import { z } from "zod";
 import { validationSchema } from "./utils";
 import type { Maybe } from "../../types";
-import type {Task, List, Status, User, Tag} from "../../services/clickUp/types";
+import type { Task, Status, User, Tag } from "../../services/clickUp/types";
 
 export type FormValidationSchema = z.infer<typeof validationSchema>;
 
 export type TaskValues = {
-  listId: List["id"],
   name: Task["name"],
   description?: Task["description"]
   status?: Status["id"],
@@ -16,7 +15,7 @@ export type TaskValues = {
 };
 
 export type Props = {
-  onSubmit: (data: FormValidationSchema) => Promise<void>,
+  onSubmit: (values: FormValidationSchema) => Promise<void>,
   onCancel?: () => void,
   isEditMode?: boolean,
   task?: Task,
