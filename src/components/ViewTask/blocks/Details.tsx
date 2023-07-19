@@ -20,14 +20,15 @@ import {
 import type { FC } from "react";
 import type { AnyIcon } from "@deskpro/deskpro-ui";
 import type { Maybe } from "../../../types";
-import type { Task, Workspace } from "../../../services/clickUp/types";
+import type { Task, Workspace, Space } from "../../../services/clickUp/types";
 
 type Props = {
   task: Maybe<Task>,
+  space: Maybe<Space>,
   workspaces: Workspace[],
 }
 
-const Details: FC<Props> = ({ task, workspaces }) => {
+const Details: FC<Props> = ({ task, workspaces, space }) => {
   const { getWorkspaceUrl, getProjectUrl } = useExternalLink();
   const workspace = useMemo(() => {
     return find(workspaces, { id: get(task, ["team_id"]) });
@@ -68,7 +69,11 @@ const Details: FC<Props> = ({ task, workspaces }) => {
         )}
       />
       <Property
-        label="Project"
+        label="Space"
+        text={get(space, ["name"], "-")}
+      />
+      <Property
+        label="Folder"
         text={folder}
       />
       <Property

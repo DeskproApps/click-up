@@ -5,10 +5,11 @@ import { LoadingSpinner, HorizontalDivider } from "@deskpro/app-sdk";
 import { NoFound, Card } from "../../common";
 import { TaskItem } from "../../TaskItem";
 import type { FC } from "react";
-import type { Task, Workspace } from "../../../services/clickUp/types";
+import type { Task, Space, Workspace } from "../../../services/clickUp/types";
 
 type Props = {
   tasks: Task[],
+  spaces: Space[],
   isLoading: boolean,
   selectedTasks: Task[],
   workspaces: Workspace[],
@@ -17,6 +18,7 @@ type Props = {
 
 const Tasks: FC<Props> = ({
   tasks,
+  spaces,
   isLoading,
   workspaces,
   selectedTasks,
@@ -45,6 +47,7 @@ const Tasks: FC<Props> = ({
                   <Card.Body>
                     <TaskItem
                       task={task}
+                      spaces={spaces}
                       workspaces={workspaces}
                       onClickTitle={() => onChangeSelectedTask(task)}
                     />

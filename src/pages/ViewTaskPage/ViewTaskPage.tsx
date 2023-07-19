@@ -18,7 +18,7 @@ const ViewTaskPage: FC = () => {
   const { taskId } = useParams();
   const { client } = useDeskproAppClient();
   const { asyncErrorHandler } = useAsyncError();
-  const { task, workspaces, comments, statuses, isLoading } = useTask(taskId);
+  const { task, workspaces, comments, statuses, space, isLoading } = useTask(taskId);
 
   const onNavigateToAddComment = useCallback(() => {
     navigate(`/view/${taskId}/comments/new`);
@@ -69,6 +69,7 @@ const ViewTaskPage: FC = () => {
   return (
       <ViewTask
         task={task}
+        space={space}
         workspaces={workspaces}
         comments={comments}
         statuses={statuses}

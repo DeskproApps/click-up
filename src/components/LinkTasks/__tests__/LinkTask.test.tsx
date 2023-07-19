@@ -16,6 +16,7 @@ describe("LinkTask", () => {
   test("render", async () => {
     const { findByText } = render((
       <LinkTasks
+        spaces={[]}
         onChangeSearch={jest.fn()}
         onCancel={jest.fn()}
         onLinkTasks={jest.fn()}

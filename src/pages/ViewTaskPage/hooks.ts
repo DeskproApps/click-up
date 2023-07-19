@@ -13,6 +13,7 @@ import type { Task, Space, Status, Comment, Workspace } from "../../services/cli
 type UseTask = (taskId?: Task["id"]) => {
   isLoading: boolean,
   task: Maybe<Task>,
+  space: Maybe<Space>,
   workspaces: Workspace[],
   comments: Comment[],
   statuses: Status[],
@@ -47,6 +48,7 @@ const useTask: UseTask = (taskId) => {
     task: get(task, ["data"]),
     workspaces: get(workspaces, ["data", "teams"], []) || [],
     comments: get(comments, ["data", "comments"], []) || [],
+    space: get(space, ["data"]),
     statuses: get(space, ["data", "statuses"]) || [],
   }
 };

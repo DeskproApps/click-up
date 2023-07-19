@@ -3,10 +3,11 @@ import { HorizontalDivider } from "@deskpro/app-sdk";
 import { Comments, Details, SubTasks, Checklists } from "./blocks";
 import type { FC } from "react";
 import type { Maybe } from "../../types";
-import type { Task, Workspace, Comment, CheckList, CheckListItem, Status } from "../../services/clickUp/types";
+import type { Task, Workspace, Comment, CheckList, CheckListItem, Status, Space } from "../../services/clickUp/types";
 
 type Props = {
   task: Maybe<Task>,
+  space: Maybe<Space>,
   workspaces: Workspace[],
   comments: Comment[],
   statuses: Status[],
@@ -20,6 +21,7 @@ type Props = {
 
 const ViewTask: FC<Props> = ({
   task,
+  space,
   comments,
   statuses,
   workspaces,
@@ -28,7 +30,7 @@ const ViewTask: FC<Props> = ({
 }) => {
   return (
     <>
-      <Details task={task} workspaces={workspaces} />
+      <Details task={task} workspaces={workspaces} space={space} />
       <HorizontalDivider/>
       <SubTasks subTasks={get(task, ["subtasks"])} statuses={statuses} />
       <HorizontalDivider/>

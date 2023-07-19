@@ -18,21 +18,25 @@ import {
   DeskproTickets,
 } from "../common";
 import type { FC, MouseEvent } from "react";
-import type { Task, Workspace } from "../../services/clickUp/types";
+import type { Task, Workspace, Space } from "../../services/clickUp/types";
 
 type Props = {
   task: Task,
+  spaces: Space[],
   workspaces: Workspace[],
   onClickTitle?: () => void,
 };
 
-const TaskItem: FC<Props> = ({ task, workspaces, onClickTitle }) => {
+const TaskItem: FC<Props> = ({ task, spaces, workspaces, onClickTitle }) => {
   const { getWorkspaceUrl, getProjectUrl } = useExternalLink();
   const tags = useMemo(() => (get(task, ["tags"], []) || []), [task]);
   const assignees = useMemo(() => (get(task, ["assignees"], []) || []), [task]);
   const workspace = useMemo(() => {
     return find(workspaces, { id: get(task, ["team_id"]) });
   }, [workspaces, task]);
+  const space = useMemo(() => {
+    return find(spaces, { id: get(task, ["space", "id"]) });
+  }, [spaces, task]);
   const folder = useMemo(() => {
     if (get(task, ["folder", "hidden"])) {
       return "-";
@@ -72,18 +76,20 @@ const TaskItem: FC<Props> = ({ task, workspaces, onClickTitle }) => {
             link={getWorkspaceUrl(get(task, ["team_id"]))}
           />
         )}
-        rightLabel="Project"
-        rightText={folder}
+        rightLabel="Space"
+        rightText={get(space, ["name"], "-")}
       />
       <TwoProperties
-        leftLabel="Status"
-        leftText={<Status status={get(task, ["status"])} />}
-        rightLabel="Due Date"
-        rightText={format(get(task, ["due_date"]))}
+        leftLabel="Folder"
+        leftText={folder}
+        rightLabel="Status"
+        rightText={<Status status={get(task, ["status"])} />}
       />
-      <Property
-        label="Deskpro Tickets"
-        text={<DeskproTickets entityId={get(task, ["id"])}/>}
+      <TwoProperties
+        leftLabel="Due Date"
+        leftText={format(get(task, ["due_date"]))}
+        rightLabel="Deskpro Tickets"
+        rightText={<DeskproTickets entityId={get(task, ["id"])}/>}
       />
       {Boolean(size(assignees)) && (
         <Property

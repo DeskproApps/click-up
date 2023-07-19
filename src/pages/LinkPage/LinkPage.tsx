@@ -35,7 +35,7 @@ const LinkPage: FC = () => {
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<Workspace["id"]|null>(null);
   const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const { workspaces, tasks, isLoading } = useTasks(selectedWorkspaceId);
+  const { workspaces, tasks, spaces, isLoading } = useTasks(selectedWorkspaceId);
   const ticketId = get(context, ["data", "ticket", "id"]);
 
   const onChangeSearch = useCallback((search: string) => {
@@ -103,6 +103,7 @@ const LinkPage: FC = () => {
       isSubmitting={isSubmitting}
       selectedTasks={selectedTasks}
       isLoading={isLoading}
+      spaces={spaces}
       workspaces={workspaces}
       selectedWorkspaceId={selectedWorkspaceId}
       onChangeWorkspace={setSelectedWorkspaceId}
