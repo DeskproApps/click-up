@@ -46,6 +46,22 @@
       "isRequired": false,
       "isBackendOnly": false,
       "order": 40
+    },
+    "default_comment_on_ticket_reply": {
+      "title": "Ticket reply as comment",
+      "description": "Enable option to add Deskpro replies as task comments when a ClickUp task is linked to a Deskpro ticket",
+      "type": "boolean",
+      "isRequired": false,
+      "isBackendOnly": false,
+      "order": 40
+    },
+    "default_comment_on_ticket_note": {
+      "title": "Ticket note as comment",
+      "description": "Enable option to add Deskpro notes as task comments when a ClickUp task is linked to a Deskpro ticket",
+      "type": "boolean",
+      "isRequired": false,
+      "isBackendOnly": false,
+      "order": 50
     }
   },
   "proxy": {

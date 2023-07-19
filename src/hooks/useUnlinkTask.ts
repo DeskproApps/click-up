@@ -9,6 +9,7 @@ import {
 import { deleteEntityService } from "../services/deskpro";
 import { useAsyncError } from "./useAsyncError";
 import { useLinkedAutoComment } from "./useLinkedAutoComment";
+import { useReplyBox } from "./useReplyBox";
 import type { TicketContext } from "../types";
 import type { Task } from "../services/clickUp/types";
 
@@ -23,6 +24,7 @@ const useUnlinkTask = (): Result => {
   const { context } = useDeskproLatestAppContext() as { context: TicketContext };
   const { asyncErrorHandler } = useAsyncError();
   const { addUnlinkComment } = useLinkedAutoComment();
+  const { deleteSelectionState } = useReplyBox();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const ticketId = get(context, ["data", "ticket", "id"]);
 
@@ -35,13 +37,15 @@ const useUnlinkTask = (): Result => {
     Promise.all([
       deleteEntityService(client, ticketId, task.id),
       addUnlinkComment(task.id),
+      deleteSelectionState(task.id, "note"),
+      deleteSelectionState(task.id, "email"),
     ])
       .then(() => {
         setIsLoading(false);
         navigate("/home");
       })
       .catch(asyncErrorHandler);
-  }, [client, ticketId, navigate, asyncErrorHandler, addUnlinkComment]);
+  }, [client, ticketId, navigate, asyncErrorHandler, addUnlinkComment, deleteSelectionState]);
 
   return { isLoading, unlink };
 };
