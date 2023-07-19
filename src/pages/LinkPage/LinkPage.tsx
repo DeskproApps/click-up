@@ -15,6 +15,7 @@ import {
   useSetTitle,
   useReplyBox,
   useAsyncError,
+  useDeskproTag,
   useLinkedAutoComment,
 } from "../../hooks";
 import { LinkTasks } from "../../components";
@@ -29,6 +30,7 @@ const LinkPage: FC = () => {
   const { asyncErrorHandler } = useAsyncError();
   const { addLinkComment } = useLinkedAutoComment();
   const { setSelectionState } = useReplyBox();
+  const { addDeskproTag } = useDeskproTag();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<Workspace["id"]|null>(null);
   const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
@@ -65,6 +67,7 @@ const LinkPage: FC = () => {
     Promise.all([
       ...selectedTasks.map((task) => setEntityService(client, ticketId, task.id)),
       ...selectedTasks.map((task) => addLinkComment(task.id)),
+      ...selectedTasks.map((task) => addDeskproTag(task)),
       ...selectedTasks.map((task) => setSelectionState(task.id, true, "email")),
       ...selectedTasks.map((task) => setSelectionState(task.id, true, "note")),
     ])
@@ -73,7 +76,7 @@ const LinkPage: FC = () => {
         navigate("/home");
       })
       .catch(asyncErrorHandler);
-  }, [client, navigate, ticketId, selectedTasks, asyncErrorHandler, addLinkComment, setSelectionState]);
+  }, [client, navigate, ticketId, selectedTasks, asyncErrorHandler, addLinkComment, setSelectionState, addDeskproTag]);
 
   useSetTitle("Link Tasks");
 
