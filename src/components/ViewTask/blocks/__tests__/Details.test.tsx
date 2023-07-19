@@ -25,6 +25,7 @@ describe("ViewTask", () => {
       expect(await findByText(/ilia makarov/i)).toBeInTheDocument();
       expect(await findByText(/development/i)).toBeInTheDocument();
       expect(await findByText(/mvp/i)).toBeInTheDocument();
+      expect(await findByText(/screenshot-001.png/i)).toBeInTheDocument();
     });
 
     test("should display email if there is no user name", async () => {

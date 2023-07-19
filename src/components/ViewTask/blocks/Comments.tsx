@@ -9,12 +9,16 @@ import type { Comment as CommentType } from "../../../services/clickUp/types";
 
 type Props = {
   comments: CommentType[],
+  onNavigateToAddComment: () => void,
 };
 
-const Comments: FC<Props> = ({ comments }) => {
+const Comments: FC<Props> = ({ comments, onNavigateToAddComment }) => {
   return (
     <Container>
-      <Title title={`Comments (${size(comments)})`}/>
+      <Title
+        title={`Comments (${size(comments)})`}
+        onClick={onNavigateToAddComment}
+      />
 
       {comments.map(({ id, comment_text, date, user }) => (
         <Fragment key={id}>

@@ -19,3 +19,4 @@ export { Navigation } from "./Navigation";
 export { TextArea } from "./TextArea";
 export { DateInput } from "./DateInput";
 export { Markdown } from "./Markdown";
+export { Attach } from "./Attach";

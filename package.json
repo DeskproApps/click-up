@@ -17,6 +17,7 @@
   "dependencies": {
     "@deskpro/app-sdk": "1.2.14",
     "@deskpro/deskpro-ui": "4.7.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@heroicons/react": "1.0.6",
     "@hookform/resolvers": "^3.1.1",

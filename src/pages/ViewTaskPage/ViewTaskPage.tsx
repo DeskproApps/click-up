@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   LoadingSpinner,
   useDeskproElements,
@@ -14,10 +14,15 @@ import type { FC } from "react";
 import type { CheckList, CheckListItem } from "../../services/clickUp/types";
 
 const ViewTaskPage: FC = () => {
+  const navigate = useNavigate();
   const { taskId } = useParams();
   const { client } = useDeskproAppClient();
   const { asyncErrorHandler } = useAsyncError();
   const { task, workspaces, comments, statuses, isLoading } = useTask(taskId);
+
+  const onNavigateToAddComment = useCallback(() => {
+    navigate(`/view/${taskId}/comments/new`);
+  }, [navigate, taskId]);
 
   const onCompleteChecklist = useCallback((
     checklistId: CheckList["id"],
@@ -68,6 +73,7 @@ const ViewTaskPage: FC = () => {
         comments={comments}
         statuses={statuses}
         onCompleteChecklist={onCompleteChecklist}
+        onNavigateToAddComment={onNavigateToAddComment}
       />
   );
 };

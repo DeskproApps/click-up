@@ -153,6 +153,22 @@ export type Project = {
   access: boolean,
 };
 
+export type Attachment = {
+  date: Timestamp,
+  extension: string,
+  id: string,
+  name: string,
+  title: string,
+  thumbnail_large: string,
+  thumbnail_medium: string,
+  thumbnail_small: string,
+  url: string,
+  url_w_host: string,
+  url_w_query: string,
+  version: string,
+  size?: 435235,
+};
+
 export type Task = {
   id: string,
   custom_id: Maybe<string>,
@@ -185,14 +201,15 @@ export type Task = {
   linked_tasks: [],
   sharing: object,
   permission_level: "create",
-  list: { // { "id": "900201232319", "name": "MVP", "access": true },
+  list: {
     id: string,
     name: string,
     access: boolean,
   },
-  project: Project, // { "id": "90020674555", "name": "Projects", "hidden": false, "access": true }
-  folder: Project,  // { "id": "90020674555", "name": "Projects", "hidden": false, "access": true }
+  project: Project,
+  folder: Project,
   space: { id: string },
+  attachments?: Attachment[],
 };
 
 export type Comment = {
@@ -204,4 +221,8 @@ export type Comment = {
   date: Maybe<Timestamp>,
 };
 
-
+export type CreatedComment = {
+  id: number,
+  date: Timestamp,
+  hist_id: string,
+};
