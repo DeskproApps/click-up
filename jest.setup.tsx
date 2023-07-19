@@ -24,7 +24,11 @@ const context = {
   type: "ticket",
   settings: {},
   data: {
-    ticket: { id: "215", subject: "Big ticket" },
+    ticket: {
+      id: "215",
+      subject: "Big ticket",
+      permalinkUrl: "https://permalink.url",
+    },
     app: {},
     env: {},
     currentAgent: {},

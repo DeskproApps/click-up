@@ -1,5 +1,6 @@
+import { useMemo } from "react";
 import get from "lodash/get";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { useDebouncedCallback } from "use-debounce";
 import { match } from "ts-pattern";
 import {
@@ -25,10 +26,11 @@ import type { EventPayload } from "./types";
 
 const App: FC = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { client } = useDeskproAppClient();
   const { logout, isLoading: isLoadingLogout } = useLogout();
   const { unlink, isLoading: isLoadingUnlink } = useUnlinkTask();
-
+  const isAdmin = useMemo(() => pathname.includes("/admin/"), [pathname]);
   const isLoading = [isLoadingLogout, isLoadingUnlink].some((isLoading) => isLoading);
 
   const debounceElementEvent = useDebouncedCallback((_, __, payload: EventPayload) => {
@@ -71,7 +73,7 @@ const App: FC = () => {
         <Route path="/view/:taskId/comments/new" element={<CreateTaskCommentPage/>} />
         <Route index element={<LoadingAppPage/>} />
       </Routes>
-      <br/><br/><br/>
+      {!isAdmin && (<><br/><br/><br/></>)}
     </>
   );
 }

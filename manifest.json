@@ -37,6 +37,15 @@
       "isRequired": false,
       "isBackendOnly": true,
       "order": 30
+    },
+    "add_comment_when_linking": {
+      "title": "Leave a comment on the task in ClickUp when it is linked to a ticket in Deskpro",
+      "description": "",
+      "type": "boolean",
+      "default": true,
+      "isRequired": false,
+      "isBackendOnly": false,
+      "order": 40
     }
   },
   "proxy": {

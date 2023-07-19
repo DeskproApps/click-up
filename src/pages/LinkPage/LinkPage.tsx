@@ -11,7 +11,7 @@ import {
 import { setEntityService } from "../../services/deskpro";
 import { useTasks } from "./hooks";
 import { getFilteredTasks } from "../../utils";
-import { useAsyncError } from "../../hooks";
+import { useSetTitle, useAsyncError, useLinkedAutoComment } from "../../hooks";
 import { LinkTasks } from "../../components";
 import type { FC } from "react";
 import type { TicketContext } from "../../types";
@@ -22,6 +22,7 @@ const LinkPage: FC = () => {
   const { client } = useDeskproAppClient();
   const { context } = useDeskproLatestAppContext() as { context: TicketContext };
   const { asyncErrorHandler } = useAsyncError();
+  const { addLinkComment } = useLinkedAutoComment();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<Workspace["id"]|null>(null);
   const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
@@ -57,13 +58,16 @@ const LinkPage: FC = () => {
     setIsSubmitting(true);
     Promise.all([
       ...selectedTasks.map((task) => setEntityService(client, ticketId, task.id)),
+      ...selectedTasks.map((task) => addLinkComment(task.id)),
     ])
       .then(() => {
         setIsSubmitting(false);
         navigate("/home");
       })
       .catch(asyncErrorHandler);
-  }, [client, navigate, ticketId, selectedTasks, asyncErrorHandler]);
+  }, [client, navigate, ticketId, selectedTasks, asyncErrorHandler, addLinkComment]);
+
+  useSetTitle("Link Tasks");
 
   // At the beginning, we choose the first workspace
   useEffect(() => {
