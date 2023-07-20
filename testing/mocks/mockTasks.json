@@ -381,7 +381,7 @@
       "permission_level": "create",
       "list": {
         "id": "900201232319",
-        "name": "MVP",
+        "name": "DP List One",
         "access": true
       },
       "project": {

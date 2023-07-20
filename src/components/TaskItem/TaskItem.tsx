@@ -82,14 +82,18 @@ const TaskItem: FC<Props> = ({ task, spaces, workspaces, onClickTitle }) => {
       <TwoProperties
         leftLabel="Folder"
         leftText={folder}
-        rightLabel="Status"
-        rightText={<Status status={get(task, ["status"])} />}
+        rightLabel="List"
+        rightText={get(task, ["list", "name"], "-")}
       />
       <TwoProperties
-        leftLabel="Due Date"
-        leftText={format(get(task, ["due_date"]))}
-        rightLabel="Deskpro Tickets"
-        rightText={<DeskproTickets entityId={get(task, ["id"])}/>}
+        leftLabel="Status"
+        leftText={<Status status={get(task, ["status"])} />}
+        rightLabel="Due Date"
+        rightText={format(get(task, ["due_date"]))}
+      />
+      <Property
+        label="Deskpro Tickets"
+        text={<DeskproTickets entityId={get(task, ["id"])}/>}
       />
       {Boolean(size(assignees)) && (
         <Property

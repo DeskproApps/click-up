@@ -77,6 +77,10 @@ const Details: FC<Props> = ({ task, workspaces, space }) => {
         text={folder}
       />
       <Property
+        label="List"
+        text={get(task, ["list", "name"], "-")}
+      />
+      <Property
         label="Description"
         text={(
           <Markdown text={get(task, ["description"], "-") || "-"}/>

@@ -11,18 +11,19 @@ describe("ViewTask", () => {
     });
 
     test("render", async () => {
-      const {findByText} = render((
+      const { findByText } = render((
         <Details
           task={mockTask as never}
           space={mockSpace as never}
           workspaces={mockWorkspaces.teams as never}
         />
-      ), {wrappers: {theme: true}});
+      ), { wrappers: { theme: true }});
 
       expect(await findByText(/Link page/i)).toBeInTheDocument();
-      expect(await findByText(/Team Space/i)).toBeInTheDocument();
       expect(await findByText(/Apps Lab Workspace/i)).toBeInTheDocument();
+      expect(await findByText(/Team Space/i)).toBeInTheDocument();
       expect(await findByText(/Projects/i)).toBeInTheDocument();
+      expect(await findByText(/Just a List/i)).toBeInTheDocument();
       expect(await findByText(/Oh this is linking page/i)).toBeInTheDocument();
       expect(await findByText(/In Progress/i)).toBeInTheDocument();
       expect(await findByText(/30 Jun, 2023/i)).toBeInTheDocument();

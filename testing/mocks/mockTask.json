@@ -189,7 +189,7 @@
   "permission_level": "create",
   "list": {
     "id": "list-001",
-    "name": "MVP",
+    "name": "Just a List",
     "access": true
   },
   "project": {

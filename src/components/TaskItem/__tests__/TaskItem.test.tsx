@@ -26,6 +26,7 @@ describe("TaskItem", () => {
     expect(await findByText(/Team Space/i)).toBeInTheDocument();
     expect(await findByText(/Apps Lab Workspace/i)).toBeInTheDocument();
     expect(await findByText(/Projects/i)).toBeInTheDocument();
+    expect(await findByText(/DP List One/i)).toBeInTheDocument();
     expect(await findByText(/In Progress/i)).toBeInTheDocument();
     expect(await findByText(/06 Aug, 2023/i)).toBeInTheDocument();
     expect(await findByText(/ilia makarov/i)).toBeInTheDocument();
