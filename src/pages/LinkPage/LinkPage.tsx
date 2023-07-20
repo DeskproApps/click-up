@@ -10,7 +10,7 @@ import {
 } from "@deskpro/app-sdk";
 import { setEntityService } from "../../services/deskpro";
 import { useTasks } from "./hooks";
-import { getFilteredTasks } from "../../utils";
+import { getFilteredTasks, getEntityMetadata } from "../../utils";
 import {
   useSetTitle,
   useReplyBox,
@@ -65,7 +65,12 @@ const LinkPage: FC = () => {
 
     setIsSubmitting(true);
     Promise.all([
-      ...selectedTasks.map((task) => setEntityService(client, ticketId, task.id)),
+      ...selectedTasks.map((task) => setEntityService(
+        client,
+        ticketId,
+        task.id,
+        getEntityMetadata(task, workspaces, spaces)),
+      ),
       ...selectedTasks.map((task) => addLinkComment(task.id)),
       ...selectedTasks.map((task) => addDeskproTag(task)),
       ...selectedTasks.map((task) => setSelectionState(task.id, true, "email")),
@@ -76,7 +81,18 @@ const LinkPage: FC = () => {
         navigate("/home");
       })
       .catch(asyncErrorHandler);
-  }, [client, navigate, ticketId, selectedTasks, asyncErrorHandler, addLinkComment, setSelectionState, addDeskproTag]);
+  }, [
+    client,
+    navigate,
+    ticketId,
+    selectedTasks,
+    asyncErrorHandler,
+    addLinkComment,
+    setSelectionState,
+    addDeskproTag,
+    workspaces,
+    spaces,
+  ]);
 
   useSetTitle("Link Tasks");
 

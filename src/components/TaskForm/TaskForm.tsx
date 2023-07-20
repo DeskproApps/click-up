@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import has from "lodash/has";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,6 +39,14 @@ const TaskForm: FC<Props> = ({ onSubmit, onCancel, isEditMode, error, task }) =>
     workspaceOptions,
   } = useFormDeps(watch("workspace"), watch("space"));
 
+  const onSubmitForm = useCallback((values: FormValidationSchema) => {
+    return onSubmit(
+      values,
+      workspaceOptions.map(({ value, label }) => ({ id: value, name: label as Workspace["name"] })),
+      spaceOptions.map(({ value, label }) => ({ id: value, name: label as Space["name"] })),
+    );
+  }, [onSubmit, spaceOptions, workspaceOptions]);
+
   if (isLoading) {
     return (
       <LoadingSpinner/>
@@ -45,7 +54,7 @@ const TaskForm: FC<Props> = ({ onSubmit, onCancel, isEditMode, error, task }) =>
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmitForm)}>
       {error && <ErrorBlock text={error}/>}
 
       <Label htmlFor="workspace" label="Workspace" required>

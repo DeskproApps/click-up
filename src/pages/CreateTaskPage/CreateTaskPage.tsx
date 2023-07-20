@@ -9,10 +9,12 @@ import {
 import { createTaskService } from "../../services/clickUp";
 import { setEntityService } from "../../services/deskpro";
 import { useSetTitle, useAsyncError, useLinkedAutoComment } from "../../hooks";
+import { getEntityMetadata } from "../../utils";
 import { CreateTask } from "../../components";
 import { getTaskValues, getListId } from "../../components/TaskForm";
 import type { FC } from "react";
 import type { Maybe, TicketContext } from "../../types";
+import type { Workspace, Space } from "../../services/clickUp/types";
 import type { FormValidationSchema } from "../../components/TaskForm";
 
 const CreateTaskPage: FC = () => {
@@ -28,7 +30,11 @@ const CreateTaskPage: FC = () => {
 
   const onCancel = useCallback(() => navigate("/home"), [navigate]);
 
-  const onSubmit = useCallback((values: FormValidationSchema) => {
+  const onSubmit = useCallback((
+    values: FormValidationSchema,
+    workspaces: Array<Pick<Workspace, "id"|"name">>,
+    spaces: Array<Pick<Space, "id"|"name">>,
+  ) => {
     if (!client || !ticketId) {
       return Promise.resolve();
     }
@@ -37,7 +43,7 @@ const CreateTaskPage: FC = () => {
 
     return createTaskService(client, getListId(values), getTaskValues(values))
       .then((task) => Promise.all([
-        setEntityService(client, ticketId, task.id),
+        setEntityService(client, ticketId, task.id, getEntityMetadata(task, workspaces, spaces)),
         addLinkComment(task.id),
       ]))
       .then(() => navigate("/home"))
