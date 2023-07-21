@@ -6,21 +6,26 @@ import { Title, HorizontalDivider } from "@deskpro/app-sdk";
 import {
   NoFound,
   Container,
-  Status,
   Member,
   ClickUpLogo,
   TwoProperties,
+  StatusDropdown,
 } from "../../common";
 import type { FC } from "react";
 import type { Maybe } from "../../../types";
-import type { Subtask, Status as StatusType } from "../../../services/clickUp/types";
+import type { Subtask, Status } from "../../../services/clickUp/types";
 
 type Props = {
   subTasks: Maybe<Array<Subtask>>,
-  statuses: StatusType[],
+  statuses: Status[],
+  onChangeSubtaskStatus: (taskId: Subtask["id"], status: Status["status"]) => Promise<void|Subtask>,
 };
 
-const Subtask: FC<{ subTask: Subtask, statuses: StatusType[] }> = ({ subTask }) => {
+const Subtask: FC<{ subTask: Subtask } & Omit<Props, "subTasks">> = ({
+  subTask,
+  statuses,
+  onChangeSubtaskStatus,
+}) => {
   const assignees = get(subTask, ["assignees"], []) || [];
 
   return (
@@ -31,7 +36,13 @@ const Subtask: FC<{ subTask: Subtask, statuses: StatusType[] }> = ({ subTask }) 
       />
       <TwoProperties
         leftLabel="Status"
-        leftText={<Status status={get(subTask, ["status"])} />}
+        leftText={(
+          <StatusDropdown
+            statuses={statuses}
+            status={get(subTask, ["status"])}
+            onChange={(status) => onChangeSubtaskStatus(subTask.id, status)}
+          />
+        )}
         rightLabel="Assignee"
         rightText={!size(assignees) ? "-" : (
           <Stack gap={6} wrap="wrap">
@@ -49,7 +60,7 @@ const Subtask: FC<{ subTask: Subtask, statuses: StatusType[] }> = ({ subTask }) 
   );
 };
 
-const SubTasks: FC<Props> = ({ subTasks, statuses }) => {
+const SubTasks: FC<Props> = ({ subTasks, statuses, onChangeSubtaskStatus }) => {
   return (
     <Container>
       <Title title="Subtasks" />
@@ -59,7 +70,7 @@ const SubTasks: FC<Props> = ({ subTasks, statuses }) => {
           ? <NoFound text="No subtasks found"/>
           : subTasks.map((subTask, index) => (
             <Fragment key={subTask.id}>
-              <Subtask subTask={subTask} statuses={statuses} />
+              <Subtask subTask={subTask} statuses={statuses} onChangeSubtaskStatus={onChangeSubtaskStatus} />
               {(size(subTasks) !== index + 1) && <HorizontalDivider style={{ width: "100%" }}/>}
             </Fragment>
           ))

@@ -12,7 +12,7 @@ describe("ViewTask", () => {
 
     test("render", async () => {
       const { findByText } = render((
-        <SubTasks subTasks={mockTask.subtasks as never} statuses={[]}/>
+        <SubTasks subTasks={mockTask.subtasks as never} statuses={[]} onChangeSubtaskStatus={jest.fn()}/>
       ), { wrappers: { theme: true } });
 
       expect(await findByText(/search tasks/i)).toBeInTheDocument();
