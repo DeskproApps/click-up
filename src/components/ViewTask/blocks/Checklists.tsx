@@ -78,7 +78,7 @@ const Checklists: FC<Props> = ({ checklists, onCompleteChecklist }) => {
       <Title title="Checklists" />
 
       <Stack vertical gap={10}>
-        {(!Array.isArray(checklists) && !size(checklists))
+        {(!Array.isArray(checklists) || !size(checklists))
           ? <NoFound text="No checklists found"/>
           : (checklists as CheckList[]).map((checklist) => (
             <CheckList key={checklist.id} checklist={checklist} onCompleteChecklist={onCompleteChecklist} />

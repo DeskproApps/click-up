@@ -41,5 +41,13 @@ describe("ViewTask", () => {
 
       expect(mockOnCompleteChecklist).toHaveBeenCalledWith("checklist-002", "checklist-002-item-3", true);
     });
+
+    test("should show 'No checklists found' id empty checklists", async () => {
+      const  { findByText } = render((
+        <Checklists checklists={[]} onCompleteChecklist={jest.fn()}/>
+      ), { wrappers: { theme: true }});
+
+      expect(await findByText(/No checklists found/i)).toBeInTheDocument();
+    });
   });
 });

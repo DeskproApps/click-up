@@ -43,7 +43,7 @@ const Subtask: FC<{ subTask: Subtask } & Omit<Props, "subTasks">> = ({
             onChange={(status) => onChangeSubtaskStatus(subTask.id, status)}
           />
         )}
-        rightLabel="Assignee"
+        rightLabel="Assignee(s)"
         rightText={!size(assignees) ? "-" : (
           <Stack gap={6} wrap="wrap">
             {assignees.map((assignee) => (

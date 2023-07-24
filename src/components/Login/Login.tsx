@@ -1,4 +1,5 @@
-import { H3, Title } from "@deskpro/app-sdk";
+import { H3 } from "@deskpro/deskpro-ui";
+import { Title } from "@deskpro/app-sdk";
 import { Container, AnchorButton } from "../common";
 import type { FC } from "react";
 

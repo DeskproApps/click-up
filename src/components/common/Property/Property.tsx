@@ -1,6 +1,6 @@
 import { isValidElement } from "react";
 import styled from "styled-components";
-import { P5 } from "@deskpro/app-sdk";
+import { P5 } from "@deskpro/deskpro-ui";
 import { TSpan } from "@deskpro/deskpro-ui";
 import type { FC, ReactNode } from "react";
 import type { Props } from "./types";
