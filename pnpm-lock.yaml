@@ -6,11 +6,11 @@ settings:
 
 dependencies:
   '@deskpro/app-sdk':
-    specifier: 1.2.14
-    version: 1.2.14(@babel/core@7.22.9)(@deskpro/deskpro-ui@4.7.0)(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@4.9.5)
+    specifier: 2.0.0
+    version: 2.0.0(@babel/core@7.22.9)(@deskpro/deskpro-ui@7.1.0)(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@4.9.5)
   '@deskpro/deskpro-ui':
-    specifier: 4.7.0
-    version: 4.7.0(@types/web@0.0.86)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+    specifier: ^7.1.0
+    version: 7.1.0(@types/web@0.0.86)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
   '@fortawesome/free-regular-svg-icons':
     specifier: ^6.4.0
     version: 6.4.0
@@ -172,6 +172,9 @@ devDependencies:
   prettier:
     specifier: 2.8.7
     version: 2.8.7
+  react-resize-observer:
+    specifier: ^1.1.1
+    version: 1.1.1(react@18.2.0)
   rimraf:
     specifier: ^3.0.2
     version: 3.0.2
@@ -576,8 +579,8 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@deskpro/app-sdk@1.2.14(@babel/core@7.22.9)(@deskpro/deskpro-ui@4.7.0)(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@4.9.5):
-    resolution: {integrity: sha512-sPsGXA5v2jB9Mim0zVAP7OfeG1KmhPGpD5+x4WbHDBXK8fX6AutR41LML+Znt8MUXO4UzVyadEj/syU83aG+QQ==}
+  /@deskpro/app-sdk@2.0.0(@babel/core@7.22.9)(@deskpro/deskpro-ui@7.1.0)(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@4.9.5):
+    resolution: {integrity: sha512-/8Ga7Wg2N/6muUot9vcftfuxc8sjqOBqGJ4a7Am2WwkMn8BGo3/L+vGlf7eQ5HnD3FVcyIwGLYgywqaGsxKdqA==}
     engines: {node: ^16.0.0}
     peerDependencies:
       '@deskpro/deskpro-ui': ^7
@@ -586,7 +589,7 @@ packages:
       react: ^18
       react-dom: ^18
     dependencies:
-      '@deskpro/deskpro-ui': 4.7.0(@types/web@0.0.86)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+      '@deskpro/deskpro-ui': 7.1.0(@types/web@0.0.86)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
       '@fortawesome/fontawesome-svg-core': 6.4.0
       '@fortawesome/free-brands-svg-icons': 6.4.0
       '@fortawesome/free-regular-svg-icons': 6.4.0
@@ -618,13 +621,13 @@ packages:
       - typescript
     dev: false
 
-  /@deskpro/deskpro-ui@4.7.0(@types/web@0.0.86)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11):
-    resolution: {integrity: sha512-YtsETDNhHy8fT11juymxz1dwI4VRCnMCkXj4pzkLadHu7p3NhJ+5oMGUyH9IMuUUqnXiFteOzw+kS3WdZxfNZw==}
+  /@deskpro/deskpro-ui@7.1.0(@types/web@0.0.86)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11):
+    resolution: {integrity: sha512-0a74iUbAOfIw0EocB5xxwATNImDhOCUkeM+bfvFdqyEkWCLIIbJgzaexoPpfFIUeeNWOFzB6m4ctzc0FKSRPfA==}
     engines: {node: ^16.0.0}
     peerDependencies:
       '@typescript/lib-dom': npm:@types/web
-      react: ^17 || ^18
-      react-dom: ^17 || ^18
+      react: ^18
+      react-dom: ^18
       styled-components: ^5
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.4.0
@@ -635,8 +638,10 @@ packages:
       '@tippyjs/react': 4.2.6(react-dom@18.2.0)(react@18.2.0)
       '@typescript/lib-dom': /@types/web@0.0.86
       csstype: 3.1.2
+      d3-hierarchy: 3.1.2
       formik: 2.4.2(react@18.2.0)
       framer-motion: 6.5.1(react-dom@18.2.0)(react@18.2.0)
+      lodash: 4.17.21
       pretty-bytes: 6.1.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -726,13 +731,13 @@ packages:
     resolution: {integrity: sha512-EBikYFp2JCdIfGEb5G9dyCkTGDmC57KSHhRQOC3aYxoPWVZvfWCDjZwkGYHN7Lis/fmuWl906bnNTJifDQ3sXw==}
     dependencies:
       '@formatjs/intl-localematcher': 0.2.25
-      tslib: 2.3.1
+      tslib: 2.6.0
     dev: false
 
   /@formatjs/fast-memoize@1.2.1:
     resolution: {integrity: sha512-Rg0e76nomkz3vF9IPlKeV+Qynok0r7YZjL6syLz4/urSg0IbjPZCB/iYUMNsYA643gh4mgrX3T7KEIFIxJBQeg==}
     dependencies:
-      tslib: 2.3.1
+      tslib: 2.6.0
     dev: false
 
   /@formatjs/icu-messageformat-parser@2.1.0:
@@ -740,14 +745,14 @@ packages:
     dependencies:
       '@formatjs/ecma402-abstract': 1.11.4
       '@formatjs/icu-skeleton-parser': 1.3.6
-      tslib: 2.3.1
+      tslib: 2.6.0
     dev: false
 
   /@formatjs/icu-skeleton-parser@1.3.6:
     resolution: {integrity: sha512-I96mOxvml/YLrwU2Txnd4klA7V8fRhb6JG/4hm3VMNmeJo1F03IpV2L3wWt7EweqNLES59SZ4d6hVOPCSf80Bg==}
     dependencies:
       '@formatjs/ecma402-abstract': 1.11.4
-      tslib: 2.3.1
+      tslib: 2.6.0
     dev: false
 
   /@formatjs/intl-displaynames@5.4.3:
@@ -755,7 +760,7 @@ packages:
     dependencies:
       '@formatjs/ecma402-abstract': 1.11.4
       '@formatjs/intl-localematcher': 0.2.25
-      tslib: 2.3.1
+      tslib: 2.6.0
     dev: false
 
   /@formatjs/intl-listformat@6.5.3:
@@ -763,13 +768,13 @@ packages:
     dependencies:
       '@formatjs/ecma402-abstract': 1.11.4
       '@formatjs/intl-localematcher': 0.2.25
-      tslib: 2.3.1
+      tslib: 2.6.0
     dev: false
 
   /@formatjs/intl-localematcher@0.2.25:
     resolution: {integrity: sha512-YmLcX70BxoSopLFdLr1Ds99NdlTI2oWoLbaUW2M406lxOIPzE1KQhRz2fPUkq34xVZQaihCoU29h0KK7An3bhA==}
     dependencies:
-      tslib: 2.3.1
+      tslib: 2.6.0
     dev: false
 
   /@formatjs/intl@2.2.1(typescript@4.9.5):
@@ -786,7 +791,7 @@ packages:
       '@formatjs/intl-displaynames': 5.4.3
       '@formatjs/intl-listformat': 6.5.3
       intl-messageformat: 9.13.0
-      tslib: 2.3.1
+      tslib: 2.6.0
       typescript: 4.9.5
     dev: false
 
@@ -1152,7 +1157,7 @@ packages:
       '@motionone/easing': 10.15.1
       '@motionone/types': 10.15.1
       '@motionone/utils': 10.15.1
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: false
 
   /@motionone/dom@10.12.0:
@@ -1163,14 +1168,14 @@ packages:
       '@motionone/types': 10.15.1
       '@motionone/utils': 10.15.1
       hey-listen: 1.0.8
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: false
 
   /@motionone/easing@10.15.1:
     resolution: {integrity: sha512-6hIHBSV+ZVehf9dcKZLT7p5PEKHGhDwky2k8RKkmOvUoYP3S+dXsKupyZpqx5apjd9f+php4vXk4LuS+ADsrWw==}
     dependencies:
       '@motionone/utils': 10.15.1
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: false
 
   /@motionone/generators@10.15.1:
@@ -1178,7 +1183,7 @@ packages:
     dependencies:
       '@motionone/types': 10.15.1
       '@motionone/utils': 10.15.1
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: false
 
   /@motionone/types@10.15.1:
@@ -1190,7 +1195,7 @@ packages:
     dependencies:
       '@motionone/types': 10.15.1
       hey-listen: 1.0.8
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: false
 
   /@nodelib/fs.scandir@2.1.5:
@@ -2250,6 +2255,11 @@ packages:
   /csstype@3.1.2:
     resolution: {integrity: sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==}
 
+  /d3-hierarchy@3.1.2:
+    resolution: {integrity: sha512-FX/9frcub54beBdugHjDCdikxThEqjnR93Qt7PvQTOHxyiNCAlvMrHhclk3cD5VeAaq9fxmfRp+CnWw9rEMBuA==}
+    engines: {node: '>=12'}
+    dev: false
+
   /data-uri-to-buffer@4.0.1:
     resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
     engines: {node: '>= 12'}
@@ -2962,7 +2972,7 @@ packages:
       react: 18.2.0
       react-fast-compare: 2.0.4
       tiny-warning: 1.0.3
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: false
 
   /framer-motion@6.5.1(react-dom@18.2.0)(react@18.2.0):
@@ -2978,7 +2988,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       style-value-types: 5.0.0
-      tslib: 2.4.1
+      tslib: 2.6.0
     optionalDependencies:
       '@emotion/is-prop-valid': 0.8.8
     dev: false
@@ -2986,7 +2996,7 @@ packages:
   /framesync@6.0.1:
     resolution: {integrity: sha512-fUY88kXvGiIItgNC7wcTOl0SNRCVXMKSWW2Yzfmn7EKNc+MpCzcz9DhdHcdjbrtN3c6R4H5dTY2jiCpPdysEjA==}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: false
 
   /fs-extra@8.1.0:
@@ -3305,7 +3315,7 @@ packages:
       '@formatjs/ecma402-abstract': 1.11.4
       '@formatjs/fast-memoize': 1.2.1
       '@formatjs/icu-messageformat-parser': 2.1.0
-      tslib: 2.3.1
+      tslib: 2.6.0
     dev: false
 
   /is-arguments@1.1.1:
@@ -4417,7 +4427,7 @@ packages:
       framesync: 6.0.1
       hey-listen: 1.0.8
       style-value-types: 5.0.0
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: false
 
   /postcss-value-parser@4.2.0:
@@ -4607,7 +4617,7 @@ packages:
       hoist-non-react-statics: 3.3.2
       intl-messageformat: 9.13.0
       react: 18.2.0
-      tslib: 2.3.1
+      tslib: 2.6.0
       typescript: 4.9.5
     dev: false
 
@@ -4637,6 +4647,14 @@ packages:
   /react-refresh@0.13.0:
     resolution: {integrity: sha512-XP8A9BT0CpRBD+NYLLeIhld/RqG9+gktUjW1FkE+Vm7OCinbG1SshcK5tb9ls4kzvjZr9mOQc7HYgBngEyPAXg==}
     engines: {node: '>=0.10.0'}
+    dev: true
+
+  /react-resize-observer@1.1.1(react@18.2.0):
+    resolution: {integrity: sha512-3R+90Hou90Mr3wJYc+unsySC8Pn91V4nmjO32NKvUvjphRUbq9HisyLg7bDyGBE7xlMrrM6Fax7iNQaFdc/FYA==}
+    peerDependencies:
+      react: '>=0.14'
+    dependencies:
+      react: 18.2.0
     dev: true
 
   /react-router-dom@6.14.2(react-dom@18.2.0)(react@18.2.0):
@@ -4978,7 +4996,7 @@ packages:
     resolution: {integrity: sha512-08yq36Ikn4kx4YU6RD7jWEv27v4V+PUsOGa4n/as8Et3CuODMJQ00ENeAVXAeydX4Z2j1XHZF1K2sX4mGl18fA==}
     dependencies:
       hey-listen: 1.0.8
-      tslib: 2.4.1
+      tslib: 2.6.0
     dev: false
 
   /styled-components@5.3.11(@babel/core@7.22.9)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0):
@@ -5143,7 +5161,6 @@ packages:
 
   /tslib@2.6.0:
     resolution: {integrity: sha512-7At1WUettjcSRHXCyYtTselblcHl9PJFFVKiCAy/bY97+BPZXSQ2wbq0P9s8tK2G7dFQfNnlJnPAiArVBVBsfA==}
-    dev: true
 
   /tsutils@3.21.0(typescript@4.9.5):
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
