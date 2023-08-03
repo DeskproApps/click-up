@@ -1,3 +1,5 @@
+import { lightTheme } from "@deskpro/deskpro-ui";
+
 /** Typo */
 export const nbsp = "\u00A0";
 
@@ -25,3 +27,9 @@ export const placeholders = {
 export const BASE_URL = "https://api.clickup.com/api/v2";
 
 export const CLICK_UP_URL = "https://app.clickup.com";
+
+export const DESKPRO_TAG = {
+  name: "Deskpro",
+  tag_bg: lightTheme.colors.cyan100,
+  tag_fg: lightTheme.colors.white,
+};

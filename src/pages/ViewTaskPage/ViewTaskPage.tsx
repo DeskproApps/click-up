@@ -5,20 +5,23 @@ import {
   useDeskproElements,
   useDeskproAppClient,
 } from "@deskpro/app-sdk";
-import { editChecklistItemService } from "../../services/clickUp";
+import {
+  updateTaskService,
+  editChecklistItemService,
+} from "../../services/clickUp";
 import { useSetTitle, useAsyncError } from "../../hooks";
 import { useTask } from "./hooks";
 import { queryClient } from "../../query";
 import { ViewTask } from "../../components";
 import type { FC } from "react";
-import type { CheckList, CheckListItem } from "../../services/clickUp/types";
+import type { CheckList, CheckListItem, Status, Subtask } from "../../services/clickUp/types";
 
 const ViewTaskPage: FC = () => {
   const navigate = useNavigate();
   const { taskId } = useParams();
   const { client } = useDeskproAppClient();
   const { asyncErrorHandler } = useAsyncError();
-  const { task, workspaces, comments, statuses, isLoading } = useTask(taskId);
+  const { task, workspaces, comments, statuses, space, isLoading } = useTask(taskId);
 
   const onNavigateToAddComment = useCallback(() => {
     navigate(`/view/${taskId}/comments/new`);
@@ -34,6 +37,16 @@ const ViewTaskPage: FC = () => {
     }
 
     return editChecklistItemService(client, checklistId, itemId, resolved)
+      .then(() => queryClient.invalidateQueries())
+      .catch(asyncErrorHandler);
+  }, [client, asyncErrorHandler]);
+
+  const onChangeSubtaskStatus = useCallback((taskId: Subtask["id"], status: Status["status"]): Promise<void|Subtask> => {
+    if (!client) {
+      return Promise.resolve();
+    }
+
+    return updateTaskService(client, taskId, { status })
       .then(() => queryClient.invalidateQueries())
       .catch(asyncErrorHandler);
   }, [client, asyncErrorHandler]);
@@ -69,11 +82,13 @@ const ViewTaskPage: FC = () => {
   return (
       <ViewTask
         task={task}
+        space={space}
         workspaces={workspaces}
         comments={comments}
         statuses={statuses}
         onCompleteChecklist={onCompleteChecklist}
         onNavigateToAddComment={onNavigateToAddComment}
+        onChangeSubtaskStatus={onChangeSubtaskStatus}
       />
   );
 };

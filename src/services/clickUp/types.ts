@@ -91,7 +91,7 @@ export type Space = {
 };
 
 export type Tag = {
-  creator: User["id"],
+  creator?: User["id"],
   name: string,
   tag_bg: string, // "#ff7800"
   tag_fg: string, // "#E50000"

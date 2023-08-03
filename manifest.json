@@ -37,6 +37,40 @@
       "isRequired": false,
       "isBackendOnly": true,
       "order": 30
+    },
+    "add_comment_when_linking": {
+      "title": "Leave a comment on the task in ClickUp when it is linked to a ticket in Deskpro",
+      "description": "",
+      "type": "boolean",
+      "default": true,
+      "isRequired": false,
+      "isBackendOnly": false,
+      "order": 40
+    },
+    "default_comment_on_ticket_reply": {
+      "title": "Ticket reply as comment",
+      "description": "Enable option to add Deskpro replies as task comments when a ClickUp task is linked to a Deskpro ticket",
+      "type": "boolean",
+      "isRequired": false,
+      "isBackendOnly": false,
+      "order": 50
+    },
+    "default_comment_on_ticket_note": {
+      "title": "Ticket note as comment",
+      "description": "Enable option to add Deskpro notes as task comments when a ClickUp task is linked to a Deskpro ticket",
+      "type": "boolean",
+      "isRequired": false,
+      "isBackendOnly": false,
+      "order": 60
+    },
+    "add_deskpro_tag": {
+      "title": "Add \"Deskpro\" label when creating or linking Task",
+      "description": "Automatically adding a label to indicate in ClickUp that the task is currently linked to a Deskpro ticket",
+      "type": "boolean",
+      "default": true,
+      "isRequired": false,
+      "isBackendOnly": false,
+      "order": 70
     }
   },
   "proxy": {

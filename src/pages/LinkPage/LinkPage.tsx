@@ -10,8 +10,14 @@ import {
 } from "@deskpro/app-sdk";
 import { setEntityService } from "../../services/deskpro";
 import { useTasks } from "./hooks";
-import { getFilteredTasks } from "../../utils";
-import { useAsyncError } from "../../hooks";
+import { getFilteredTasks, getEntityMetadata } from "../../utils";
+import {
+  useSetTitle,
+  useReplyBox,
+  useAsyncError,
+  useDeskproTag,
+  useLinkedAutoComment,
+} from "../../hooks";
 import { LinkTasks } from "../../components";
 import type { FC } from "react";
 import type { TicketContext } from "../../types";
@@ -22,11 +28,14 @@ const LinkPage: FC = () => {
   const { client } = useDeskproAppClient();
   const { context } = useDeskproLatestAppContext() as { context: TicketContext };
   const { asyncErrorHandler } = useAsyncError();
+  const { addLinkComment } = useLinkedAutoComment();
+  const { setSelectionState } = useReplyBox();
+  const { addDeskproTag } = useDeskproTag();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<Workspace["id"]|null>(null);
   const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const { workspaces, tasks, isLoading } = useTasks(selectedWorkspaceId);
+  const { workspaces, tasks, spaces, isLoading } = useTasks(selectedWorkspaceId);
   const ticketId = get(context, ["data", "ticket", "id"]);
 
   const onChangeSearch = useCallback((search: string) => {
@@ -56,14 +65,36 @@ const LinkPage: FC = () => {
 
     setIsSubmitting(true);
     Promise.all([
-      ...selectedTasks.map((task) => setEntityService(client, ticketId, task.id)),
+      ...selectedTasks.map((task) => setEntityService(
+        client,
+        ticketId,
+        task.id,
+        getEntityMetadata(task, workspaces, spaces)),
+      ),
+      ...selectedTasks.map((task) => addLinkComment(task.id)),
+      ...selectedTasks.map((task) => addDeskproTag(task)),
+      ...selectedTasks.map((task) => setSelectionState(task.id, true, "email")),
+      ...selectedTasks.map((task) => setSelectionState(task.id, true, "note")),
     ])
       .then(() => {
         setIsSubmitting(false);
         navigate("/home");
       })
       .catch(asyncErrorHandler);
-  }, [client, navigate, ticketId, selectedTasks, asyncErrorHandler]);
+  }, [
+    client,
+    navigate,
+    ticketId,
+    selectedTasks,
+    asyncErrorHandler,
+    addLinkComment,
+    setSelectionState,
+    addDeskproTag,
+    workspaces,
+    spaces,
+  ]);
+
+  useSetTitle("Link Tasks");
 
   // At the beginning, we choose the first workspace
   useEffect(() => {
@@ -88,6 +119,7 @@ const LinkPage: FC = () => {
       isSubmitting={isSubmitting}
       selectedTasks={selectedTasks}
       isLoading={isLoading}
+      spaces={spaces}
       workspaces={workspaces}
       selectedWorkspaceId={selectedWorkspaceId}
       onChangeWorkspace={setSelectedWorkspaceId}

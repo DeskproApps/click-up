@@ -4,15 +4,16 @@ import { HorizontalDivider } from "@deskpro/app-sdk";
 import { NoFound, Container } from "../common";
 import { TaskItem } from "../TaskItem";
 import type { FC } from "react";
-import type { Task, Workspace } from "../../services/clickUp/types";
+import type { Task, Workspace, Space } from "../../services/clickUp/types";
 
 type Props = {
   tasks: Task[],
+  spaces: Space[],
   workspaces: Workspace[],
   onNavigateToTask: (taskId: Task["id"]) => void,
 };
 
-const Home: FC<Props> = ({ tasks, workspaces, onNavigateToTask }) => {
+const Home: FC<Props> = ({ tasks, workspaces, spaces, onNavigateToTask }) => {
   return (
     <Container>
       {!Array.isArray(tasks)
@@ -23,6 +24,7 @@ const Home: FC<Props> = ({ tasks, workspaces, onNavigateToTask }) => {
             <Fragment key={task.id}>
               <TaskItem
                 task={task}
+                spaces={spaces}
                 workspaces={workspaces}
                 onClickTitle={() => onNavigateToTask(task.id)}
               />

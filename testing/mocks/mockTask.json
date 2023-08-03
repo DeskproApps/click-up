@@ -189,7 +189,7 @@
   "permission_level": "create",
   "list": {
     "id": "list-001",
-    "name": "MVP",
+    "name": "Just a List",
     "access": true
   },
   "project": {
@@ -205,7 +205,7 @@
     "access": true
   },
   "space": {
-    "id": "90020292664"
+    "id": "space001"
   },
   "subtasks": [
     {

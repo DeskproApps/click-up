@@ -3,7 +3,7 @@ import { Container, Search, Navigation } from "../common";
 import { Filters, Buttons, Tasks } from "./blocks";
 import type { FC, Dispatch } from "react";
 import type { Maybe } from "../../types";
-import type { Task, Workspace } from "../../services/clickUp/types";
+import type { Task, Workspace, Space } from "../../services/clickUp/types";
 
 type Props = {
   onChangeSearch: (search: string) => void,
@@ -18,6 +18,7 @@ type Props = {
   tasks: Task[],
   onChangeSelectedTask: (task: Task) => void,
   onNavigateToCreateTask: () => void,
+  spaces: Space[],
 };
 
 const LinkTasks: FC<Props> = ({
@@ -30,6 +31,7 @@ const LinkTasks: FC<Props> = ({
   selectedWorkspaceId,
   onChangeWorkspace,
   tasks,
+  spaces,
   isLoading,
   onChangeSelectedTask,
   onNavigateToCreateTask,
@@ -57,6 +59,7 @@ const LinkTasks: FC<Props> = ({
       <Container>
         <Tasks
           tasks={tasks}
+          spaces={spaces}
           isLoading={isLoading}
           workspaces={workspaces}
           selectedTasks={selectedTasks}

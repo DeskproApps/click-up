@@ -7,13 +7,16 @@ import {
   useDeskproAppClient,
   useDeskproLatestAppContext,
 } from "@deskpro/app-sdk";
+import { setEntityService } from "../../services/deskpro";
 import { updateTaskService, updateTaskTagsService } from "../../services/clickUp";
 import { useSetTitle, useAsyncError } from "../../hooks";
 import { useTask } from "./hooks";
+import { getEntityMetadata } from "../../utils";
 import { EditTask } from "../../components";
 import { getTaskValues, getAssigneesToUpdate, getTagsToUpdate } from "../../components/TaskForm";
 import type { FC } from "react";
 import type { Maybe, TicketContext } from "../../types";
+import type { Workspace, Space } from "../../services/clickUp/types";
 import type { FormValidationSchema } from "../../components/TaskForm";
 
 const EditTaskPage: FC = () => {
@@ -34,7 +37,11 @@ const EditTaskPage: FC = () => {
     navigate(`/view/${taskId}`)
   }, [navigate, taskId]);
 
-  const onSubmit = useCallback((values: FormValidationSchema) => {
+  const onSubmit = useCallback((
+    values: FormValidationSchema,
+    workspaces: Array<Pick<Workspace, "id"|"name">>,
+    spaces: Array<Pick<Space, "id"|"name">>,
+  ) => {
     if (!client || !taskId || !ticketId) {
       return Promise.resolve();
     }
@@ -44,7 +51,8 @@ const EditTaskPage: FC = () => {
     const data = { ...getTaskValues(values), assignees: getAssigneesToUpdate(task, values) };
 
     return updateTaskService(client, taskId, data)
-      .then(() => Promise.all([
+      .then((task) => Promise.all([
+        setEntityService(client, ticketId, task.id, getEntityMetadata(task, workspaces, spaces)),
         ...updateTaskTagsService(client, taskId, getTagsToUpdate(task, values)),
       ]))
       .then(() => navigate(`/view/${taskId}`))

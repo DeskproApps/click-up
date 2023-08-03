@@ -1,7 +1,7 @@
 import { cleanup } from "@testing-library/react";
 import { render } from "../../../../../testing";
 import { Details } from "../Details";
-import { mockTask, mockWorkspaces } from "../../../../../testing/mocks";
+import { mockTask, mockWorkspaces, mockSpace } from "../../../../../testing/mocks";
 
 describe("ViewTask", () => {
   describe("Details", () => {
@@ -11,13 +11,19 @@ describe("ViewTask", () => {
     });
 
     test("render", async () => {
-      const {findByText} = render((
-        <Details task={mockTask as never} workspaces={mockWorkspaces.teams as never}/>
-      ), {wrappers: {theme: true}});
+      const { findByText } = render((
+        <Details
+          task={mockTask as never}
+          space={mockSpace as never}
+          workspaces={mockWorkspaces.teams as never}
+        />
+      ), { wrappers: { theme: true }});
 
       expect(await findByText(/Link page/i)).toBeInTheDocument();
       expect(await findByText(/Apps Lab Workspace/i)).toBeInTheDocument();
+      expect(await findByText(/Team Space/i)).toBeInTheDocument();
       expect(await findByText(/Projects/i)).toBeInTheDocument();
+      expect(await findByText(/Just a List/i)).toBeInTheDocument();
       expect(await findByText(/Oh this is linking page/i)).toBeInTheDocument();
       expect(await findByText(/In Progress/i)).toBeInTheDocument();
       expect(await findByText(/30 Jun, 2023/i)).toBeInTheDocument();
@@ -34,7 +40,7 @@ describe("ViewTask", () => {
       delete mockTask.assignees[0].username;
 
       const { findByText } = render((
-        <Details task={mockTask as never} workspaces={mockWorkspaces.teams as never}/>
+        <Details space={undefined} task={mockTask as never} workspaces={mockWorkspaces.teams as never}/>
       ), { wrappers: { appSdk: true } });
 
       expect(await findByText(/ilia.makarov@me.com/i)).toBeInTheDocument();

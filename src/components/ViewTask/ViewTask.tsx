@@ -3,10 +3,20 @@ import { HorizontalDivider } from "@deskpro/app-sdk";
 import { Comments, Details, SubTasks, Checklists } from "./blocks";
 import type { FC } from "react";
 import type { Maybe } from "../../types";
-import type { Task, Workspace, Comment, CheckList, CheckListItem, Status } from "../../services/clickUp/types";
+import type {
+  Task,
+  Space,
+  Status,
+  Comment,
+  Subtask,
+  CheckList,
+  Workspace,
+  CheckListItem,
+} from "../../services/clickUp/types";
 
 type Props = {
   task: Maybe<Task>,
+  space: Maybe<Space>,
   workspaces: Workspace[],
   comments: Comment[],
   statuses: Status[],
@@ -16,21 +26,28 @@ type Props = {
     resolved: boolean,
   ) => Promise<unknown>,
   onNavigateToAddComment: () => void,
+  onChangeSubtaskStatus: (taskId: Subtask["id"], status: Status["status"]) => Promise<void|Subtask>,
 };
 
 const ViewTask: FC<Props> = ({
   task,
+  space,
   comments,
   statuses,
   workspaces,
   onCompleteChecklist,
+  onChangeSubtaskStatus,
   onNavigateToAddComment,
 }) => {
   return (
     <>
-      <Details task={task} workspaces={workspaces} />
+      <Details task={task} workspaces={workspaces} space={space} />
       <HorizontalDivider/>
-      <SubTasks subTasks={get(task, ["subtasks"])} statuses={statuses} />
+      <SubTasks
+        subTasks={get(task, ["subtasks"])}
+        statuses={statuses}
+        onChangeSubtaskStatus={onChangeSubtaskStatus}
+      />
       <HorizontalDivider/>
       <Checklists
         checklists={get(task, ["checklists"])}

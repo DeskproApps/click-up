@@ -1,7 +1,7 @@
 import { cleanup } from "@testing-library/react";
 import { TaskItem } from "../TaskItem";
 import { render } from "../../../../testing";
-import { mockTasks, mockWorkspaces } from "../../../../testing/mocks";
+import { mockTasks, mockWorkspaces, mockSpace } from "../../../../testing/mocks";
 
 jest.mock("../../common/DeskproTickets/DeskproTickets", () => ({
   DeskproTickets: () => <>100500</>,
@@ -16,14 +16,17 @@ describe("TaskItem", () => {
   test("render", async () => {
     const { findByText } = render((
       <TaskItem
+        spaces={[mockSpace as never]}
         task={mockTasks.tasks[3] as never}
         workspaces={mockWorkspaces.teams as never}
       />
     ), { wrappers: { appSdk: true } });
 
     expect(await findByText(/Link/i)).toBeInTheDocument();
+    expect(await findByText(/Team Space/i)).toBeInTheDocument();
     expect(await findByText(/Apps Lab Workspace/i)).toBeInTheDocument();
     expect(await findByText(/Projects/i)).toBeInTheDocument();
+    expect(await findByText(/DP List One/i)).toBeInTheDocument();
     expect(await findByText(/In Progress/i)).toBeInTheDocument();
     expect(await findByText(/06 Aug, 2023/i)).toBeInTheDocument();
     expect(await findByText(/ilia makarov/i)).toBeInTheDocument();
@@ -40,6 +43,7 @@ describe("TaskItem", () => {
 
     const { findByText } = render((
       <TaskItem
+        spaces={[]}
         task={mockTasks.tasks[3] as never}
         workspaces={mockWorkspaces.teams as never}
       />

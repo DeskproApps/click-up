@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Stack } from "@deskpro/app-sdk";
+import { Stack } from "@deskpro/deskpro-ui";
 import type { FC } from "react";
 import type { Maybe } from "../../../types";
 

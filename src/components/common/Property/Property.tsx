@@ -1,6 +1,6 @@
 import { isValidElement } from "react";
 import styled from "styled-components";
-import { P5 } from "@deskpro/app-sdk";
+import { P5 } from "@deskpro/deskpro-ui";
 import { TSpan } from "@deskpro/deskpro-ui";
 import type { FC, ReactNode } from "react";
 import type { Props } from "./types";
@@ -25,7 +25,7 @@ const Property: FC<Props> = ({ text, label, marginBottom = 10 }) => {
   return (
     <Container marginBottom={marginBottom}>
       {label && <Label type="p8">{label}</Label>}
-      {textBlock && textBlock}
+      {textBlock && <div>{textBlock}</div>}
     </Container>
   );
 }

@@ -8,7 +8,7 @@ import type { Task } from "../../services/clickUp/types";
 
 const HomePage: FC = () => {
   const navigate = useNavigate();
-  const { isLoading, tasks, workspaces } = useLinkedTasks();
+  const { isLoading, tasks, workspaces, spaces } = useLinkedTasks();
 
   const onNavigateToTask = useCallback((taskId: Task["id"]) => {
     navigate(`/view/${taskId}`);
@@ -44,6 +44,7 @@ const HomePage: FC = () => {
   return (
     <Home
       tasks={tasks}
+      spaces={spaces}
       workspaces={workspaces}
       onNavigateToTask={onNavigateToTask}
     />

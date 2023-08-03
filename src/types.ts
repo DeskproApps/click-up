@@ -1,7 +1,7 @@
 import type { To, ParamKeyValuePair } from "react-router-dom";
 import type { DropdownValueType } from "@deskpro/deskpro-ui";
 import type { Context, IDeskproClient } from "@deskpro/app-sdk";
-import type { Task } from "./services/clickUp/types";
+import type { Task, Workspace, Space, List } from "./services/clickUp/types";
 
 /** Common types */
 export type Maybe<T> = T | undefined | null;
@@ -37,6 +37,7 @@ export type Request = <T>(
 export type Settings = {
   client_id?: string,
   client_secret?: string,
+  add_comment_when_linking?: boolean,
 };
 
 export type TicketData = {
@@ -56,5 +57,14 @@ export type EventPayload =
   | { type: "logout" }
   | { type: "unlink", task: Task }
 ;
+
+export type EntityMetadata = {
+  id: Task["id"],
+  name: Task["name"],
+  workspace: Workspace["name"],
+  space: Space["name"],
+  folder: List["name"],
+  list: List["name"],
+};
 
 /** Entities */
