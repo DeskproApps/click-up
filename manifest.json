@@ -8,6 +8,7 @@
   "hasDevMode": true,
   "targets": [{ "target": "ticket_sidebar", "entrypoint": "index.html" }],
   "serveUrl": "https://apps-cdn.deskpro-service.com/__name__/__version__",
+  "appStoreUrl": "https://www.deskpro.com/product-embed/apps/clickup",
   "entityAssociations": {
     "linkedClickUpTask": {
       "title": "Linked ClickUp Task",
