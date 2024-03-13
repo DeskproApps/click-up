@@ -15,7 +15,7 @@
     "bumpManifestVer": "node ./bin/bumpManifestVer.js"
   },
   "dependencies": {
-    "@deskpro/app-sdk": "2.0.0",
+    "@deskpro/app-sdk": "2.1.13",
     "@deskpro/deskpro-ui": "^7.1.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
@@ -23,7 +23,6 @@
     "@hookform/resolvers": "^3.1.1",
     "@tanstack/react-query": "^4.29.19",
     "date-fns": "^2.30.0",
-    "iframe-resizer": "^4.3.6",
     "javascript-time-ago": "^2.5.9",
     "lodash": "^4.17.21",
     "polished": "^4.1.4",
@@ -73,6 +72,7 @@
     "node-fetch": "^3.3.0",
     "prettier": "2.8.7",
     "react-resize-observer": "^1.1.1",
+    "resize-observer-polyfill": "^1.5.1",
     "rimraf": "^3.0.2",
     "rollup-plugin-copy": "3.4.0",
     "slugify": "^1.6.5",

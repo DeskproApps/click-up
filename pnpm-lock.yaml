@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@deskpro/app-sdk':
-    specifier: 2.0.0
-    version: 2.0.0(@babel/core@7.23.9)(@deskpro/deskpro-ui@7.1.0)(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@4.9.5)
+    specifier: 2.1.13
+    version: 2.1.13(@babel/core@7.23.9)(@deskpro/deskpro-ui@7.1.0)(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@4.9.5)
   '@deskpro/deskpro-ui':
     specifier: ^7.1.0
     version: 7.1.0(@types/web@0.0.86)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
@@ -29,9 +29,6 @@ dependencies:
   date-fns:
     specifier: ^2.30.0
     version: 2.30.0
-  iframe-resizer:
-    specifier: ^4.3.6
-    version: 4.3.6
   javascript-time-ago:
     specifier: ^2.5.9
     version: 2.5.9
@@ -175,6 +172,9 @@ devDependencies:
   react-resize-observer:
     specifier: ^1.1.1
     version: 1.1.1(react@18.2.0)
+  resize-observer-polyfill:
+    specifier: ^1.5.1
+    version: 1.5.1
   rimraf:
     specifier: ^3.0.2
     version: 3.0.2
@@ -701,8 +701,8 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@deskpro/app-sdk@2.0.0(@babel/core@7.23.9)(@deskpro/deskpro-ui@7.1.0)(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@4.9.5):
-    resolution: {integrity: sha512-/8Ga7Wg2N/6muUot9vcftfuxc8sjqOBqGJ4a7Am2WwkMn8BGo3/L+vGlf7eQ5HnD3FVcyIwGLYgywqaGsxKdqA==}
+  /@deskpro/app-sdk@2.1.13(@babel/core@7.23.9)(@deskpro/deskpro-ui@7.1.0)(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@4.9.5):
+    resolution: {integrity: sha512-YAntcA5Zj8jDCnYRBb0UvWMKrQ7JZHg83Izm03ImlCE6CARIt3HqVcZTJofibGWWTXFNnOiXLthEUKd7PxOtsQ==}
     engines: {node: ^16.0.0}
     peerDependencies:
       '@deskpro/deskpro-ui': ^7
@@ -3369,11 +3369,6 @@ packages:
       safer-buffer: 2.1.2
     dev: true
 
-  /iframe-resizer@4.3.6:
-    resolution: {integrity: sha512-wz0WodRIF6eP0oGQa5NIP1yrITAZ59ZJvVaVJqJRjaeCtfm461vy2C3us6CKx0e7pooqpIGLpVMSTzrfAjX9Sg==}
-    engines: {node: '>=0.8.0'}
-    dev: false
-
   /ignore@4.0.6:
     resolution: {integrity: sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==}
     engines: {node: '>= 4'}
@@ -4863,6 +4858,10 @@ packages:
 
   /requires-port@1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
+    dev: true
+
+  /resize-observer-polyfill@1.5.1:
+    resolution: {integrity: sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==}
     dev: true
 
   /resolve-cwd@3.0.0:

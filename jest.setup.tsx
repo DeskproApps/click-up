@@ -1,5 +1,6 @@
 import "regenerator-runtime/runtime";
 import "@testing-library/jest-dom/extend-expect";
+import ResizeObserver from "resize-observer-polyfill";
 import { useQuery } from "@tanstack/react-query";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -19,6 +20,9 @@ global.TextDecoder = TextDecoder;
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 global.React = React;
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
+global.ResizeObserver = ResizeObserver;
 
 const context = {
   type: "ticket",
