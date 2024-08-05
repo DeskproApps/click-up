@@ -2,10 +2,13 @@ module.exports = {
   root: true,
   ignorePatterns: ["**/*.js", ".dist/**/*", "build/**/*", "dist/**/*"],
   parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project: "./tsconfig.json",
+  },
   plugins: ["@typescript-eslint"],
   extends: [
     "eslint:recommended",
-    "plugin:@typescript-eslint/strict-type-checked",
+    "plugin:@typescript-eslint/recommended-type-checked",
     "plugin:react-hooks/recommended",
     "prettier",
   ],
