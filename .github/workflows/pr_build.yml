@@ -56,7 +56,7 @@ jobs:
 
       - name: Get labels from pull request
         id: labels
-        run: echo "::set-output name=milestone::$(jq --raw-output '.pull_request.labels[].name' $GITHUB_EVENT_PATH | grep -E 'major-version|minor-version' | head -1)"
+        run: echo "milestone=$(jq --raw-output '.pull_request.labels[].name' $GITHUB_EVENT_PATH | grep -E 'major-version|minor-version' | head -1)" >> $GITHUB_OUTPUT
 
       - name: Bump Version
         run: |
