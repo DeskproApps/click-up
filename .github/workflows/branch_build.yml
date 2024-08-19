@@ -84,7 +84,7 @@ jobs:
             milestone=$(echo "$pull_request_info" | jq -r '.labels[].name' | grep -E 'major-version|minor-version' | head -1)
           fi
 
-          echo "milestone=${milestone}"
+          echo "milestone=${milestone}" >> $GITHUB_OUTPUT
 
       - name: Bump Version
         run: |
@@ -127,13 +127,13 @@ jobs:
           content="${content//'%'/'%25'}"
           content="${content//$'\n'/'%0A'}"
           content="${content//$'\r'/'%0D'}"
-          echo "manifest=$content"
+          echo "manifest=$content" >> $GITHUB_OUTPUT
 
       - name: Create safe package filename
         id: create_package_filename
         run: |
           packageFilename=`echo "${{ fromJson(steps.read_manifest.outputs.manifest).name }}" | iconv -t ascii//TRANSLIT | sed -r s/[~\^]+//g | sed -r s/[^a-zA-Z0-9]+/-/g | sed -r s/^-+\|-+$//g | tr A-Z a-z`
-          echo "packageFilename=$packageFilename"
+          echo "packageFilename=$packageFilename" >> $GITHUB_OUTPUT
 
       - name: Create release
         id: create_release
