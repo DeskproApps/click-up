@@ -16,7 +16,6 @@ import "tippy.js/dist/tippy.css";
 import "simplebar/dist/simplebar.min.css";
 import "@deskpro/deskpro-ui/dist/deskpro-ui.css";
 import "@deskpro/deskpro-ui/dist/deskpro-custom-icons.css";
-import "simplebar/dist/simplebar.min.css";
 import { Scrollbar } from "@deskpro/deskpro-ui";
 
 TimeAgo.addDefaultLocale(en);
