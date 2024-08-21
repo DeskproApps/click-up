@@ -5,7 +5,3 @@ html, body, #root {
     margin: 0px;
 }
 
-#root {
-    padding: 8px;
-    box-sizing: border-box;
-}
