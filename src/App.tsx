@@ -1,6 +1,5 @@
-import { useMemo } from "react";
 import get from "lodash/get";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useDebouncedCallback } from "use-debounce";
 import { match } from "ts-pattern";
 import {
@@ -26,11 +25,9 @@ import type { EventPayload } from "./types";
 
 const App: FC = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const { client } = useDeskproAppClient();
   const { logout, isLoading: isLoadingLogout } = useLogout();
   const { unlink, isLoading: isLoadingUnlink } = useUnlinkTask();
-  const isAdmin = useMemo(() => pathname.includes("/admin/"), [pathname]);
   const isLoading = [isLoadingLogout, isLoadingUnlink].some((isLoading) => isLoading);
 
   const debounceElementEvent = useDebouncedCallback((_, __, payload: EventPayload) => {
@@ -56,25 +53,22 @@ const App: FC = () => {
 
   if (!client || isLoading) {
     return (
-      <LoadingSpinner/>
+      <LoadingSpinner />
     );
   }
 
   return (
-    <>
-      <Routes>
-        <Route path="/admin/callback" element={<AdminCallbackPage/>}/>)
-        <Route path="/login" element={<LoginPage/>}/>
-        <Route path="/home" element={<HomePage/>}/>
-        <Route path="/link" element={<LinkPage/>} />
-        <Route path="/view/:taskId" element={<ViewTaskPage/>} />
-        <Route path="/create" element={<CreateTaskPage/>} />
-        <Route path="/edit/:taskId" element={<EditTaskPage/>} />
-        <Route path="/view/:taskId/comments/new" element={<CreateTaskCommentPage/>} />
-        <Route index element={<LoadingAppPage/>} />
-      </Routes>
-      {!isAdmin && (<><br/><br/><br/></>)}
-    </>
+    <Routes>
+      <Route path="/admin/callback" element={<AdminCallbackPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/home" element={<HomePage />} />
+      <Route path="/link" element={<LinkPage />} />
+      <Route path="/view/:taskId" element={<ViewTaskPage />} />
+      <Route path="/create" element={<CreateTaskPage />} />
+      <Route path="/edit/:taskId" element={<EditTaskPage />} />
+      <Route path="/view/:taskId/comments/new" element={<CreateTaskCommentPage />} />
+      <Route index element={<LoadingAppPage />} />
+    </Routes>
   );
 }
 
