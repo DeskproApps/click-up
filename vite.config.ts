@@ -6,9 +6,6 @@ import copy from "rollup-plugin-copy";
 export default defineConfig({
   base: "",
   plugins: [react()],
-  server: {
-    https: true,
-  },
   build: {
     rollupOptions: {
       onwarn(warning, warn) {
