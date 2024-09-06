@@ -93,5 +93,5 @@ jobs:
   deploy:
     uses: DeskproApps/app-template-vite/.github/workflows/subworkflow-deploy.yml@master
     secrets: inherit
-    if: ${{ github.env.DESKPRO_SERVICE_TOKEN != '' }}
+    if: github.repository_owner == 'deskpro' || github.repository_owner == 'DeskproApps'
     needs: [deskpro_app_test_and_build]
