@@ -1,5 +1,5 @@
 import isEmpty from "lodash/isEmpty";
-import { proxyFetch } from "@deskpro/app-sdk";
+import { V2ProxyRequestInit, proxyFetch } from "@deskpro/app-sdk";
 import { BASE_URL, placeholders } from "../../constants";
 import { getQueryParams } from "../../utils";
 import { ClickUpError } from "./ClickUpError";
@@ -18,7 +18,7 @@ const baseRequest: Request = async (client, {
   const params = getQueryParams(queryParams);
 
   const requestUrl = `${baseUrl}?${params}`;
-  const options: RequestInit = {
+  const options: V2ProxyRequestInit = {
     method,
     headers: {
       "Authorization": placeholders.TOKEN,
