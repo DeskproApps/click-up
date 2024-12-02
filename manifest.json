@@ -7,6 +7,7 @@
   "isSingleInstall": false,
   "hasDevMode": true,
   "targets": [{ "target": "ticket_sidebar", "entrypoint": "index.html" }],
+  "appStoreUrl": "https://www.deskpro.com/product-embed/apps/clickup",
   "serveUrl": "https://apps-cdn.deskpro-service.com/__name__/__version__",
   "appStoreUrl": "https://www.deskpro.com/product-embed/apps/clickup",
   "entityAssociations": {
