@@ -123,10 +123,7 @@ jobs:
       - name: Read manifest
         id: read_manifest
         run: |
-          content=`cat ./manifest.json`
-          content="${content//'%'/'%25'}"
-          content="${content//$'\n'/'%0A'}"
-          content="${content//$'\r'/'%0D'}"
+          content=`cat ./manifest.json | tr -d '\n'`
           echo "manifest=$content" >> $GITHUB_OUTPUT
 
       - name: Create safe package filename
@@ -135,58 +132,26 @@ jobs:
           packageFilename=`echo "${{ fromJson(steps.read_manifest.outputs.manifest).name }}" | iconv -t ascii//TRANSLIT | sed -r s/[~\^]+//g | sed -r s/[^a-zA-Z0-9]+/-/g | sed -r s/^-+\|-+$//g | tr A-Z a-z`
           echo "packageFilename=$packageFilename" >> $GITHUB_OUTPUT
 
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ fromJson(steps.read_manifest.outputs.manifest).version }}
-          release_name: ${{ fromJson(steps.read_manifest.outputs.manifest).version }}
-          draft: false
-          prerelease: false
-
       - name: Rename package
         id: rename_app_package
         run: |
           (cd ./dist && mv app.zip ${{ steps.create_package_filename.outputs.packageFilename }}.zip)
 
-      - name: Add app asset to release
-        id: add_app_asset_to_release
-        uses: actions/upload-release-asset@v1
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/${{ steps.create_package_filename.outputs.packageFilename }}.zip
-          asset_name: ${{ steps.create_package_filename.outputs.packageFilename }}.zip
-          asset_content_type: application/zip
+          tag_name: ${{ fromJson(steps.read_manifest.outputs.manifest).version }}
+          draft: false
+          prerelease: false
+          files: |
+            ./dist/${{ steps.create_package_filename.outputs.packageFilename }}.zip
+            ./dist/manifest.json
 
-      - name: Add app manifest to release
-        id: add_app_manifest_to_release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/manifest.json
-          asset_name: manifest.json
-          asset_content_type: application/json
+  release:
+    uses: DeskproApps/app-template-vite/.github/workflows/subworkflow-release.yml@master
+    secrets: inherit
+    needs: [deskpro_app_test_and_build]
 
-      - name: Register release with apps registry
-        id: register_with_apps_registry
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: 'https://apps.deskpro-service.com/register'
-          method: 'POST'
-          customHeaders: '{"Content-Type": "application/json", "x-api-key": "${{ secrets.APP_REGISTRY_KEY }}"}'
-          data: '{"repositoryUrl": "${{ github.server_url }}/${{ github.repository }}", "type": "github"}'
-
-      - name: Trigger release
-        id: trigger_release
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: 'https://apps.deskpro-service.com/release'
-          method: 'POST'
-          customHeaders: '{"Content-Type": "application/json", "x-api-key": "${{ secrets.APP_REGISTRY_KEY }}"}'
-          data: '{"repositoryUrl": "${{ github.server_url }}/${{ github.repository }}"}'
