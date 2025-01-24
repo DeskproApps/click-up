@@ -32,7 +32,7 @@ const useLinkedAutoComment = (): Result => {
   const permalink = get(context, ["data", "ticket", "permalinkUrl"]);
 
   const addLinkComment = useCallback((taskId: Task["id"]) => {
-    if (!client || !isEnable) {
+    if (!client || !isEnable || !ticketId) {
       return Promise.resolve();
     }
 
@@ -42,7 +42,7 @@ const useLinkedAutoComment = (): Result => {
   }, [client, isEnable, ticketId, permalink]);
 
   const addUnlinkComment = useCallback((taskId: Task["id"]) => {
-    if (!client || !isEnable) {
+    if (!client || !isEnable || !ticketId) {
       return Promise.resolve();
     }
 
