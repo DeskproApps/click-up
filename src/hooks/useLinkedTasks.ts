@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import get from "lodash/get";
 import map from "lodash/map";
 import uniq from "lodash/uniq";
 import size from "lodash/size";
@@ -20,7 +19,7 @@ type UseLinkedTasks = () => {
 
 const useLinkedTasks: UseLinkedTasks = () => {
   const { context } = useDeskproLatestAppContext() as { context: TicketContext };
-  const ticketId = get(context, ["data", "ticket", "id"]);
+  const ticketId = context.data?.ticket.id
 
   const linkedIds = useQueryWithClient(
     [QueryKey.LINKED_TASKS],
@@ -33,7 +32,7 @@ const useLinkedTasks: UseLinkedTasks = () => {
     (client) => getWorkspacesService(client),
   );
 
-  const fetchedTasks = useQueriesWithClient((get(linkedIds, ["data"], []) || []).map((taskId) => ({
+  const fetchedTasks = useQueriesWithClient((linkedIds.data ?? []).map((taskId) => ({
     queryKey: [QueryKey.TASK, taskId],
     queryFn: (client) => getTaskService(client, taskId),
     enabled: Boolean(size(linkedIds)),
@@ -55,7 +54,7 @@ const useLinkedTasks: UseLinkedTasks = () => {
 
   return {
     isLoading: [linkedIds, workspaces, ...fetchedTasks, ...spaces].some(({ isLoading }) => isLoading),
-    workspaces: get(workspaces, ["data", "teams"], []) || [],
+    workspaces: workspaces.data?.teams ?? [],
     tasks: tasks as Task[],
     spaces: spaces.map(({ data }) => data).filter(Boolean) as Space[],
   };
