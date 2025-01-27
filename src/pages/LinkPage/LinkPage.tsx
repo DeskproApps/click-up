@@ -20,13 +20,13 @@ import {
 } from "../../hooks";
 import { LinkTasks } from "../../components";
 import type { FC } from "react";
-import type { TicketContext } from "../../types";
+import type { Maybe, Settings, TicketData } from "../../types";
 import type { Task, Workspace } from "../../services/clickUp/types";
 
 const LinkPage: FC = () => {
   const navigate = useNavigate();
   const { client } = useDeskproAppClient();
-  const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
+  const { context } = useDeskproLatestAppContext<TicketData, Maybe<Settings>>();
   const { asyncErrorHandler } = useAsyncError();
   const { addLinkComment } = useLinkedAutoComment();
   const { setSelectionState } = useReplyBox();

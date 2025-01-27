@@ -11,7 +11,7 @@ import {
 } from "../services/clickUp";
 import { findDeskproTag } from "../utils";
 import { DESKPRO_TAG } from "../constants";
-import type { TicketContext } from "../types";
+import type { Maybe, Settings, TicketData } from "../types";
 import type { Task } from "../services/clickUp/types";
 
 type UseDeskproTag = () => {
@@ -21,7 +21,7 @@ type UseDeskproTag = () => {
 
 const useDeskproTag: UseDeskproTag = () => {
   const { client } = useDeskproAppClient();
-  const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
+  const { context } = useDeskproLatestAppContext<TicketData, Maybe<Settings>>()
 
   const isAddDeskproTag = useMemo(() => {
     return get(context, ["settings", "add_deskpro_tag"]) === true

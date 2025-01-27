@@ -15,7 +15,7 @@ import { getEntityMetadata } from "../../utils";
 import { EditTask } from "../../components";
 import { getTaskValues, getAssigneesToUpdate, getTagsToUpdate } from "../../components/TaskForm";
 import type { FC } from "react";
-import type { Maybe, TicketContext } from "../../types";
+import type { Maybe, Settings, TicketData } from "../../types";
 import type { Workspace, Space } from "../../services/clickUp/types";
 import type { FormValidationSchema } from "../../components/TaskForm";
 
@@ -23,7 +23,7 @@ const EditTaskPage: FC = () => {
   const { taskId } = useParams();
   const navigate = useNavigate();
   const { client } = useDeskproAppClient();
-  const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
+  const { context } = useDeskproLatestAppContext<TicketData, Maybe<Settings>>();
   const { asyncErrorHandler } = useAsyncError();
   const { isLoading, task } = useTask(taskId);
   const [error, setError] = useState<Maybe<string|string[]>>(null);

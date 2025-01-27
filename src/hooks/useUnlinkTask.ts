@@ -11,7 +11,7 @@ import { useAsyncError } from "./useAsyncError";
 import { useLinkedAutoComment } from "./useLinkedAutoComment";
 import { useReplyBox } from "./useReplyBox";
 import { useDeskproTag } from "./useDeskproTag";
-import type { TicketContext } from "../types";
+import type { Maybe, Settings, TicketData } from "../types";
 import type { Task } from "../services/clickUp/types";
 
 export type Result = {
@@ -22,7 +22,7 @@ export type Result = {
 const useUnlinkTask = (): Result => {
   const navigate = useNavigate();
   const { client } = useDeskproAppClient();
-  const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
+  const { context } = useDeskproLatestAppContext<TicketData, Maybe<Settings>>();
   const { asyncErrorHandler } = useAsyncError();
   const { addUnlinkComment } = useLinkedAutoComment();
   const { removeDeskproTag } = useDeskproTag();

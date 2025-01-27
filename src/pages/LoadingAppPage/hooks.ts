@@ -7,13 +7,13 @@ import {
 } from "@deskpro/app-sdk";
 import { getEntityListService } from "../../services/deskpro";
 import { getCurrentUserService } from "../../services/clickUp";
-import type { TicketContext } from "../../types";
+import type { Maybe, Settings, TicketData } from "../../types";
 
 type UseCheckAuth = () => void;
 
 const useCheckAuth: UseCheckAuth = () => {
   const navigate = useNavigate();
-  const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
+  const { context } = useDeskproLatestAppContext<TicketData, Maybe<Settings>>();
   const ticketId = get(context, ["data", "ticket", "id"]);
 
   useInitialisedDeskproAppClient((client) => {

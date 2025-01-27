@@ -8,7 +8,7 @@ import { getTaskService, getWorkspacesService, getSpaceService } from "../servic
 import { useQueriesWithClient } from "./useQueriesWithClient";
 import { QueryKey } from "../query";
 import type { Task, Workspace, Space } from "../services/clickUp/types";
-import type { TicketContext } from "../types";
+import type { Maybe, Settings, TicketData } from "../types";
 
 type UseLinkedTasks = () => {
   isLoading: boolean;
@@ -18,7 +18,7 @@ type UseLinkedTasks = () => {
 };
 
 const useLinkedTasks: UseLinkedTasks = () => {
-  const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
+  const { context } = useDeskproLatestAppContext<TicketData, Maybe<Settings>>();
   const ticketId = context?.data?.ticket.id
 
   const linkedIds = useQueryWithClient(
