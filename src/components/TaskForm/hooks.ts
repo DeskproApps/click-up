@@ -65,9 +65,9 @@ const useFormDeps: UseFormDeps = (workspaceId, spaceId) => {
 
   const users = useMemo(() => {
     const workspace = find(workspaces.data?.teams, { id: workspaceId });
-    const members = workspace?.members?? [];
+    const members = workspace?.members.user?? [];
 
-    return (!workspaceId || !size(members)) ? [] : members.map(({ user }: Workspace["members"]) => user);
+    return (!workspaceId || !size(members)) ? [] : members.map((user) => user);
   }, [workspaceId, workspaces]);
 
    const tags = useQueryWithClient(
