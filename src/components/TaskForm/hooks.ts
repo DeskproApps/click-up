@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import get from "lodash/get";
 import size from "lodash/size";
 import find from "lodash/find";
 import { useQueryWithClient } from "@deskpro/app-sdk";
@@ -58,17 +57,17 @@ const useFormDeps: UseFormDeps = (workspaceId, spaceId) => {
   );
 
   const statuses = useMemo(() => {
-    const space = find(get(spaces, ["data", "spaces"]), { id: spaceId });
-    const statuses = get(space, ["statuses"], []);
+    const space = find(spaces.data?.spaces, { id: spaceId });
+    const statuses = space?.statuses ?? [];
 
     return (!spaceId || !size(statuses)) ? [] : statuses;
   }, [spaceId, spaces]);
 
   const users = useMemo(() => {
-    const workspace = find(get(workspaces, ["data", "teams"]), { id: workspaceId });
-    const members = get(workspace, ["members"], []);
+    const workspace = find(workspaces.data?.teams, { id: workspaceId });
+    const members = workspace?.members.user?? [];
 
-    return (!workspaceId || !size(members)) ? [] : members.map(({ user }: Workspace["members"]) => user);
+    return (!workspaceId || !size(members)) ? [] : members.map((user) => user);
   }, [workspaceId, workspaces]);
 
    const tags = useQueryWithClient(
@@ -79,15 +78,15 @@ const useFormDeps: UseFormDeps = (workspaceId, spaceId) => {
 
   return {
     isLoading: [workspaces].some(({ isLoading }) => isLoading),
-    workspaceOptions: useMemo(() => getWorkspaceOptions(get(workspaces, ["data", "teams"])), [workspaces]),
-    spaceOptions: useMemo(() => getSpaceOptions(get(spaces, ["data", "spaces"])), [spaces]),
+    workspaceOptions: useMemo(() => getWorkspaceOptions(workspaces.data?.teams), [workspaces]),
+    spaceOptions: useMemo(() => getSpaceOptions(spaces.data?.spaces), [spaces]),
     listOptions: [
-      ...useMemo(() => getListFromFolders(get(folders, ["data", "folders"])), [folders]),
-      ...useMemo(() => getListOptions(get(folderlessLists, ["data", "lists"])), [folderlessLists]),
+      ...useMemo(() => getListFromFolders(folders.data?.folders), [folders]),
+      ...useMemo(() => getListOptions(folderlessLists.data?.lists), [folderlessLists]),
     ],
     statusOptions: getStatusOptions(statuses),
     userOptions: getUserOptions(users),
-    tagOptions: getTagOptions(get(tags, ["data", "tags"])),
+    tagOptions: getTagOptions(tags.data?.tags),
   };
 };
 

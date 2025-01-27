@@ -17,7 +17,7 @@ import {
 } from "../../services/clickUp";
 import { getQueryParams } from "../../utils";
 import { useAsyncError } from "../../hooks";
-import type { TicketContext } from "../../types";
+import type { Maybe, Settings, TicketData } from "../../types";
 import size from "lodash/size";
 
 type UseLogin = () => {
@@ -31,7 +31,7 @@ const useLogin: UseLogin = () => {
   const [callback, setCallback] = useState<OAuth2CallbackUrl|null>(null);
   const [authUrl, setAuthUrl] = useState<string|null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { context } = useDeskproLatestAppContext() as { context: TicketContext };
+  const { context } = useDeskproLatestAppContext<TicketData, Maybe<Settings>>();
   const { client } = useDeskproAppClient();
   const { asyncErrorHandler } = useAsyncError();
   const clientId = useMemo(() => get(context, ["settings", "client_id"]), [context]);
@@ -62,7 +62,7 @@ const useLogin: UseLogin = () => {
   }, [callback, clientId]);
 
   const poll = useCallback(() => {
-    if (!client || !callback?.poll) {
+    if (!client || !callback?.poll || !ticketId) {
       return;
     }
 

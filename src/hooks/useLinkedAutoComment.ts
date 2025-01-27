@@ -1,12 +1,11 @@
 import { useCallback, useState } from "react";
-import get from "lodash/get";
 import {
   useDeskproAppClient,
   useDeskproLatestAppContext,
 } from "@deskpro/app-sdk";
 import { createTaskCommentService } from "../services/clickUp";
 import type { Task, CreatedComment } from "../services/clickUp/types";
-import type { TicketContext } from "../types";
+import type { Maybe, Settings, TicketData } from "../types";
 
 export type Result = {
   isLoading: boolean,
@@ -24,15 +23,15 @@ const getUnlinkedMessage = (ticketId: string, link?: string): string => {
 
 const useLinkedAutoComment = (): Result => {
   const { client } = useDeskproAppClient();
-  const { context } = useDeskproLatestAppContext() as { context: TicketContext };
+  const { context } = useDeskproLatestAppContext<TicketData, Maybe<Settings>>() ;
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const isEnable = context?.settings?.add_comment_when_linking ?? false;
+  const ticketId = context?.data?.ticket.id;
+  const permalink = context?.data?.ticket.permalinkUrl;
 
-  const isEnable = get(context, ["settings", "add_comment_when_linking"], false);
-  const ticketId = get(context, ["data", "ticket", "id"]);
-  const permalink = get(context, ["data", "ticket", "permalinkUrl"]);
 
   const addLinkComment = useCallback((taskId: Task["id"]) => {
-    if (!client || !isEnable) {
+    if (!client || !isEnable || !ticketId) {
       return Promise.resolve();
     }
 
@@ -42,7 +41,7 @@ const useLinkedAutoComment = (): Result => {
   }, [client, isEnable, ticketId, permalink]);
 
   const addUnlinkComment = useCallback((taskId: Task["id"]) => {
-    if (!client || !isEnable) {
+    if (!client || !isEnable || !ticketId) {
       return Promise.resolve();
     }
 

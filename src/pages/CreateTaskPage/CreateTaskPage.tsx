@@ -13,14 +13,14 @@ import { getEntityMetadata } from "../../utils";
 import { CreateTask } from "../../components";
 import { getTaskValues, getListId } from "../../components/TaskForm";
 import type { FC } from "react";
-import type { Maybe, TicketContext } from "../../types";
+import type { Maybe, Settings, TicketData } from "../../types";
 import type { Workspace, Space } from "../../services/clickUp/types";
 import type { FormValidationSchema } from "../../components/TaskForm";
 
 const CreateTaskPage: FC = () => {
   const navigate = useNavigate();
   const { client } = useDeskproAppClient();
-  const { context } = useDeskproLatestAppContext() as { context: TicketContext };
+  const { context } = useDeskproLatestAppContext<TicketData, Maybe<Settings>>();
   const { asyncErrorHandler } = useAsyncError();
   const { addLinkComment } = useLinkedAutoComment();
   const [error, setError] = useState<Maybe<string|string[]>>(null);
