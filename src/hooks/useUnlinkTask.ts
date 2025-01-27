@@ -31,7 +31,7 @@ const useUnlinkTask = (): Result => {
   const ticketId = get(context, ["data", "ticket", "id"]);
 
   const unlink = useCallback((task?: Task) => {
-    if (!client || isEmpty(task)) {
+    if (!client || isEmpty(task) || !ticketId) {
       return;
     }
 
