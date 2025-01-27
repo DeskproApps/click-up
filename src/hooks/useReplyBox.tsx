@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useContext, createContext } from "react";
+import { useState, useEffect, useMemo, useCallback, useContext, createContext } from "react";
 import get from "lodash/get";
 import size from "lodash/size";
 import map from "lodash/map";
@@ -14,7 +14,7 @@ import {
 } from "@deskpro/app-sdk";
 import { useLinkedTasks } from "./useLinkedTasks";
 import { getEntityListService } from "../services/deskpro";
-import { createTaskCommentService } from "../services/clickUp";
+import { createTaskCommentService, getCurrentUserService } from "../services/clickUp";
 import { queryClient } from "../query";
 import { APP_PREFIX } from "../constants";
 import type { FC, PropsWithChildren } from "react";
@@ -114,7 +114,27 @@ const useReplyBox = () => useContext<ReturnUseReplyBox>(ReplyBoxContext);
 const ReplyBoxProvider: FC<PropsWithChildren> = ({ children }) => {
   const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
   const { client } = useDeskproAppClient();
-  const { tasks } = useLinkedTasks();
+  
+  // let tasks: Task[] = []
+
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  // Ensure the user is authenticated before fetching tasks (This is a temporary fix)
+
+  useEffect(() => {
+    if (client) {
+      getCurrentUserService(client)
+        .then(() => {
+          // eslint-disable-next-line react-hooks/rules-of-hooks
+          const { tasks: tempTasks } = useLinkedTasks(); 
+          setTasks(tempTasks);
+        })
+        .catch(() => {
+          setTasks([]); 
+        });
+    }
+  }, [client])
+
   const tasksMap = useMemo(() => (Array.isArray(tasks) ? tasks : []).reduce<Record<Task["id"], Task>>((acc, task) => {
     acc[task.id] = task;
     return acc;
