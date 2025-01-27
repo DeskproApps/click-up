@@ -23,7 +23,7 @@ const useLinkedTasks: UseLinkedTasks = () => {
 
   const linkedIds = useQueryWithClient(
     [QueryKey.LINKED_TASKS],
-    (client) => getEntityListService(client, ticketId),
+    (client) => getEntityListService(client, ticketId ?? ""),
     { enabled: Boolean(ticketId) }
   );
 
