@@ -114,8 +114,6 @@ const useReplyBox = () => useContext<ReturnUseReplyBox>(ReplyBoxContext);
 const ReplyBoxProvider: FC<PropsWithChildren> = ({ children }) => {
   const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
   const { client } = useDeskproAppClient();
-  
-  // let tasks: Task[] = []
 
   const [tasks, setTasks] = useState<Task[]>([]);
 
