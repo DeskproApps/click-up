@@ -2,14 +2,13 @@
   "name": "@deskpro-apps/click-up",
   "title": "ClickUp",
   "description": "View your ClickUp tasks linked with Deskpro tickets to streamline communication with users.",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "scope": "agent",
   "isSingleInstall": false,
   "hasDevMode": true,
   "targets": [{ "target": "ticket_sidebar", "entrypoint": "index.html" }],
   "appStoreUrl": "https://www.deskpro.com/product-embed/apps/clickup",
   "serveUrl": "https://apps-cdn.deskpro-service.com/__name__/__version__",
-  "appStoreUrl": "https://www.deskpro.com/product-embed/apps/clickup",
   "entityAssociations": {
     "linkedClickUpTask": {
       "title": "Linked ClickUp Task",
