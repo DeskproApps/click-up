@@ -22,7 +22,7 @@ export type Result = {
 const useUnlinkTask = (): Result => {
   const navigate = useNavigate();
   const { client } = useDeskproAppClient();
-  const { context } = useDeskproLatestAppContext() as { context: TicketContext };
+  const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
   const { asyncErrorHandler } = useAsyncError();
   const { addUnlinkComment } = useLinkedAutoComment();
   const { removeDeskproTag } = useDeskproTag();

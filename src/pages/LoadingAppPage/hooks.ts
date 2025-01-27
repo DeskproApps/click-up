@@ -13,7 +13,7 @@ type UseCheckAuth = () => void;
 
 const useCheckAuth: UseCheckAuth = () => {
   const navigate = useNavigate();
-  const { context } = useDeskproLatestAppContext() as { context: TicketContext };
+  const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
   const ticketId = get(context, ["data", "ticket", "id"]);
 
   useInitialisedDeskproAppClient((client) => {

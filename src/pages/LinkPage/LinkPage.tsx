@@ -26,7 +26,7 @@ import type { Task, Workspace } from "../../services/clickUp/types";
 const LinkPage: FC = () => {
   const navigate = useNavigate();
   const { client } = useDeskproAppClient();
-  const { context } = useDeskproLatestAppContext() as { context: TicketContext };
+  const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
   const { asyncErrorHandler } = useAsyncError();
   const { addLinkComment } = useLinkedAutoComment();
   const { setSelectionState } = useReplyBox();

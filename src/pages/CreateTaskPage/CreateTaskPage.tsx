@@ -20,7 +20,7 @@ import type { FormValidationSchema } from "../../components/TaskForm";
 const CreateTaskPage: FC = () => {
   const navigate = useNavigate();
   const { client } = useDeskproAppClient();
-  const { context } = useDeskproLatestAppContext() as { context: TicketContext };
+  const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
   const { asyncErrorHandler } = useAsyncError();
   const { addLinkComment } = useLinkedAutoComment();
   const [error, setError] = useState<Maybe<string|string[]>>(null);

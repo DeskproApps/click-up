@@ -31,7 +31,7 @@ const useLogin: UseLogin = () => {
   const [callback, setCallback] = useState<OAuth2CallbackUrl|null>(null);
   const [authUrl, setAuthUrl] = useState<string|null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { context } = useDeskproLatestAppContext() as { context: TicketContext };
+  const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
   const { client } = useDeskproAppClient();
   const { asyncErrorHandler } = useAsyncError();
   const clientId = useMemo(() => get(context, ["settings", "client_id"]), [context]);

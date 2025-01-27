@@ -21,7 +21,7 @@ type UseDeskproTag = () => {
 
 const useDeskproTag: UseDeskproTag = () => {
   const { client } = useDeskproAppClient();
-  const { context } = useDeskproLatestAppContext() as { context: TicketContext };
+  const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
 
   const isAddDeskproTag = useMemo(() => {
     return get(context, ["settings", "add_deskpro_tag"]) === true

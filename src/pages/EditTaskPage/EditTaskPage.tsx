@@ -23,7 +23,7 @@ const EditTaskPage: FC = () => {
   const { taskId } = useParams();
   const navigate = useNavigate();
   const { client } = useDeskproAppClient();
-  const { context } = useDeskproLatestAppContext() as { context: TicketContext };
+  const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
   const { asyncErrorHandler } = useAsyncError();
   const { isLoading, task } = useTask(taskId);
   const [error, setError] = useState<Maybe<string|string[]>>(null);

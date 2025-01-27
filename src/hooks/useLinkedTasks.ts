@@ -18,8 +18,8 @@ type UseLinkedTasks = () => {
 };
 
 const useLinkedTasks: UseLinkedTasks = () => {
-  const { context } = useDeskproLatestAppContext() as { context: TicketContext };
-  const ticketId = context.data?.ticket.id
+  const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
+  const ticketId = context?.data?.ticket.id
 
   const linkedIds = useQueryWithClient(
     [QueryKey.LINKED_TASKS],

@@ -112,7 +112,7 @@ const ReplyBoxContext = createContext<ReturnUseReplyBox>({
 const useReplyBox = () => useContext<ReturnUseReplyBox>(ReplyBoxContext);
 
 const ReplyBoxProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { context } = useDeskproLatestAppContext() as { context: TicketContext };
+  const { context } = useDeskproLatestAppContext() as { context?: TicketContext };
   const { client } = useDeskproAppClient();
   const { tasks } = useLinkedTasks();
   const tasksMap = useMemo(() => (Array.isArray(tasks) ? tasks : []).reduce<Record<Task["id"], Task>>((acc, task) => {
