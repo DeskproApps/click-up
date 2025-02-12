@@ -1,10 +1,10 @@
+import { Login } from "../../components";
 import { useDeskproElements } from "@deskpro/app-sdk";
 import { useLogin } from "./hooks";
-import { Login } from "../../components";
 import type { FC } from "react";
 
 const LoginPage: FC = () => {
-  const { poll, authUrl, isLoading } = useLogin();
+  const { onSignIn, authUrl, isLoading } = useLogin();
 
   useDeskproElements(({ clearElements, registerElement }) => {
     clearElements();
@@ -12,7 +12,7 @@ const LoginPage: FC = () => {
   });
 
   return (
-    <Login poll={poll} authUrl={authUrl} isLoading={isLoading} />
+    <Login poll={onSignIn} authUrl={authUrl} isLoading={isLoading} />
   );
 };
 

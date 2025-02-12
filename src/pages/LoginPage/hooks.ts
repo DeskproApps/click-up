@@ -1,83 +1,99 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { getAccessTokenService, } from "../../services/clickUp";
+import { OAuth2Result, useDeskproLatestAppContext, useInitialisedDeskproAppClient, } from "@deskpro/app-sdk";
+import { getEntityListService, } from "../../services/deskpro";
 import { useNavigate } from "react-router-dom";
-import get from "lodash/get";
-import {
-  OAuth2CallbackUrl,
-  useDeskproAppClient,
-  useDeskproLatestAppContext,
-  useInitialisedDeskproAppClient,
-} from "@deskpro/app-sdk";
-import {
-  getEntityListService,
-  setAccessTokenService,
-} from "../../services/deskpro";
-import {
-  getAccessTokenService,
-  getCurrentUserService,
-} from "../../services/clickUp";
-import { getQueryParams } from "../../utils";
-import { useAsyncError } from "../../hooks";
-import type { Maybe, Settings, TicketData } from "../../types";
-import size from "lodash/size";
+import { useState, useCallback } from "react";
+import type { Settings, TicketData } from "../../types";
 
 type UseLogin = () => {
-  poll: () => void,
-  authUrl: string|null,
+  onSignIn: () => void,
+  authUrl: string | null,
+  error: null | string,
   isLoading: boolean,
 };
 
 const useLogin: UseLogin = () => {
-  const navigate = useNavigate();
-  const [callback, setCallback] = useState<OAuth2CallbackUrl|null>(null);
-  const [authUrl, setAuthUrl] = useState<string|null>(null);
+  const [authUrl, setAuthUrl] = useState<string | null>(null);
+  const [error, setError] = useState<null | string>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { context } = useDeskproLatestAppContext<TicketData, Maybe<Settings>>();
-  const { client } = useDeskproAppClient();
-  const { asyncErrorHandler } = useAsyncError();
-  const clientId = useMemo(() => get(context, ["settings", "client_id"]), [context]);
-  const ticketId = get(context, ["data", "ticket", "id"]);
 
-  useInitialisedDeskproAppClient(
-    (client) => {
-      (async () => {
-        const callback: OAuth2CallbackUrl = await client
-          .oauth2()
-          .getCallbackUrl("code", /code=(?<token>[\d\w]+)/, {
-            pollInterval: 2000,
-          });
+  const { context } = useDeskproLatestAppContext<TicketData, Settings>();
+  const navigate = useNavigate();
+  const ticketId = context?.data?.ticket.id;
 
-        setCallback(() => callback);
-      })();
-    },
-    [setCallback]
-  );
 
-  useEffect(() => {
-    if (callback?.callbackUrl && clientId) {
-      setAuthUrl(`https://app.clickup.com/api?${getQueryParams({
-        client_id: clientId,
-        redirect_uri: callback?.callbackUrl,
-      })}`);
-    }
-  }, [callback, clientId]);
+  useInitialisedDeskproAppClient(async (client) => {
 
-  const poll = useCallback(() => {
-    if (!client || !callback?.poll || !ticketId) {
+    if (context?.settings.use_deskpro_saas === undefined || !ticketId) {
+      // Make sure settings have loaded.
       return;
     }
 
-    setTimeout(() => setIsLoading(true), 1000);
+    const clientId = context?.settings.client_id;
+    const mode = context?.settings.use_deskpro_saas ? 'global' : 'local';
 
-    callback.poll()
-      .then(({ statePathPlaceholder }) => getAccessTokenService(client, statePathPlaceholder))
-      .then(({ access_token }) => setAccessTokenService(client, access_token))
-      .then(() => getCurrentUserService(client))
-      .then(() => getEntityListService(client, ticketId))
-      .then((entityIds) => navigate(size(entityIds) ? "/home" : "/link"))
-      .catch(asyncErrorHandler);
-  }, [client, callback, navigate, asyncErrorHandler, ticketId]);
+    if (mode === 'local' && typeof clientId !== 'string') {
+      // Local mode requires a clientId.
+      return;
+    }
 
-  return { authUrl, poll, isLoading };
+    const oauth2 =
+      mode === 'local'
+        // Local Version (custom/self-hosted app)
+        ? await client.startOauth2Local(
+          ({ state, callbackUrl }) => {
+            return `https://app.clickup.com/api?response_type=code&client_id=${clientId}&state=${state}&redirect_uri=${callbackUrl}`;
+          },
+          /\bcode=(?<code>[^&#]+)/,
+          async (code: string): Promise<OAuth2Result> => {
+            // Extract the callback URL from the authorization URL
+            const url = new URL(oauth2.authorizationUrl);
+            const redirectUri = url.searchParams.get("redirect_uri");
+
+            if (!redirectUri) {
+              throw new Error("Failed to get callback URL");
+            }
+
+            const data = await getAccessTokenService(client, code);
+
+            return { data }
+          }
+        )
+
+        // Global Proxy Service
+        : await client.startOauth2Global("C2CN2TBIOAZV6IC61BVL6LLQICE9CD8V");
+
+    setAuthUrl(oauth2.authorizationUrl)
+    setIsLoading(false)
+
+    try {
+      const result = await oauth2.poll()
+      await Promise.all([
+        client.setUserState("oauth2/access_token", result.data.access_token, { backend: true }),
+        result.data.refresh_token ? client.setUserState("oauth2/refresh_token", result.data.refresh_token, { backend: true }) : Promise.resolve(undefined)
+      ])
+
+      const linkedTickets = await getEntityListService(client, ticketId)
+
+      if (linkedTickets.length > 0) {
+        navigate("/home")
+      } else {
+        navigate("/link")
+      }
+
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Unknown error');
+      setIsLoading(false);
+    }
+  }, [setAuthUrl, context?.settings.client_id, context?.settings.use_deskpro_saas]);
+
+  const onSignIn = useCallback(() => {
+    setIsLoading(true);
+    window.open(authUrl ?? "", '_blank');
+  }, [setIsLoading, authUrl]);
+
+
+  return { authUrl, onSignIn, error, isLoading };
 };
 
 export { useLogin };
