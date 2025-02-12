@@ -9,6 +9,7 @@
   "targets": [{ "target": "ticket_sidebar", "entrypoint": "index.html" }],
   "appStoreUrl": "https://www.deskpro.com/product-embed/apps/clickup",
   "serveUrl": "https://apps-cdn.deskpro-service.com/__name__/__version__",
+  "secrets": "FZWsSmoDmNAyutDHL8PP7XcdhEkvMH9Nih/ff4Vvw3sR5F3o1iqYVdJ1blnK5F/x8yQuCbwkUXvwSb+sqVkH/l3AysTfp9EK/fNCNm3ZKyp7yfd8y/S7dLg+X9lKmUINdm9enxamMS9+HTw1qV8NVeDoqLWweZdkWoiQGrOF9DHh9B6eatFzJabfmcaUYZXchg0wL5XwWpxbDakMDux7FpPHlkooTkFpqdjMIQbikjKy9T1XwipV9XEPJFyHjmRlg6ySpd00Wsu2e6iMYS1ZojL3bD+ZviEe0M+9Aw4wDvUpjp5s3xW+3XXxn4yiyuJ6ZoDu57/0rLIQn4KRJ6TO28zGTMpU3czzzPQZJyvO1bLNSXj/AIo+YLy60gfpz8sU1BCAkaAAN9WGQoe9odQ8gMxdYwhrEQAPVfd12XuMVbdCcBWTXA8u8Ixw+2LMfDR764J4XnAKApFSIuUOZq5n4FpBB99/D4A2rCaQxTMHAHsr4qLjiSYS5dVwJY01XvqSWP0GYFZuA6YjHKHmy+qXpoxv2hvNKpACqWUD7SX5j/bNreKQnvLUHa5UtqDrGYDzfYAib+7S5iIP4ue53LDX0s/s38Hj/8NfhrPNutqhTnAL0TJknOPQT0YIluY7TRzq5Q3fHLN4M8UJdJzokhOFJxFtksuEmhzRDcNNUZ8JpY8=",
   "entityAssociations": {
     "linkedClickUpTask": {
       "title": "Linked ClickUp Task",
@@ -17,18 +18,28 @@
     }
   },
   "settings": {
+    "use_deskpro_saas": {
+      "title": "One-Click Installation",
+      "type": "boolean",
+      "default": true,
+      "isRequired": false,
+      "isBackendOnly": false,
+      "order": 5
+    },
     "client_id": {
       "title": "Client ID",
       "type": "string",
-      "isRequired": true,
+      "isRequired": false,
       "isBackendOnly": false,
+      "condition": "settings.use_deskpro_saas != true",
       "order": 10
     },
     "client_secret": {
       "title": "Client Secret",
       "type": "string",
-      "isRequired": true,
+      "isRequired": false,
       "isBackendOnly": true,
+      "condition": "settings.use_deskpro_saas != true",
       "order": 20
     },
     "callback_url": {
@@ -37,6 +48,7 @@
       "options": { "entrypoint": "#/admin/callback" },
       "isRequired": false,
       "isBackendOnly": true,
+      "condition": "settings.use_deskpro_saas != true",
       "order": 30
     },
     "add_comment_when_linking": {
