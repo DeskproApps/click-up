@@ -61,7 +61,7 @@ const useLogin: UseLogin = () => {
         )
 
         // Global Proxy Service
-        : await client.startOauth2Global("C2CN2TBIOAZV6IC61BVL6LLQICE9CD8V");
+        : await client.startOauth2Global("CFNS68ATLVYX66UASKFL1FR5W5Q9RNXX");
 
     setAuthUrl(oauth2.authorizationUrl)
     setIsLoading(false)

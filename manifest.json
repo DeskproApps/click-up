@@ -9,7 +9,7 @@
   "targets": [{ "target": "ticket_sidebar", "entrypoint": "index.html" }],
   "appStoreUrl": "https://www.deskpro.com/product-embed/apps/clickup",
   "serveUrl": "https://apps-cdn.deskpro-service.com/__name__/__version__",
-  "secrets": "FZWsSmoDmNAyutDHL8PP7XcdhEkvMH9Nih/ff4Vvw3sR5F3o1iqYVdJ1blnK5F/x8yQuCbwkUXvwSb+sqVkH/l3AysTfp9EK/fNCNm3ZKyp7yfd8y/S7dLg+X9lKmUINdm9enxamMS9+HTw1qV8NVeDoqLWweZdkWoiQGrOF9DHh9B6eatFzJabfmcaUYZXchg0wL5XwWpxbDakMDux7FpPHlkooTkFpqdjMIQbikjKy9T1XwipV9XEPJFyHjmRlg6ySpd00Wsu2e6iMYS1ZojL3bD+ZviEe0M+9Aw4wDvUpjp5s3xW+3XXxn4yiyuJ6ZoDu57/0rLIQn4KRJ6TO28zGTMpU3czzzPQZJyvO1bLNSXj/AIo+YLy60gfpz8sU1BCAkaAAN9WGQoe9odQ8gMxdYwhrEQAPVfd12XuMVbdCcBWTXA8u8Ixw+2LMfDR764J4XnAKApFSIuUOZq5n4FpBB99/D4A2rCaQxTMHAHsr4qLjiSYS5dVwJY01XvqSWP0GYFZuA6YjHKHmy+qXpoxv2hvNKpACqWUD7SX5j/bNreKQnvLUHa5UtqDrGYDzfYAib+7S5iIP4ue53LDX0s/s38Hj/8NfhrPNutqhTnAL0TJknOPQT0YIluY7TRzq5Q3fHLN4M8UJdJzokhOFJxFtksuEmhzRDcNNUZ8JpY8=",
+  "secrets": "L5g1+RnoXRUKQJF85x598d5uWo1SzFB6gtohlzL8jlyS76kE2NOsmLO0Rzx1nlqr/vmXm2piYYWquh77SNtw1tS8FOwHKMJTIbzTQAEfntDYAKtnuEreNIUBk5PyHklCiXmGRiWfYp6K7rpL/bXpU/hnV04SyZJnhBXGfOmepyR/vmTIowf5zRvqjqKq5ns+O3ZCyjOSbA9a5E2g76IF4m90O9whnrU9kExkYiHyMSsyoHuoWt0WrbWb82Ic81NhkQpBs5KJ4gLzCP8Uub5DFX/B52jeg4zg+veWr6Cgctkawk2f78tDZypCXseC0CEAJZyby6XOBWZFzD6TsRvL019/wF1tRI7QINCl0Sju6VHTCCngxwWDs9XF2yd6NWXmiBEHwvc+CoYoxG3+feC8WgXGB9CtBMP87xLCLVhgZl1sGwDZsIHEONxDLpyjwN8JElaDnH3S+rcwnJ/Vqva7S0c9N6i5Y8fnfsd7lyQlWWw2lA5MSviJr6uZqGf4+kJuuqIhRhbK3DmdoN+LRKNhkX1YWGk9QIACoxUf767I6IZVCASpoH7q+SPnYQOSK9YHZDPAWzO7jrd2tBUc4eTQas0GbEzOdtdDqr3c8SKqkeOHU92vO5mVhRQDrgQng0RmRhqu/GEW/WCPfiw7aCH67vjJcQbI5T3aaDFHOKQvPgI=",
   "entityAssociations": {
     "linkedClickUpTask": {
       "title": "Linked ClickUp Task",
