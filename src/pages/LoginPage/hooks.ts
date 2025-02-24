@@ -68,10 +68,11 @@ const useLogin: UseLogin = () => {
 
     try {
       const result = await oauth2.poll()
-      await Promise.all([
-        client.setUserState("oauth2/access_token", result.data.access_token, { backend: true }),
-        result.data.refresh_token ? client.setUserState("oauth2/refresh_token", result.data.refresh_token, { backend: true }) : Promise.resolve(undefined)
-      ])
+
+      await client.setUserState("oauth2/access_token", result.data.access_token, { backend: true })
+      if (result.data.refresh_token) {
+        client.setUserState("oauth2/refresh_token", result.data.refresh_token, { backend: true })
+      }
 
       const linkedTickets = await getEntityListService(client, ticketId)
 
