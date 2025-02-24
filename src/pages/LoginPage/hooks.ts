@@ -71,7 +71,7 @@ const useLogin: UseLogin = () => {
 
       await client.setUserState("oauth2/access_token", result.data.access_token, { backend: true })
       if (result.data.refresh_token) {
-        client.setUserState("oauth2/refresh_token", result.data.refresh_token, { backend: true })
+        await client.setUserState("oauth2/refresh_token", result.data.refresh_token, { backend: true })
       }
 
       const linkedTickets = await getEntityListService(client, ticketId)
