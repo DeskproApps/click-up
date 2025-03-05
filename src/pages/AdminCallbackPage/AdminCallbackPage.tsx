@@ -1,12 +1,7 @@
-import { useState, useMemo } from "react";
-import styled from "styled-components";
-import { v4 as uuidv4 } from "uuid";
 import { P1 } from "@deskpro/deskpro-ui";
-import {
-  LoadingSpinner,
-  CopyToClipboardInput,
-  useInitialisedDeskproAppClient,
-} from "@deskpro/app-sdk";
+import { useState } from "react";
+import { CopyToClipboardInput, LoadingSpinner, OAuth2Result, useInitialisedDeskproAppClient, } from "@deskpro/app-sdk";
+import styled from "styled-components";
 import type { FC } from "react";
 import type { Maybe } from "../../types";
 
@@ -18,7 +13,7 @@ const Description = styled(P1)`
 
 export const AdminCallback: FC<{ callbackUrl?: Maybe<string> }> = ({ callbackUrl }) => {
   if (!callbackUrl) {
-    return (<LoadingSpinner/>);
+    return (<LoadingSpinner />);
   }
 
   return (
@@ -30,14 +25,22 @@ export const AdminCallback: FC<{ callbackUrl?: Maybe<string> }> = ({ callbackUrl
 };
 
 const AdminCallbackPage: FC = () => {
-  const [callbackUrl, setCallbackUrl] = useState<string|null>(null);
-  const key = useMemo(() => uuidv4(), []);
+  const [callbackUrl, setCallbackUrl] = useState<string | null>(null);
 
-  useInitialisedDeskproAppClient((client) => {
-    client.oauth2()
-      .getAdminGenericCallbackUrl(key, /code=(?<token>[0-9a-f]+)/, /state=(?<key>.+)/)
-      .then(({ callbackUrl }) => setCallbackUrl(callbackUrl));
-  }, [key]);
+  useInitialisedDeskproAppClient(async (client) => {
+    const oauth2 = await client.startOauth2Local(
+      ({callbackUrl, state }) => `https://app.clickup.com/api?response_type=code&client_id=xxx&state=${state}&redirect_uri=${callbackUrl}`,
+      /code=(?<code>[0-9a-f]+)/,
+      async (): Promise<OAuth2Result> => ({ data: { access_token: "", refresh_token: "" } })
+    );
+
+    const url = new URL(oauth2.authorizationUrl);
+    const redirectUri = url.searchParams.get("redirect_uri");
+
+    if (redirectUri) {
+      setCallbackUrl(redirectUri);
+    }
+  });
 
   return (
     <AdminCallback callbackUrl={callbackUrl} />
