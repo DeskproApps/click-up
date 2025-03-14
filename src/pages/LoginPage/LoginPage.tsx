@@ -4,7 +4,7 @@ import { useLogin } from "./hooks";
 import type { FC } from "react";
 
 const LoginPage: FC = () => {
-  const { onSignIn, authUrl, isLoading } = useLogin();
+  const { onSignIn, authUrl, isLoading, error } = useLogin();
 
   useDeskproElements(({ clearElements, registerElement }) => {
     clearElements();
@@ -12,7 +12,7 @@ const LoginPage: FC = () => {
   });
 
   return (
-    <Login poll={onSignIn} authUrl={authUrl} isLoading={isLoading} />
+    <Login poll={onSignIn} authUrl={authUrl} isLoading={isLoading} error={error} />
   );
 };
 
