@@ -7,7 +7,7 @@ type Props = {
   authUrl: string|null,
   poll: () => void,
   isLoading: boolean,
-  error: string | null,
+  error?: string | null,
 };
 
 const Login: FC<Props> = ({ authUrl, poll, isLoading, error }) => (
