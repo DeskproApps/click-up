@@ -28,13 +28,13 @@ const useLogin: UseLogin = () => {
 
   useInitialisedDeskproAppClient(async (client) => {
 
-    if (context?.settings.use_deskpro_saas === undefined || !ticketId) {
+    if (!ticketId) {
       // Make sure settings have loaded.
       return;
     }
 
     const clientId = context?.settings.client_id;
-    const mode = context?.settings.use_deskpro_saas ? 'global' : 'local';
+    const mode = context?.settings.use_advanced_connect === false ? 'global' : 'local';
 
     if (mode === 'local' && (typeof clientId !== 'string' || clientId.trim() === "")) {
       // Local mode requires a clientId.
@@ -71,7 +71,7 @@ const useLogin: UseLogin = () => {
     setAuthUrl(oauth2Response.authorizationUrl)
     setOAuth2Context(oauth2Response)
 
-  }, [setAuthUrl, context?.settings.client_id, context?.settings.use_deskpro_saas]);
+  }, [setAuthUrl, context?.settings.client_id, context?.settings.use_advanced_connect]);
 
 
   useInitialisedDeskproAppClient((client) => {
