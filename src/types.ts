@@ -37,7 +37,7 @@ export type Request = <T>(
 export type Settings = {
   client_id?: string,
   add_comment_when_linking?: boolean,
-  use_deskpro_saas?: boolean,
+  use_advanced_connect?: boolean,
 
 };
 
