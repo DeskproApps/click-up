@@ -1,24 +1,10 @@
-import { useMemo } from "react";
-import size from "lodash/size";
-import find from "lodash/find";
-import { useQueryWithClient } from "@deskpro/app-sdk";
-import {
-  getTagsService,
-  getSpacesService,
-  getFoldersService,
-  getWorkspacesService,
-  getFolderlessListsService,
-} from "../../services/clickUp";
+import { getFolderlessListsService, getFoldersService, getSpacesService, getTagsService, getWorkspacesService } from "../../services/clickUp";
+import { getListFromFolders, getListOptions, getSpaceOptions, getStatusOptions, getTagOptions, getUserOptions, getWorkspaceOptions } from "./utils";
 import { QueryKey } from "../../query";
-import {
-  getTagOptions,
-  getUserOptions,
-  getListOptions,
-  getSpaceOptions,
-  getStatusOptions,
-  getListFromFolders,
-  getWorkspaceOptions,
-} from "./utils";
+import { useMemo } from "react";
+import { useQueryWithClient } from "@deskpro/app-sdk";
+import find from "lodash/find";
+import size from "lodash/size";
 import type { Option } from "../../types";
 import type { Workspace, Space, List, Status, User, Tag as TagType } from "../../services/clickUp/types";
 
@@ -65,16 +51,17 @@ const useFormDeps: UseFormDeps = (workspaceId, spaceId) => {
 
   const users = useMemo(() => {
     const workspace = find(workspaces.data?.teams, { id: workspaceId });
-    const members = workspace?.members.user?? [];
+    const members = workspace?.members ?? [];
 
-    return (!workspaceId || !size(members)) ? [] : members.map((user) => user);
+    return members.map(member => member.user);
+
   }, [workspaceId, workspaces]);
 
-   const tags = useQueryWithClient(
-     [QueryKey.TAGS, spaceId as Space["id"]],
-     (client) => getTagsService(client, spaceId as Space["id"]),
-     { enabled: Boolean(spaceId) },
-   );
+  const tags = useQueryWithClient(
+    [QueryKey.TAGS, spaceId as Space["id"]],
+    (client) => getTagsService(client, spaceId as Space["id"]),
+    { enabled: Boolean(spaceId) },
+  );
 
   return {
     isLoading: [workspaces].some(({ isLoading }) => isLoading),

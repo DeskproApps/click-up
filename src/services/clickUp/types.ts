@@ -22,20 +22,22 @@ export type User = {
   global_font_support?: boolean,
 };
 
+export type MemberUser = User & {
+  role: 1,
+  custom_role: null,
+  last_active: Timestamp,
+  date_joined: Timestamp,
+  date_invited: Timestamp,
+}
+
 export type Workspace = {
   id: string
   name: string,
   color: string, // "#3498DB"
   avatar: Maybe<string>,
   members: {
-    user: Array<User & {
-      role: 1,
-      custom_role: null,
-      last_active: Timestamp,
-      date_joined: Timestamp,
-      date_invited: Timestamp,
-    }>,
-  }
+    user: MemberUser,
+  }[]
 };
 
 export type Status = {

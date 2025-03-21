@@ -1,21 +1,21 @@
 import { createElement } from "react";
-import get from "lodash/get";
-import map from "lodash/map";
-import size from "lodash/size";
-import flatten from "lodash/flatten";
-import startCase from "lodash/startCase";
-import difference from "lodash/difference";
-import isDate from "date-fns/isDate";
-import getTime from "date-fns/getTime";
-import { z } from "zod";
-import { nbsp } from "../../constants";
-import { parse } from "../../utils/date";
 import { getOption } from "../../utils";
 import { Member, Tag } from "../common";
-import type { Option } from "../../types";
+import { nbsp } from "../../constants";
+import { parse } from "../../utils/date";
+import { Space } from "../../services/clickUp/types";
+import { z } from "zod";
+import difference from "lodash/difference";
+import flatten from "lodash/flatten";
+import get from "lodash/get";
+import getTime from "date-fns/getTime";
+import isDate from "date-fns/isDate";
+import map from "lodash/map";
+import size from "lodash/size";
+import startCase from "lodash/startCase";
 import type { FormValidationSchema, TaskValues } from "./types";
-import type {List, Tag as TagType, Task, User, Status, Folder, Workspace} from "../../services/clickUp/types";
-import {Space} from "../../services/clickUp/types";
+import type { List, Tag as TagType, Task, User, Status, Folder, Workspace, MemberUser } from "../../services/clickUp/types";
+import type { Option } from "../../types";
 
 const validationSchema = z.object({
   workspace: z.string().nonempty(),
@@ -107,7 +107,7 @@ const getTagOptions = (tags?: TagType[]): Array<Option<TagType["name"]>> => {
   });
 };
 
-const getUserOptions = (users?: User[]): Array<Option<User["id"]>> => {
+const getUserOptions = (users?: MemberUser[]): Array<Option<User["id"]>> => {
   if (!Array.isArray(users) || !size(users)) {
     return [];
   }
@@ -137,13 +137,13 @@ const getListFromFolders = (folders?: Folder[]): Array<Option<List["id"]>> => {
   }
 
   return flatten(folders.map((folder: Folder) => {
-      return [
-        { type: "header", label: folder.name },
-        ...(get(folder, ["lists"], []) || []).map((list) => {
-          return getOption(list.id, `${nbsp}${nbsp}${nbsp}${list.name}`)
-        })
-      ];
-    })) as Array<Option<List["id"]>>;
+    return [
+      { type: "header", label: folder.name },
+      ...(get(folder, ["lists"], []) || []).map((list) => {
+        return getOption(list.id, `${nbsp}${nbsp}${nbsp}${list.name}`)
+      })
+    ];
+  })) as Array<Option<List["id"]>>;
 };
 
 const getListOptions = (lists?: List[]): Array<Option<List["id"]>> => {
