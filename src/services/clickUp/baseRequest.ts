@@ -1,8 +1,8 @@
-import isEmpty from "lodash/isEmpty";
-import { proxyFetch } from "@deskpro/app-sdk";
 import { BASE_URL, placeholders } from "../../constants";
-import { getQueryParams } from "../../utils";
 import { ClickUpError } from "./ClickUpError";
+import { getQueryParams } from "../../utils";
+import { proxyFetch } from "@deskpro/app-sdk";
+import isEmpty from "lodash/isEmpty";
 import type { Request } from "../../types";
 
 const baseRequest: Request = async (client, {
@@ -28,6 +28,10 @@ const baseRequest: Request = async (client, {
 
   if (data instanceof FormData) {
     options.body = data;
+    options.headers = {
+      "Content-Type": "multipart/form-data",
+      ...options.headers,
+    };
   } else if (!isEmpty(data)) {
     options.body = JSON.stringify(data);
     options.headers = {

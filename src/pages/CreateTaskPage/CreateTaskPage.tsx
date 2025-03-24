@@ -8,7 +8,7 @@ import {
 } from "@deskpro/app-sdk";
 import { createTaskService } from "../../services/clickUp";
 import { setEntityService } from "../../services/deskpro";
-import { useSetTitle, useAsyncError, useLinkedAutoComment } from "../../hooks";
+import { useSetTitle, useAsyncError, useLinkedAutoComment, useDeskproTag } from "../../hooks";
 import { getEntityMetadata } from "../../utils";
 import { CreateTask } from "../../components";
 import { getTaskValues, getListId } from "../../components/TaskForm";
@@ -23,7 +23,8 @@ const CreateTaskPage: FC = () => {
   const { context } = useDeskproLatestAppContext<TicketData, Maybe<Settings>>();
   const { asyncErrorHandler } = useAsyncError();
   const { addLinkComment } = useLinkedAutoComment();
-  const [error, setError] = useState<Maybe<string|string[]>>(null);
+  const { addDeskproTag } = useDeskproTag();
+  const [error, setError] = useState<Maybe<string | string[]>>(null);
   const ticketId = get(context, ["data", "ticket", "id"]);
 
   const onNavigateToLinkTask = useCallback(() => navigate("/link"), [navigate]);
@@ -32,8 +33,8 @@ const CreateTaskPage: FC = () => {
 
   const onSubmit = useCallback((
     values: FormValidationSchema,
-    workspaces: Array<Pick<Workspace, "id"|"name">>,
-    spaces: Array<Pick<Space, "id"|"name">>,
+    workspaces: Array<Pick<Workspace, "id" | "name">>,
+    spaces: Array<Pick<Space, "id" | "name">>,
   ) => {
     if (!client || !ticketId) {
       return Promise.resolve();
@@ -45,6 +46,8 @@ const CreateTaskPage: FC = () => {
       .then((task) => Promise.all([
         setEntityService(client, ticketId, task.id, getEntityMetadata(task, workspaces, spaces)),
         addLinkComment(task.id),
+        addDeskproTag(task),
+
       ]))
       .then(() => navigate("/home"))
       .catch((err) => {
@@ -56,7 +59,7 @@ const CreateTaskPage: FC = () => {
           asyncErrorHandler(err);
         }
       });
-  }, [client, ticketId, navigate, asyncErrorHandler, addLinkComment]);
+  }, [client, ticketId, addLinkComment, addDeskproTag, navigate, asyncErrorHandler]);
 
   useSetTitle("Link Tasks");
 
