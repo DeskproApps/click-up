@@ -39,6 +39,8 @@ jobs:
         with:
           env: LABELS
           runCmd: |
+            set -e
+
             # Lint
             pnpm run lint
             pnpm tsc --noemit
