@@ -9,73 +9,70 @@ jobs:
   deskpro_app_test_and_build:
     name: Test / Build
     timeout-minutes: 30
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: git fetch --no-tags --depth=1 origin master
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
 
       - name: Clone repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        id: pnpm-install
-        with:
-          version: 9
-          run_install: false
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
+      - name: Prep local dev
         run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-      - uses: actions/cache@v4
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile --strict-peer-dependencies
-
-      - name: Lint
-        run: pnpm run lint
-
-      - name: Type check
-        run: pnpm tsc --noemit
-
-      - name: Run tests
-        run: pnpm test:coverage
-
-      - name: Get labels from pull request
-        id: labels
-        run: echo "milestone=$(jq --raw-output '.pull_request.labels[].name' $GITHUB_EVENT_PATH | grep -E 'major-version|minor-version' | head -1)" >> $GITHUB_OUTPUT
-
-      - name: Bump Version
-        run: |
-          git config --global user.name "git log -1 --pretty=format:%an"
+          touch ~/.gitconfig
+          mkdir ~/.ssh
+          git config --global user.name "$(git log -1 --pretty=format:%an)"
           git config --global user.email "$(git log -1 --pretty=format:%ae)"
-          if [ "$(git log -1 --pretty=format:%ae)" = "noreply@github.com" ]; then
-            echo "Skipping workflow run because previous commit was not made by workflow."
-            exit 0
-          fi
-          if [[ "${{ steps.labels.outputs.milestone }}" == "major-version" ]]; then
-            pnpm run bumpManifestVer major
-          elif [[ "${{ steps.labels.outputs.milestone }}" == "minor-version" ]]; then
-            pnpm run bumpManifestVer minor
-          else
-            pnpm run bumpManifestVer
-          fi
 
-      - name: Build
-        run: pnpm run build
+      - name: Export PR Labels
+        id: extract_labels
+        run: echo "labels=$(jq -r '[.[] | .name] | join(",")' <<< '${{ toJson(github.event.pull_request.labels) }}')" >> $GITHUB_OUTPUT
+
+      - name: Lint, Test, Build, and Tag
+        uses: devcontainers/ci@v0.3
+        env:
+          LABELS: "${{ steps.extract_labels.outputs.labels }}"
+        with:
+          env: LABELS
+          runCmd: |
+            set -e
+
+            # Lint
+            pnpm run lint
+            pnpm tsc --noemit
+
+            # Test
+            pnpm test:coverage
+
+            # Build
+            pnpm run build
+
+            # Tag
+            if [ "$(git log -1 --pretty=format:%ae)" = "noreply@github.com" ]; then
+              echo "Skipping workflow run because previous commit was made by workflow."
+              exit 0
+            fi
+
+            ## Get current version number
+            PREV_COMMIT=$(git log -1 --pretty=format:%H -- manifest.json)
+            VERSION=$(git show $PREV_COMMIT:manifest.json | grep version | head -n 1 | awk -F'"' '{print $4}')
+
+            ## Get the commit message
+            MILESTONE=$(echo "$LABELS" | grep -E 'major-version|minor-version' | head -1)
+
+            echo "Current Version is $VERSION and the milestone is $MILESTONE"
+            if [[ "$MILESTONE" == "major-version" ]]; then
+              pnpm run bumpManifestVer major $VERSION
+            elif [[ "$MILESTONE" == "minor-version" ]]; then
+              pnpm run bumpManifestVer minor $VERSION
+            else
+              pnpm run bumpManifestVer patch $VERSION
+            fi
+
+            pnpm prettier --write manifest.json
+
       - name: Package app zip
         working-directory: dist
         run: |
@@ -88,7 +85,7 @@ jobs:
           path: |
             dist/app.zip
             dist/manifest.json
-          retention-days: 1
+          retention-days: 7
 
   deploy:
     uses: DeskproApps/app-template-vite/.github/workflows/subworkflow-deploy.yml@master
