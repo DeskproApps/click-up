@@ -83,6 +83,7 @@ jobs:
       - name: Package app zip
         working-directory: dist
         run: |
+          cp ../manifest.json .
           zip -rq ../app.zip *
           mv ../app.zip .
       - name: Read manifest
