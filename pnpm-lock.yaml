@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@deskpro/app-sdk':
-        specifier: 6.0.3
-        version: 6.0.3(@deskpro/deskpro-ui@8.3.1(@types/web@0.0.86)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
+        specifier: 6.0.5
+        version: 6.0.5(@deskpro/deskpro-ui@8.3.1(@types/web@0.0.86)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
       '@deskpro/deskpro-ui':
         specifier: ^8.3.1
         version: 8.3.1(@types/web@0.0.86)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -386,8 +386,8 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  '@deskpro/app-sdk@6.0.3':
-    resolution: {integrity: sha512-7IYRxJ6SRCKrsSFO5bZwGYhRoEvX08LPv0pDGIxhNejrqp+eaDb8hjobKnPKwK22pRNJ/riExGPsbGXeSuuCZQ==}
+  '@deskpro/app-sdk@6.0.5':
+    resolution: {integrity: sha512-YJDJm66heU8M448s5TqI7T6a6/Jk2AKXXNhdFiUgrjv207wBer8HyGFTFvhLW4En6nS39d1JV71GqeEWdmicOQ==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       '@deskpro/deskpro-ui': ^8.0.0
@@ -3586,7 +3586,7 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@deskpro/app-sdk@6.0.3(@deskpro/deskpro-ui@8.3.1(@types/web@0.0.86)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)':
+  '@deskpro/app-sdk@6.0.5(@deskpro/deskpro-ui@8.3.1(@types/web@0.0.86)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)':
     dependencies:
       '@deskpro/deskpro-ui': 8.3.1(@types/web@0.0.86)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@fortawesome/fontawesome-svg-core': 6.7.2
