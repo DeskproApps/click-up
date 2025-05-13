@@ -1,19 +1,9 @@
 <div align='center'>
-  <a target='_blank' href=''>
-    <img src='https://img.shields.io/github/contributors/deskproapps/click-up.svg?style=for-the-badge' alt='Contributors' />
-  </a>
-  <a target='_blank' href='https://github.com/deskproapps/click-up/issues'>
-    <img src='https://img.shields.io/github/issues/deskproapps/click-up.svg?style=for-the-badge' alt='Issues' />
-  </a>
-  <a target='_blank' href='https://github.com/deskproapps/click-up/blob/master/LICENSE.md'>
-    <img src='https://img.shields.io/github/license/deskproapps/click-up.svg?style=for-the-badge' alt='MIT License' />
-  </a>
-  <a target='_blank' href='https://github.com/deskproapps/click-up/releases'>
-    <img src='https://img.shields.io/github/v/release/deskproapps/click-up?style=for-the-badge' alt='GitHub Release' />
-  </a>
-  <a target='_blank' href='https://www.linkedin.com/company/deskpro'>
-    <img src='https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555' alt='LinkedIn' />
-  </a>
+  <a target='_blank' href=''><img src='https://img.shields.io/github/contributors/deskproapps/click-up.svg?style=for-the-badge' alt='Contributors' /></a>
+  <a target='_blank' href='https://github.com/deskproapps/click-up/issues'><img src='https://img.shields.io/github/issues/deskproapps/click-up.svg?style=for-the-badge' alt='Issues' /></a>
+  <a target='_blank' href='https://github.com/deskproapps/click-up/blob/master/LICENSE.md'><img src='https://img.shields.io/github/license/deskproapps/click-up.svg?style=for-the-badge' alt='MIT License' /></a>
+  <a target='_blank' href='https://github.com/deskproapps/click-up/releases'><img src='https://img.shields.io/github/v/release/deskproapps/click-up?style=for-the-badge' alt='GitHub Release' /></a>
+  <a target='_blank' href='https://www.linkedin.com/company/deskpro'><img src='https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555' alt='LinkedIn' /></a>
   <img src='readme.svg' />
 </div>
 
