@@ -3,7 +3,7 @@ name: PR Build
 on:
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   deskpro_app_test_and_build:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: git fetch --no-tags --depth=1 origin master
+      - run: git fetch --no-tags --depth=1 origin main
 
       - name: Clone repo
         uses: actions/checkout@v4
@@ -89,7 +89,7 @@ jobs:
           retention-days: 7
 
   deploy:
-    uses: DeskproApps/app-template-vite/.github/workflows/subworkflow-deploy.yml@master
+    uses: DeskproApps/app-template-vite/.github/workflows/subworkflow-deploy.yml@main
     secrets: inherit
     if: github.actor != 'dependabot[bot]'
     needs: [deskpro_app_test_and_build]
