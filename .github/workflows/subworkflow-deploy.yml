@@ -1,0 +1,126 @@
+name: "Deploy PR demo"
+
+on:
+  workflow_call:
+    inputs:
+      deskpro-docker-repository:
+        type: string
+        description: "Deskpro docker repository"
+        required: false
+        default: "registry.deskprodemo.com/deskpro/deskpro-product-dev"
+
+      mysql-docker-repository:
+        type: string
+        description: "MySQL docker repository"
+        required: false
+        default: "registry.deskprodemo.com/deskpro/deskpro-mysql-dev"
+
+      artifact-name:
+        type: string
+        description: "The artifact name to download that contains the package build output"
+        default: "app-package"
+        required: false
+
+    secrets:
+      DESKPRO_SERVICE_TOKEN: { required: true }
+      DEMO_SERVER_SSH_KEY: { required: true }
+      DEMO_SERVER_SSH_USER: { required: true }
+      DEMO_SERVER_SSH_HOST: { required: true }
+      DOCKER_REPO_USERNAME: { required: true }
+      DOCKER_REPO_TOKEN: { required: true }
+      DESKPRO_LICENSE_KEY: { required: true }
+      DESKPRO_DEMO_FQDN: { required: true }
+      APP_SETTINGS: { required: true }
+
+jobs:
+  deploy:
+    name: Deploy / Deskpro Demo
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - run: |
+          mkdir -p compose
+
+          curl -fsSL \
+            -H "Accept: application/vnd.github.VERSION.raw" \
+            -H "Authorization: token ${{ secrets.DESKPRO_SERVICE_TOKEN }}" \
+            -o compose/docker-compose.yml \
+            https://api.github.com/repos/deskpro/deskpro-product/contents/docker/compose/deskpro-demo/docker-compose.yml
+
+      - name: Create Docker SSH context
+        uses: deskpro/gh-actions/create-ssh-docker-context@master
+        with:
+          context-name: "demo"
+          private-key: ${{ secrets.DEMO_SERVER_SSH_KEY }}
+          user: ${{ secrets.DEMO_SERVER_SSH_USER }}
+          host: ${{ secrets.DEMO_SERVER_SSH_HOST }}
+
+      - name: Switch Docker context
+        run: |
+          docker context use demo
+
+      - name: Deploy demo
+        id: deployment
+        uses: deskpro/gh-actions/deploy-deskpro-demo@master
+        with:
+          compose-project-path: compose
+
+          deskpro-docker-repository: ${{ inputs.deskpro-docker-repository }}
+          mysql-docker-repository: ${{ inputs.mysql-docker-repository }}
+
+          registry-url: registry.deskprodemo.com
+          registry-username: ${{ secrets.DOCKER_REPO_USERNAME }}
+          registry-password: ${{ secrets.DOCKER_REPO_TOKEN }}
+
+          license-key: ${{ secrets.DESKPRO_LICENSE_KEY }}
+          vhost-domain: ${{ secrets.DESKPRO_DEMO_FQDN }}
+
+          url-resource: "/horizon-ui/app"
+
+      - name: Lookup container ID
+        id: container
+        run: |
+          service_name="${{ steps.deployment.outputs.swarm-stack-name }}_deskpro"
+          service_id="$(docker service ps -q "${service_name}" | head -1)"
+
+          if [ -z "${service_id}" ]; then
+            echo "::error title=Deskpro Swarm service ${service_name} not found::Deskpro Swarm service ${service_name} not found"
+            exit 1
+          fi
+
+          container_id="$(docker inspect --format '{{.Status.ContainerStatus.ContainerID}}' "${service_id}")"
+          echo "id=${container_id}" >> $GITHUB_OUTPUT
+
+      - name: Download package
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: app-package
+
+      - name: Discover app name
+        id: app
+        working-directory: app-package
+        run: |
+          app_name=$(jq -r '.name' manifest.json)
+          echo "name=${app_name}" >> $GITHUB_OUTPUT
+
+      - name: Copy package to container
+        working-directory: app-package
+        run: |
+          docker cp app.zip "${{ steps.container.outputs.id }}:/srv/deskpro/tools/fixtures/resources/custom_app_packages/app.zip"
+
+      - name: Add package
+        run: |
+          docker exec "${{ steps.container.outputs.id }}" php /srv/deskpro/tools/fixtures/artisan apps:insert \
+            --package=app.zip
+
+      - name: Install package
+        run: |
+          docker exec "${{ steps.container.outputs.id }}" php /srv/deskpro/tools/fixtures/artisan apps:install \
+            --name="${{ steps.app.outputs.name }}" \
+            --settings=${{ toJSON(secrets.APP_SETTINGS) }} \
+            --permission-person-ids=1 \
+            --uninstall-instances-before-install
