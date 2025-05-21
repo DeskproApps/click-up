@@ -1,0 +1,28 @@
+name: Feature Build
+
+on:
+  pull_request:
+  merge_group: # support for merge queues/groups
+  workflow_dispatch:
+
+# Allow this job to be canceled when new commits are pushed
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    uses: ./.github/workflows/subworkflow-build.yml
+    secrets: inherit
+    permissions:
+      contents: write
+      pull-requests: read
+
+  deploy:
+    uses: ./.github/workflows/subworkflow-deploy.yml
+    secrets: inherit
+    if: github.actor != 'dependabot[bot]' && github.event_name == 'pull_request'
+    needs: [build]
+    permissions:
+      contents: read
+      pull-requests: write

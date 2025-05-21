@@ -1,0 +1,27 @@
+name: Main Build
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-build
+  cancel-in-progress: false
+
+jobs:
+  build_and_tag:
+    uses: ./.github/workflows/subworkflow-build.yml
+    secrets: inherit
+    with:
+      push-tag: true
+    permissions:
+      contents: write
+      pull-requests: read
+
+  release:
+    uses: ./.github/workflows/subworkflow-release.yml
+    secrets: inherit
+    needs: [build_and_tag]
+    permissions:
+      contents: write

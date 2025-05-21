@@ -1,0 +1,126 @@
+name: "Build"
+
+on:
+  workflow_call:
+    inputs:
+      push-tag:
+        type: boolean
+        description: "Should the version tag be pushed to the repo"
+        default: false
+        required: false
+      run-lint:
+        type: boolean
+        description: "Should the lint checks be run"
+        default: true
+        required: false
+      run-tests:
+        type: boolean
+        description: "Should the tests be run"
+        default: true
+        required: false
+
+jobs:
+  build:
+    name: Lint / Test / Build / Tag
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Prep local dev
+        run: |
+          touch ~/.gitconfig
+          mkdir ~/.ssh
+          git config --global user.name "$(git log -1 --pretty=format:%an)"
+          git config --global user.email "$(git log -1 --pretty=format:%ae)"
+
+      - name: Export PR Labels
+        id: extract_labels
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -n "${{ github.event.pull_request.number }}" ]; then
+            # Regular PR case
+            echo "PR number found: ${{ github.event.pull_request.number }}"
+            labels=$(jq -r '[.[] | .name] | join(",")' <<< '${{ toJson(github.event.pull_request.labels) }}')
+          else
+            # Merge queue case - find PR by head ref
+            echo "No PR number found, checking for merge group"
+            PR_NUM=$(git log -1 --pretty=%B | grep -oP '#\K\d+')
+            echo "PR number found: $PR_NUM"
+            if [ -n "$PR_NUM" ]; then
+              labels=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+                "https://api.github.com/repos/${{ github.repository }}/issues/$PR_NUM/labels" | \
+                jq -r '[.[] | .name] | join(",")')
+            fi
+          fi
+          echo "labels=${labels:-}" >> $GITHUB_OUTPUT
+
+      - name: Export Version Tag
+        id: version_tag
+        run: |
+          tag=$(git tag --merged HEAD --sort=-version:refname -l "[0-9]*.[0-9]*.[0-9]*" -l "v[0-9]*.[0-9]*.[0-9]*" | head -n 1); 
+          echo version=$([ -z "$tag" ] && echo "0.0.0" || echo "${tag#v}") >> $GITHUB_OUTPUT;
+
+      - name: Lint, Test, Build, and Tag
+        uses: devcontainers/ci@8bf61b26e9c3a98f69cb6ce2f88d24ff59b785c6 #v0.3
+        env:
+          LABELS: "${{ steps.extract_labels.outputs.labels }}"
+          VERSION: "${{ steps.version_tag.outputs.version }}"
+          PUSH_TAG: "${{ inputs.push-tag }}"
+          RUN_LINT:  "${{ inputs.run-lint }}"
+          RUN_TESTS:  "${{ inputs.run-tests }}"
+        with:
+          env: |
+            LABELS
+            VERSION
+            PUSH_TAG
+            RUN_LINT
+            RUN_TESTS
+          runCmd: |
+            set -e
+
+            # Lint
+            if [ "$RUN_LINT" = true ]; then
+              pnpm run lint
+              pnpm tsc --noemit
+            fi
+
+            # Test
+            if [ "$RUN_TESTS" = true ]; then
+              pnpm test:coverage
+            fi
+
+            # Build
+            pnpm run build
+
+            # Tag
+            MILESTONE=$(echo "$LABELS" | grep -E 'major-version|minor-version' | head -1)
+            VERSION_NEW=$(pnpm run bumpManifestVer "$MILESTONE" "$VERSION" | tail -n 1)
+            pnpm prettier --write manifest.json
+            git tag -a $VERSION_NEW -m "Version $VERSION_NEW"
+            if [ "$PUSH_TAG" = "true" ]; then
+              git push origin $VERSION_NEW
+            fi
+
+      - name: Package app zip
+        working-directory: dist
+        run: |
+          cp ../manifest.json .
+          zip -rq ../app.zip *
+
+      - name: Upload package
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: app-package
+          path: |
+            app.zip
+            manifest.json
+          retention-days: 7
