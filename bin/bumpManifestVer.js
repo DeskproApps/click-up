@@ -1,36 +1,37 @@
 const fs = require("fs");
 
-const bumpSemanticVersion = (versionString, bumpType = "patch") => {
-  let [major, minor, patch] = versionString.split(".");
+/**
+ * @param {string} versionStringRaw 
+ * @param {string} labels
+ */
+function bumpSemanticVersion(versionStringRaw, labels) {
+  const versionString = (versionStringRaw ?? '0.0.0').trim();
+  if (!versionString.match(/^\d+\.\d+\.\d+$/)) {
+    throw new Error("Invalid version string: " + versionStringRaw);
+  }
 
-  switch (bumpType) {
-    case "major":
-      major = parseInt(major) + 1;
-      minor = 0;
-      patch = 0;
-      break;
+  let [major, minor, patch] = versionString.trim().split(".");
 
-    case "minor":
-      minor = parseInt(minor) + 1;
-      patch = 0;
-      break;
-
-    case "patch":
-      patch = parseInt(patch) + 1;
-      break;
-
-    default:
-      break;
+  if (labels?.includes("major")) {
+    major = parseInt(major) + 1;
+    minor = 0;
+    patch = 0;
+  } else if (labels?.includes("minor")) {
+    minor = parseInt(minor) + 1;
+    patch = 0;
+  } else {
+    patch = parseInt(patch) + 1;
   }
 
   return `${major}.${minor}.${patch}`;
 };
 
 const packageJson = JSON.parse(fs.readFileSync("./manifest.json", "utf8"));
-//1
+
 packageJson.version = bumpSemanticVersion(
-  process.argv[3] ? process.argv[3] : packageJson.version,
-  process.argv[2]
+  process.argv[3],
+  process.argv[2],
 );
 
-fs.writeFileSync("./manifest.json", JSON.stringify(packageJson));
+fs.writeFileSync("./manifest.json", JSON.stringify(packageJson, null, 2));
+console.log(packageJson.version);
