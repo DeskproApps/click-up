@@ -21,3 +21,4 @@ export { DateInput } from "./DateInput";
 export { Markdown } from "./Markdown";
 export { Attach } from "./Attach";
 export { StatusDropdown } from "./StatusDropdown";
+export { InternalIconLink } from "./InternalIconLink";
