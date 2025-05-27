@@ -54,11 +54,15 @@ const TaskItem: FC<Props> = ({ task, spaces, workspaces, onClickTitle }) => {
     );
   }, [task, getProjectUrl]);
   const [relationships, setRelationships] = useState<Relationship[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useInitialisedDeskproAppClient(async client => {
+    setIsLoading(true);
+
     const relationships = await useTaskRelationships(client, task);
-    
+
     setRelationships(relationships);
+    setIsLoading(false);
   }, [task]);
 
   const onClick = useCallback((e: MouseEvent) => {
@@ -130,18 +134,23 @@ const TaskItem: FC<Props> = ({ task, spaces, workspaces, onClickTitle }) => {
           )}
         />
       )}
-      {relationships.length === 0 ? <LoadingBlock /> : (
+      {(isLoading || relationships.length > 0) && (
         <Property
           label='Relationships'
-          text={<>
-            {relationships.map(relationship => (
-              <RelationshipItem
-                key={relationship.id}
-                task={task}
-                relationship={relationship}
-              />
-            ))}
-          </>
+          text={
+            isLoading ? (
+              <LoadingBlock />
+            ) : (
+              <>
+                {relationships.map(relationship => (
+                  <RelationshipItem
+                    key={relationship.id}
+                    task={task}
+                    relationship={relationship}
+                  />
+                ))}
+              </>
+            )
           }
         />
       )}
