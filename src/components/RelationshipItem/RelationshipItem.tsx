@@ -1,7 +1,7 @@
 import { P5 } from '@deskpro/deskpro-ui';
 import { InternalIconLink } from '../common';
 import { Task } from '../../services/clickUp/types';
-import { Maybe, Relationship } from '../../types';
+import { Maybe, Relationship, RELATIONSHIP_LABELS } from '../../types';
 
 interface RelationshipItem {
     task: Maybe<Task>;
@@ -13,25 +13,12 @@ export function RelationshipItem({ task, relationship }: RelationshipItem) {
         return null;
     };
 
-    let beginningText = '';
-
-    switch (relationship.type) {
-        case 'link':
-            beginningText = 'Linked to';
-
-            break;
-
-        case 'dependency':
-            beginningText = relationship.isSource ? 'Waiting on' : 'Blocking';
-
-            break;
-    };
-
+    const label = RELATIONSHIP_LABELS[relationship.type];
     const target = relationship.isSource ? 'destination' : 'source';
 
     return (
         <P5 style={{display: 'flex'}}>
-            {beginningText}
+            {label}
             {'\u00A0'}
             <strong>{relationship[target].name}</strong>
             <InternalIconLink link={`/view/${relationship[target].id}`} />

@@ -1,7 +1,7 @@
 import { IDeskproClient } from '@deskpro/app-sdk';
 import { getTaskService } from '../services/clickUp';
 import { Task } from '../services/clickUp/types';
-import { Maybe, Relationship } from '../types';
+import { Maybe, Relationship, RelationshipType } from '../types';
 
 export async function useTaskRelationships(client: IDeskproClient, task: Maybe<Task>): Promise<Relationship[]> {
     if (!task) {
@@ -19,7 +19,7 @@ export async function useTaskRelationships(client: IDeskproClient, task: Maybe<T
 
             return {
                 id: relatedTask.date_created,
-                type: 'link' as const,
+                type: 'link' as RelationshipType,
                 source: {
                     id: relatedTask.task_id,
                     name: sourceTask.name
@@ -41,7 +41,7 @@ export async function useTaskRelationships(client: IDeskproClient, task: Maybe<T
 
             return {
                 id: dependency.date_created,
-                type: 'dependency' as const,
+                type: (isSource ? 'waitingOn' : 'blocking') as RelationshipType,
                 source: {
                     id: dependency.task_id,
                     name: waitingTask.name
