@@ -20,6 +20,11 @@ export function RelationshipItem({ task, relationship }: RelationshipItem) {
             beginningText = 'Linked to';
 
             break;
+
+        case 'dependency':
+            beginningText = relationship.isSource ? 'Waiting on' : 'Blocking';
+
+            break;
     };
 
     const target = relationship.isSource ? 'destination' : 'source';

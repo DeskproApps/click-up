@@ -68,7 +68,7 @@ export type EntityMetadata = {
   list: List["name"],
 };
 
-export type RelationshipType = 'link';
+export type RelationshipType = 'link' | 'dependency';
 
 export type Relationship = {
   id: string;
