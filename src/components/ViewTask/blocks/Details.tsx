@@ -1,11 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import get from "lodash/get";
 import size from "lodash/size";
 import find from "lodash/find";
 import { faFile } from "@fortawesome/free-regular-svg-icons";
 import { Stack, AttachmentTag, LoadingBlock } from "@deskpro/deskpro-ui";
-import { Title, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
-import { useExternalLink, useTaskRelationships } from "../../../hooks";
+import { Title } from "@deskpro/app-sdk";
+import { useExternalLink } from "../../../hooks";
 import { format } from "../../../utils/date";
 import {
   Tag,
@@ -51,14 +51,6 @@ const Details: FC<Props> = ({ task, workspaces, space }) => {
       />
     );
   }, [task, getProjectUrl]);
-  const [relationships, setRelationships] = useState<Relationship[]>([]);
-
-  useInitialisedDeskproAppClient(async client => {
-    const relationships = await useTaskRelationships(client, task);
-    
-    setRelationships(relationships);
-  }, [task]);
-
   return (
     <Container>
       <Title
@@ -128,21 +120,6 @@ const Details: FC<Props> = ({ task, workspaces, space }) => {
           </Stack>
         )}
       />
-      {relationships.length === 0 ? <LoadingBlock /> : (
-        <Property
-          label='Relationships'
-          text={<>
-            {relationships.map(relationship => (
-              <RelationshipItem
-                key={relationship.id}
-                task={task}
-                relationship={relationship}
-              />
-            ))}
-          </>
-          }
-        />
-      )}
       <Property
         label="Attachments"
         text={!size(attachments) ? "-" : (
