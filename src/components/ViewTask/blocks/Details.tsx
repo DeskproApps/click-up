@@ -3,8 +3,8 @@ import get from "lodash/get";
 import size from "lodash/size";
 import find from "lodash/find";
 import { faFile } from "@fortawesome/free-regular-svg-icons";
-import { Stack, AttachmentTag } from "@deskpro/deskpro-ui";
-import { LoadingSpinner, Title, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
+import { Stack, AttachmentTag, LoadingBlock } from "@deskpro/deskpro-ui";
+import { Title, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
 import { useExternalLink, useTaskRelationships } from "../../../hooks";
 import { format } from "../../../utils/date";
 import {
@@ -128,7 +128,7 @@ const Details: FC<Props> = ({ task, workspaces, space }) => {
           </Stack>
         )}
       />
-      {relationships.length === 0 ? <LoadingSpinner /> : (
+      {relationships.length === 0 ? <LoadingBlock /> : (
         <Property
           label='Relationships'
           text={<>
