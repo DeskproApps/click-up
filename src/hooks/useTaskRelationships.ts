@@ -1,12 +1,11 @@
-import { IDeskproClient } from '@deskpro/app-sdk';
+import { useState } from 'react';
+import { IDeskproClient, useInitialisedDeskproAppClient } from '@deskpro/app-sdk';
 import { getTaskService } from '../services/clickUp';
 import { Task } from '../services/clickUp/types';
 import { Maybe, Relationship, RelationshipType } from '../types';
 
-export async function useTaskRelationships(client: IDeskproClient, task: Maybe<Task>): Promise<Relationship[]> {
-    if (!task) {
-        return [];
-    };
+async function getTaskRelationships(client: IDeskproClient, task: Task): Promise<Relationship[]> {
+    if (!task) return [];
 
     const linkedTasks = task.linked_tasks ?? [];
     const dependencies = task.dependencies ?? [];
@@ -56,4 +55,24 @@ export async function useTaskRelationships(client: IDeskproClient, task: Maybe<T
     );
 
     return [...linkRelationships, ...dependencyRelationships];
+}
+
+export const useTaskRelationships = (task: Maybe<Task>) => {
+    const [relationships, setRelationships] = useState<Relationship[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useInitialisedDeskproAppClient(async client => {
+        if (!task) {
+            return;
+        };
+
+        setIsLoading(true);
+
+        const relationships = await getTaskRelationships(client, task);
+
+        setRelationships(relationships);
+        setIsLoading(false);
+    }, [task]);
+
+    return { relationships, isLoading };
 };

@@ -1,7 +1,6 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { cloneDeep, get } from 'lodash';
-import { useDebouncedCallback } from 'use-debounce';
 import { HorizontalDivider, Search, Select, useDeskproAppClient, useDeskproElements } from '@deskpro/app-sdk';
 import { Stack } from '@deskpro/deskpro-ui';
 import { Button, Container, ErrorBlock, Label } from '../../components/common';

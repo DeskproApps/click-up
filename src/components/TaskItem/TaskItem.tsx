@@ -1,9 +1,9 @@
-import { useMemo, useCallback, useState } from "react";
+import { useMemo, useCallback } from "react";
 import get from "lodash/get";
 import find from "lodash/find";
 import size from "lodash/size";
 import { LoadingBlock, Stack } from "@deskpro/deskpro-ui";
-import { Title, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
+import { Title } from "@deskpro/app-sdk";
 import { useExternalLink, useTaskRelationships } from "../../hooks";
 import { format } from "../../utils/date";
 import {
@@ -19,7 +19,6 @@ import {
 } from "../common";
 import type { FC, MouseEvent } from "react";
 import type { Task, Workspace, Space } from "../../services/clickUp/types";
-import { Relationship } from "../../types";
 import { RelationshipItem } from "../RelationshipItem/RelationshipItem";
 
 type Props = {
@@ -53,17 +52,7 @@ const TaskItem: FC<Props> = ({ task, spaces, workspaces, onClickTitle }) => {
       />
     );
   }, [task, getProjectUrl]);
-  const [relationships, setRelationships] = useState<Relationship[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useInitialisedDeskproAppClient(async client => {
-    setIsLoading(true);
-
-    const relationships = await useTaskRelationships(client, task);
-
-    setRelationships(relationships);
-    setIsLoading(false);
-  }, [task]);
+  const { relationships, isLoading } = useTaskRelationships(task);
 
   const onClick = useCallback((e: MouseEvent) => {
     e.preventDefault();

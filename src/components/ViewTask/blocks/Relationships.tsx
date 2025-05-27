@@ -1,12 +1,11 @@
 import { useNavigate } from 'react-router-dom';
-import { Title, useInitialisedDeskproAppClient } from '@deskpro/app-sdk';
-import { P5 } from '@deskpro/deskpro-ui';
+import { Title } from '@deskpro/app-sdk';
+import { LoadingBlock, P5 } from '@deskpro/deskpro-ui';
 import { RelationshipItem } from '../../RelationshipItem/RelationshipItem';
-import { Container, ErrorBlock } from '../../common';
-import { Maybe, Relationship } from '../../../types';
-import { useState } from 'react';
+import { Container } from '../../common';
 import { useTaskRelationships } from '../../../hooks';
 import { Task } from '../../../services/clickUp/types';
+import { Maybe } from '../../../types';
 
 interface Relationships {
     task: Maybe<Task>;
@@ -14,22 +13,21 @@ interface Relationships {
 
 export function Relationships({ task }: Relationships) {
     const navigate = useNavigate();
-    const [relationships, setRelationships] = useState<Relationship[]>([]);
+    const { relationships, isLoading } = useTaskRelationships(task);
     const taskID = task?.id;
-
-    useInitialisedDeskproAppClient(async client => {
-        const relationships = await useTaskRelationships(client, task);
-        
-        setRelationships(relationships);
-    }, [task]);
 
     return (
         <Container>
             <Title title={`Relationships (${relationships.length})`} onClick={() => {navigate(`/view/${taskID}/relationships/new`)}} />
-            {relationships.length === 0
-                ? <P5>No relationships found</P5>
-                : relationships.map(relationship => <RelationshipItem key={relationship.id} task={task} relationship={relationship} />)
-            }
+            {isLoading ? (
+                <LoadingBlock />
+            ) : relationships.length === 0 ? (
+                <P5>No Relationships Found</P5>
+            ) : (
+                relationships.map(relationship => (
+                    <RelationshipItem key={relationship.id} task={task} relationship={relationship} />
+                ))
+            )}
         </Container>
     );
 };
