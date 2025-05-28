@@ -75,8 +75,11 @@ jobs:
           LABELS: "${{ steps.extract_labels.outputs.labels }}"
           VERSION: "${{ steps.version_tag.outputs.version }}"
           PUSH_TAG: "${{ inputs.push-tag }}"
-          RUN_LINT:  "${{ inputs.run-lint }}"
-          RUN_TESTS:  "${{ inputs.run-tests }}"
+          RUN_LINT: "${{ inputs.run-lint }}"
+          RUN_TESTS: "${{ inputs.run-tests }}"
+          SENTRY_AUTH_TOKEN: "${{ secrets.SENTRY_AUTH_TOKEN }}"
+          SENTRY_ORG: "${{ secrets.SENTRY_ORG }}"
+          SENTRY_PROJECT: "${{ secrets.SENTRY_PROJECT }}"
         with:
           env: |
             LABELS
@@ -84,6 +87,9 @@ jobs:
             PUSH_TAG
             RUN_LINT
             RUN_TESTS
+            SENTRY_AUTH_TOKEN
+            SENTRY_ORG
+            SENTRY_PROJECT
           runCmd: |
             set -e
 
@@ -98,14 +104,20 @@ jobs:
               pnpm test:coverage
             fi
 
-            # Build
-            pnpm run build
-
             # Tag
             MILESTONE=$(echo "$LABELS" | grep -E 'major-version|minor-version' | head -1)
             VERSION_NEW=$(pnpm run bumpManifestVer "$MILESTONE" "$VERSION" | tail -n 1)
             pnpm prettier --write manifest.json
             git tag -a $VERSION_NEW -m "Version $VERSION_NEW"
+
+            # Build
+            if [ "$PUSH_TAG" != "true" ]; then
+              ## Disable Sentry Release if not pushing
+              SENTRY_DISABLED="true"
+            fi
+            pnpm run build
+
+            # Push
             if [ "$PUSH_TAG" = "true" ]; then
               git push origin $VERSION_NEW
             fi
