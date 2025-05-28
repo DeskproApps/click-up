@@ -113,7 +113,7 @@ jobs:
             # Build
             if [ "$PUSH_TAG" != "true" ]; then
               ## Disable Sentry Release if not pushing
-              SENTRY_DISABLED="true"
+              export SENTRY_DISABLED="true"
             fi
             pnpm run build
 
