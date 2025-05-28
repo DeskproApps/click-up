@@ -126,6 +126,7 @@ jobs:
         working-directory: dist
         run: |
           cp ../manifest.json .
+          rm **/*.js.map || echo "No source maps to remove"
           zip -rq ../app.zip *
 
       - name: Upload package
