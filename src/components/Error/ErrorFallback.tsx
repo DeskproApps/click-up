@@ -2,14 +2,9 @@ import { Stack } from "@deskpro/deskpro-ui";
 import { ClickUpError } from "../../services/clickUp";
 import { ErrorBlock } from "../common";
 import { Container } from "../common";
-import type { FC } from "react";
-import type { FallbackProps } from "react-error-boundary";
+import { FallbackRender } from "@sentry/react";
 
-type Props = Omit<FallbackProps, "error"> & {
-  error: Error,
-};
-
-const ErrorFallback: FC<Props> = ({ error }) => {
+const ErrorFallback: FallbackRender = ({ error }) => {
   const message = "There was an error!";
   const button = null;
 
