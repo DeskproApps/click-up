@@ -1,3 +1,4 @@
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import path from "path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
@@ -10,18 +11,28 @@ const PORT = process.env.VITE_DEV_SERVER_PORT
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "",
-  plugins: [react()],
+  plugins: [
+    react(),
+    ...(
+      process.env.SENTRY_DISABLED !== "true" && process.env.SENTRY_ORG && process.env.SENTRY_PROJECT
+        ? [sentryVitePlugin({
+          org: process.env.SENTRY_ORG,
+          project: process.env.SENTRY_PROJECT,
+        })] : []
+    ),
+  ],
   server: {
     host: true,
     port: PORT,
     allowedHosts: true
   },
-  resolve:{
+  resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
     },
   },
   build: {
+    sourcemap: true,
     rollupOptions: {
       onwarn(warning, warn) {
         if (warning.code === "MODULE_LEVEL_DIRECTIVE") {
