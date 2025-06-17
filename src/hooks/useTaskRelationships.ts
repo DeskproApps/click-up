@@ -60,10 +60,13 @@ async function getTaskRelationships(client: IDeskproClient, task: Task): Promise
 
 export const useTaskRelationships = (task: Maybe<Task>) => {
     const [relationships, setRelationships] = useState<Relationship[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     useInitialisedDeskproAppClient(async client => {
-        if (!task) {
+        if (!task?.id) {
+            setRelationships([]);
+            setIsLoading(false);
+            
             return;
         };
 
@@ -73,7 +76,7 @@ export const useTaskRelationships = (task: Maybe<Task>) => {
 
         setRelationships(relationships);
         setIsLoading(false);
-    }, [task]);
+    }, [task?.id]);
 
     return { relationships, isLoading };
 };
