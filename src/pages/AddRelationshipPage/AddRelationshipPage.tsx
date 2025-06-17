@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { cloneDeep, get } from 'lodash';
 import { HorizontalDivider, Search, Select, useDeskproAppClient, useDeskproElements } from '@deskpro/app-sdk';
 import { Stack } from '@deskpro/deskpro-ui';
 import { Button, Container, ErrorBlock, Label } from '../../components/common';
@@ -40,7 +39,7 @@ export function AddRelationshipPage() {
     });
 
     useEffect(() => {
-        setSelectedWorkspaceID(get(workspaces, [0, 'id'], null));
+        setSelectedWorkspaceID(workspaces && workspaces.length > 0 ? workspaces[0].id : null);
     }, [workspaces]);
 
     const handleQueryChange = (query: string) => {
@@ -79,7 +78,7 @@ export function AddRelationshipPage() {
     };
 
     const handleChangeSelectedTask = (task: Task) => {
-        let newSelectedTasks = cloneDeep(selectedTasks);
+        let newSelectedTasks = [...selectedTasks];
 
         if (selectedTasks.some(selectedTask => task.id === selectedTask.id)) {
             newSelectedTasks = selectedTasks.filter(selectedCard => selectedCard.id !== task.id);
