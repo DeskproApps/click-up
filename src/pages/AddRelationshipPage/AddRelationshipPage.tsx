@@ -67,7 +67,7 @@ export function AddRelationshipPage() {
                 navigate(`/view/${taskId}`);
             })
             .catch(error => {
-                setError(error.message);
+                setError(error instanceof Error ? error.message : 'error linking tasks');
             })
             .finally(() => {
                 setIsSubmitting(false);
