@@ -37,10 +37,11 @@ async function getTaskRelationships(client: IDeskproClient, task: Task): Promise
             const isSource = dependency.task_id === task.id;
             const waitingTask = await getTaskService(client, dependency.task_id);
             const blockingTask = await getTaskService(client, dependency.depends_on);
+            const type: RelationshipType = isSource ? 'waitingOn' : 'blocking';
 
             return {
                 id: dependency.date_created,
-                type: (isSource ? 'waitingOn' : 'blocking') as RelationshipType,
+                type,
                 source: {
                     id: dependency.task_id,
                     name: waitingTask.name
