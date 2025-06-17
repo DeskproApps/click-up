@@ -7,7 +7,7 @@ jest.mock("../../common/DeskproTickets/DeskproTickets", () => ({
   DeskproTickets: () => <>100500</>,
 }));
 
-describe.skip("TaskItem", () => {
+describe("TaskItem", () => {
   afterEach(() => {
     jest.clearAllMocks();
     cleanup();

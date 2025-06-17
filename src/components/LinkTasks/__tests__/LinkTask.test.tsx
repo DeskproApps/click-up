@@ -13,7 +13,7 @@ describe("LinkTask", () => {
     cleanup();
   });
 
-  test.skip("render", async () => {
+  test("render", async () => {
     const { findByText } = render((
       <LinkTasks
         spaces={[]}
