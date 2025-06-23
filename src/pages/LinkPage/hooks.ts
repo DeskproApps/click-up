@@ -1,4 +1,3 @@
-import get from "lodash/get";
 import { useQueryWithClient } from "@deskpro/app-sdk";
 import {
   getSpacesService,
