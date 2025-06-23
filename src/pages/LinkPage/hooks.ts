@@ -16,10 +16,27 @@ type UseTasks = (workspaceId: Maybe<Workspace["id"]>) => {
   tasks: Task[],
 };
 
+
 const useTasks: UseTasks = (workspaceId) => {
+  console.log(workspaceId)
   const workspaces = useQueryWithClient(
     [QueryKey.WORKSPACES],
-    (client) => getWorkspacesService(client),
+    async (client) => {
+      const response = await getWorkspacesService(client)
+
+      if (response.success) {
+        return response.data.teams
+      }
+
+      // Ignore auth errors.
+      if (response.errorCode === "auth-error") {
+        return []
+      }
+
+      // Pass other errors to the error boundary.
+      throw response.error
+
+    },
   );
 
   const spaces = useQueryWithClient(
@@ -36,9 +53,9 @@ const useTasks: UseTasks = (workspaceId) => {
 
   return {
     isLoading: [workspaces, spaces, tasks].some(({ isLoading }) => isLoading),
-    workspaces: get(workspaces, ["data", "teams"], []) || [],
-    spaces: get(spaces, ["data", "spaces"], []) || [],
-    tasks: get(tasks, ["data", "tasks"], []) || [],
+    workspaces: workspaces.data ?? [],
+    spaces: spaces.data?.spaces ?? [],
+    tasks: tasks.data?.tasks?? [],
   };
 };
 

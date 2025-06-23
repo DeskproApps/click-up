@@ -14,7 +14,7 @@ import {
 } from "@deskpro/app-sdk";
 import { useLinkedTasks } from "./useLinkedTasks";
 import { getEntityListService } from "../services/deskpro";
-import { createTaskCommentService, getCurrentUserService } from "../services/clickUp";
+import { createTaskCommentService } from "../services/clickUp";
 import { queryClient } from "../query";
 import { APP_PREFIX } from "../constants";
 import type { FC, PropsWithChildren } from "react";

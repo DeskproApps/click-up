@@ -21,7 +21,22 @@ type UseFormDeps = (workspaceId?: Workspace["id"], spaceId?: Space["id"]) => {
 const useFormDeps: UseFormDeps = (workspaceId, spaceId) => {
   const workspaces = useQueryWithClient(
     [QueryKey.WORKSPACES],
-    (client) => getWorkspacesService(client),
+    async (client) => {
+      const response = await getWorkspacesService(client)
+
+      if (response.success) {
+        return response.data.teams
+      }
+
+      // Ignore auth errors.
+      if (response.errorCode === "auth-error") {
+        return []
+      }
+
+      // Pass other errors to the error boundary.
+      throw response.error
+
+    },
   );
 
   const spaces = useQueryWithClient(
@@ -50,7 +65,7 @@ const useFormDeps: UseFormDeps = (workspaceId, spaceId) => {
   }, [spaceId, spaces]);
 
   const users = useMemo(() => {
-    const workspace = find(workspaces.data?.teams, { id: workspaceId });
+    const workspace = find(workspaces.data ?? [], { id: workspaceId });
     const members = workspace?.members ?? [];
 
     return members.map(member => member.user);
@@ -65,7 +80,7 @@ const useFormDeps: UseFormDeps = (workspaceId, spaceId) => {
 
   return {
     isLoading: [workspaces].some(({ isLoading }) => isLoading),
-    workspaceOptions: useMemo(() => getWorkspaceOptions(workspaces.data?.teams), [workspaces]),
+    workspaceOptions: useMemo(() => getWorkspaceOptions(workspaces.data ?? []), [workspaces]),
     spaceOptions: useMemo(() => getSpaceOptions(spaces.data?.spaces), [spaces]),
     listOptions: [
       ...useMemo(() => getListFromFolders(folders.data?.folders), [folders]),
