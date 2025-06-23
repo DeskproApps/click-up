@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback, useContext, createContext } from "react";
+import { useMemo, useCallback, useContext, createContext } from "react";
 import get from "lodash/get";
 import size from "lodash/size";
 import map from "lodash/map";
@@ -24,11 +24,11 @@ import type { TicketContext, TicketData } from "../types";
 
 export type ReplyBoxType = "note" | "email";
 
-export type SetSelectionState = (taskId: Task["id"], selected: boolean, type: ReplyBoxType) => void|Promise<{ isSuccess: boolean }|void>;
+export type SetSelectionState = (taskId: Task["id"], selected: boolean, type: ReplyBoxType) => void | Promise<{ isSuccess: boolean } | void>;
 
-export type GetSelectionState = (taskId: Task["id"], type: ReplyBoxType) => void|Promise<Array<GetStateResponse<string>>>;
+export type GetSelectionState = (taskId: Task["id"], type: ReplyBoxType) => void | Promise<Array<GetStateResponse<string>>>;
 
-export type DeleteSelectionState = (taskId: Task["id"], type: ReplyBoxType) => void|Promise<boolean|void>;
+export type DeleteSelectionState = (taskId: Task["id"], type: ReplyBoxType) => void | Promise<boolean | void>;
 
 type ReturnUseReplyBox = {
   setSelectionState: SetSelectionState,
@@ -36,11 +36,11 @@ type ReturnUseReplyBox = {
   deleteSelectionState: DeleteSelectionState,
 };
 
-const noteKey = (ticketId: string, taskId: Task["id"]|"*") => {
+const noteKey = (ticketId: string, taskId: Task["id"] | "*") => {
   return `tickets/${ticketId}/${APP_PREFIX}/notes/selection/${taskId}`.toLowerCase();
 };
 
-const emailKey = (ticketId: string, taskId: Task["id"]|"*") => {
+const emailKey = (ticketId: string, taskId: Task["id"] | "*") => {
   return `tickets/${ticketId}/${APP_PREFIX}/emails/selection/${taskId}`.toLowerCase();
 };
 
@@ -49,7 +49,7 @@ const registerReplyBoxNotesAdditionsTargetAction = (
   ticketId: TicketData["ticket"]["id"],
   taskIds: Array<Task["id"]>,
   tasksMap: Record<Task["id"], Task>,
-): void|Promise<void> => {
+): void | Promise<void> => {
   if (!ticketId) {
     return;
   }
@@ -78,7 +78,7 @@ const registerReplyBoxEmailsAdditionsTargetAction = (
   ticketId: TicketData["ticket"]["id"],
   taskIds: Array<Task["id"]>,
   tasksMap: Record<Task["id"], Task>,
-): void|Promise<void> => {
+): void | Promise<void> => {
   if (!ticketId) {
     return;
   }
@@ -104,34 +104,17 @@ const registerReplyBoxEmailsAdditionsTargetAction = (
 };
 
 const ReplyBoxContext = createContext<ReturnUseReplyBox>({
-  setSelectionState: () => {},
-  getSelectionState: () => {},
-  deleteSelectionState: () => {},
+  setSelectionState: () => { },
+  getSelectionState: () => { },
+  deleteSelectionState: () => { },
 });
 
 const useReplyBox = () => useContext<ReturnUseReplyBox>(ReplyBoxContext);
 
 const ReplyBoxProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { context } = useDeskproLatestAppContext<TicketContext,unknown>()
+  const { context } = useDeskproLatestAppContext<TicketContext, unknown>()
   const { client } = useDeskproAppClient();
-
-  const [tasks, setTasks] = useState<Task[]>([]);
-
-  // Ensure the user is authenticated before fetching tasks (This is a temporary fix)
-
-  useEffect(() => {
-    if (client) {
-      getCurrentUserService(client)
-        .then(() => {
-          // eslint-disable-next-line react-hooks/rules-of-hooks
-          const { tasks: tempTasks } = useLinkedTasks(); 
-          setTasks(tempTasks);
-        })
-        .catch(() => {
-          setTasks([]); 
-        });
-    }
-  }, [client])
+  const { tasks } = useLinkedTasks();
 
   const tasksMap = useMemo(() => (Array.isArray(tasks) ? tasks : []).reduce<Record<Task["id"], Task>>((acc, task) => {
     acc[task.id] = task;
@@ -151,14 +134,14 @@ const ReplyBoxProvider: FC<PropsWithChildren> = ({ children }) => {
       return client.setState(noteKey(ticketId, taskId), { id: taskId, selected })
         .then(() => getEntityListService(client, ticketId))
         .then((taskIds) => registerReplyBoxNotesAdditionsTargetAction(client, ticketId, taskIds, tasksMap))
-        .catch(() => {})
+        .catch(() => { })
     }
 
     if (type === "email" && isCommentOnEmail) {
       return client?.setState(emailKey(ticketId, taskId), { id: taskId, selected })
         .then(() => getEntityListService(client, ticketId))
         .then((taskIds) => registerReplyBoxEmailsAdditionsTargetAction(client, ticketId, taskIds, tasksMap))
-        .catch(() => {})
+        .catch(() => { })
     }
   }, [client, ticketId, isCommentOnNote, isCommentOnEmail, tasksMap]);
 
@@ -188,7 +171,9 @@ const ReplyBoxProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useInitialisedDeskproAppClient((client) => {
 
-    if(!ticketId) return
+    if (!ticketId) {
+      return
+    }
 
     if (isCommentOnNote) {
       registerReplyBoxNotesAdditionsTargetAction(client, ticketId, map(tasks, "id"), tasksMap);
@@ -202,86 +187,86 @@ const ReplyBoxProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [tasks, ticketId, isCommentOnNote, isCommentOnEmail, tasksMap]);
 
   const debounceTargetAction = useDebouncedCallback<(a: TargetAction) => void>((action: TargetAction) => match<string>(action.name)
-      .with(`${APP_PREFIX}OnReplyBoxEmail`, () => {
-        const subjectTicketId = action.subject;
-        const email = action.payload.email;
+    .with(`${APP_PREFIX}OnReplyBoxEmail`, () => {
+      const subjectTicketId = action.subject;
+      const email = action.payload.email;
 
-        if (!ticketId || !email || !client) {
-          return;
-        }
+      if (!ticketId || !email || !client) {
+        return;
+      }
 
-        if (subjectTicketId !== ticketId) {
-          return;
-        }
+      if (subjectTicketId !== ticketId) {
+        return;
+      }
 
-        client.setBlocking(true);
-        client.getState<{ id: string; selected: boolean }>(emailKey(ticketId, "*"))
-          .then((selections) => {
-            const taskIds = selections
-              .filter(({ data }) => data?.selected)
-              .map(({ data }) => data?.id as Task["id"]);
+      client.setBlocking(true);
+      client.getState<{ id: string; selected: boolean }>(emailKey(ticketId, "*"))
+        .then((selections) => {
+          const taskIds = selections
+            .filter(({ data }) => data?.selected)
+            .map(({ data }) => data?.id as Task["id"]);
 
-            return Promise
-              .all(taskIds.map((taskId) => createTaskCommentService(client, taskId, { comment_text: email })))
-              .then(() => queryClient.invalidateQueries());
-          })
-          .finally(() => client.setBlocking(false));
-      })
-      .with(`${APP_PREFIX}OnReplyBoxNote`, () => {
-        const subjectTicketId = action.subject;
-        const note = action.payload.note;
-
-        if (!ticketId || !note || !client) {
-          return;
-        }
-
-        if (subjectTicketId !== ticketId) {
-          return;
-        }
-
-        client.setBlocking(true);
-        client.getState<{ id: string; selected: boolean }>(noteKey(ticketId, "*"))
-          .then((selections) => {
-            const taskIds = selections
-              .filter(({ data }) => data?.selected)
-              .map(({ data }) => data?.id as Task["id"]);
-
-            return Promise
-              .all(taskIds.map((taskId) => createTaskCommentService(client, taskId, { comment_text: note })))
-              .then(() => queryClient.invalidateQueries());
-          })
-          .finally(() => client.setBlocking(false));
-      })
-      .with(`${APP_PREFIX}ReplyBoxEmailAdditions`, () => {
-        (action.payload ?? []).forEach((selection: { id: string; selected: boolean; }) => {
-          const subjectTicketId = action.subject;
-
-          if (ticketId) {
-            client?.setState(emailKey(subjectTicketId, selection.id), { id: selection.id, selected: selection.selected })
-              .then((result) => {
-
-                if (result.isSuccess) {
-                  registerReplyBoxEmailsAdditionsTargetAction(client, ticketId, map(tasks, "id"), tasksMap);
-                }
-              });
-          }
+          return Promise
+            .all(taskIds.map((taskId) => createTaskCommentService(client, taskId, { comment_text: email })))
+            .then(() => queryClient.invalidateQueries());
         })
-      })
-      .with(`${APP_PREFIX}ReplyBoxNoteAdditions`, () => {
-        (action.payload ?? []).forEach((selection: { id: string; selected: boolean; }) => {
-          const subjectTicketId = action.subject;
+        .finally(() => client.setBlocking(false));
+    })
+    .with(`${APP_PREFIX}OnReplyBoxNote`, () => {
+      const subjectTicketId = action.subject;
+      const note = action.payload.note;
 
-          if (ticketId) {
-            client?.setState(noteKey(subjectTicketId, selection.id), { id: selection.id, selected: selection.selected })
-              .then((result) => {
-                if (result.isSuccess) {
-                  registerReplyBoxNotesAdditionsTargetAction(client, subjectTicketId, map(tasks, "id"), tasksMap);
-                }
-              });
-          }
+      if (!ticketId || !note || !client) {
+        return;
+      }
+
+      if (subjectTicketId !== ticketId) {
+        return;
+      }
+
+      client.setBlocking(true);
+      client.getState<{ id: string; selected: boolean }>(noteKey(ticketId, "*"))
+        .then((selections) => {
+          const taskIds = selections
+            .filter(({ data }) => data?.selected)
+            .map(({ data }) => data?.id as Task["id"]);
+
+          return Promise
+            .all(taskIds.map((taskId) => createTaskCommentService(client, taskId, { comment_text: note })))
+            .then(() => queryClient.invalidateQueries());
         })
+        .finally(() => client.setBlocking(false));
+    })
+    .with(`${APP_PREFIX}ReplyBoxEmailAdditions`, () => {
+      (action.payload ?? []).forEach((selection: { id: string; selected: boolean; }) => {
+        const subjectTicketId = action.subject;
+
+        if (ticketId) {
+          client?.setState(emailKey(subjectTicketId, selection.id), { id: selection.id, selected: selection.selected })
+            .then((result) => {
+
+              if (result.isSuccess) {
+                registerReplyBoxEmailsAdditionsTargetAction(client, ticketId, map(tasks, "id"), tasksMap);
+              }
+            });
+        }
       })
-      .run(),
+    })
+    .with(`${APP_PREFIX}ReplyBoxNoteAdditions`, () => {
+      (action.payload ?? []).forEach((selection: { id: string; selected: boolean; }) => {
+        const subjectTicketId = action.subject;
+
+        if (ticketId) {
+          client?.setState(noteKey(subjectTicketId, selection.id), { id: selection.id, selected: selection.selected })
+            .then((result) => {
+              if (result.isSuccess) {
+                registerReplyBoxNotesAdditionsTargetAction(client, subjectTicketId, map(tasks, "id"), tasksMap);
+              }
+            });
+        }
+      })
+    })
+    .run(),
     200
   );
 
