@@ -17,7 +17,6 @@ type UseTasks = (workspaceId: Maybe<Workspace["id"]>) => {
 
 
 const useTasks: UseTasks = (workspaceId) => {
-  console.log(workspaceId)
   const workspaces = useQueryWithClient(
     [QueryKey.WORKSPACES],
     async (client) => {
