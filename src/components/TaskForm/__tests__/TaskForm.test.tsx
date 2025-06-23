@@ -1,43 +1,58 @@
-import { cleanup } from "@testing-library/react";
+import { cleanup, screen, waitFor } from "@testing-library/react";
 import { render } from "../../../../testing";
-import { getWorkspacesService } from "../../../services/clickUp";
 import { TaskForm } from "../TaskForm";
+import { useFormDeps } from "../hooks";
 
-
-jest.mock("../../../services/clickUp/getWorkspacesService");
+jest.mock("../hooks");
 
 describe("LinkTasks", () => {
+  const mockFormDeps = {
+    isLoading: false,
+    workspaceOptions: [],
+    spaceOptions: [],
+    listOptions: [],
+    statusOptions: [],
+    userOptions: [],
+    tagOptions: []
+  }
+
+  beforeEach(() => {
+    (useFormDeps as jest.Mock).mockReturnValue(mockFormDeps)
+  })
+
   afterEach(() => {
-    jest.clearAllMocks();
-    cleanup();
-  });
+    jest.clearAllMocks()
+    cleanup()
+  })
 
   test("render", async () => {
-    (getWorkspacesService as jest.Mock).mockResolvedValue([]);
+    render(
+      <TaskForm onSubmit={jest.fn()} onCancel={jest.fn()} />,
+      { wrappers: { theme: true, query: true } }
+    );
 
-    const { findByText } = render((
-      <TaskForm onSubmit={jest.fn()} onCancel={jest.fn()} />
-    ), { wrappers: { theme: true, query: true } });
+    await waitFor(() => {
+      expect(screen.getByText("Workspace")).toBeInTheDocument()
+      expect(screen.getByText("Space")).toBeInTheDocument()
+      expect(screen.getByText("List")).toBeInTheDocument()
+      expect(screen.getByText("Task name")).toBeInTheDocument()
+      expect(screen.getByText("Description")).toBeInTheDocument()
+      expect(screen.getByText("Status")).toBeInTheDocument()
+      expect(screen.getByText("Assignees")).toBeInTheDocument()
+      expect(screen.getByText("Due date")).toBeInTheDocument()
+      expect(screen.getByText("Tags")).toBeInTheDocument()
+    })
 
-    expect(await findByText("Workspace")).toBeInTheDocument();
-    expect(await findByText("Space")).toBeInTheDocument();
-    expect(await findByText("List")).toBeInTheDocument();
-    expect(await findByText("Task name")).toBeInTheDocument();
-    expect(await findByText("Description")).toBeInTheDocument();
-    expect(await findByText("Status")).toBeInTheDocument();
-    expect(await findByText("Assignees")).toBeInTheDocument();
-    expect(await findByText("Due date")).toBeInTheDocument();
-    expect(await findByText("Tags")).toBeInTheDocument();
+    expect(screen.getByText("Create")).toBeVisible()
+    expect(screen.getByText("Cancel")).toBeVisible()
+  })
 
-    expect(await findByText("Create")).toBeVisible();
-    expect(await findByText("Cancel")).toBeVisible();
-  });
+  test("render error", async () => {
+    render(
+      <TaskForm onSubmit={jest.fn()} error="some error" />,
+      { wrappers: { theme: true, query: true } }
+    )
 
-  test("render error", () => {
-    const { queryByText } = render((
-      <TaskForm onSubmit={jest.fn()} error="some error" />
-    ), { wrappers: { theme: true, query: true } });
-
-    expect(queryByText("some error")).toBeInTheDocument();
-  });
-});
+    expect(await screen.findByText("some error")).toBeInTheDocument();
+  })
+})

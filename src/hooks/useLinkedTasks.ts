@@ -29,12 +29,40 @@ const useLinkedTasks: UseLinkedTasks = () => {
 
   const workspaces = useQueryWithClient(
     [QueryKey.WORKSPACES],
-    (client) => getWorkspacesService(client),
+    async (client) => {
+      const response = await getWorkspacesService(client)
+
+      if(response.success){
+        return response.data.teams
+      }
+
+      // Ignore auth errors.
+      if(response.errorCode === "auth-error"){
+        return []
+      }
+
+      // Pass other errors to the error boundary.
+      throw response.error
+    },
   );
 
   const fetchedTasks = useQueriesWithClient((linkedIds.data ?? []).map((taskId) => ({
     queryKey: [QueryKey.TASK, taskId],
-    queryFn: (client) => getTaskService(client, taskId),
+    queryFn: async (client) => {
+      const response = await getTaskService(client, taskId)
+
+      if(response.success){
+        return response.data
+      }
+
+      // Ignore auth errors.
+      if(response.errorCode === "auth-error"){
+        return null
+      }
+
+      // Pass other errors to the error boundary.
+      throw response.error
+    },
     enabled: Boolean(size(linkedIds)),
     useErrorBoundary: false,
   })));
@@ -54,7 +82,7 @@ const useLinkedTasks: UseLinkedTasks = () => {
 
   return {
     isLoading: [linkedIds, workspaces, ...fetchedTasks, ...spaces].some(({ isLoading }) => isLoading),
-    workspaces: workspaces.data?.teams ?? [],
+    workspaces: workspaces.data ?? [],
     tasks: tasks as Task[],
     spaces: spaces.map(({ data }) => data).filter(Boolean) as Space[],
   };

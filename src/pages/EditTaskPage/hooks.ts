@@ -11,8 +11,22 @@ type UseTask = (taskId?: Task["id"]) => {
 
 const useTask: UseTask = (taskId) => {
   const task = useQueryWithClient(
-    [QueryKey.TASK, taskId as Task["id"]],
-    (client) => getTaskService(client, taskId as Task["id"]),
+    [QueryKey.TASK, taskId ?? ""],
+    async (client) => {
+      const response = await getTaskService(client, taskId ?? "")
+
+      if (response.success) {
+        return response.data
+      }
+
+      // Ignore auth errors.
+      if (response.errorCode === "auth-error") {
+        return null
+      }
+
+      // Pass other errors to the error boundary.
+      throw response.error
+    },
     { enabled: Boolean(taskId) },
   );
 

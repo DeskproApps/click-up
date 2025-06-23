@@ -5,14 +5,14 @@ import { Container } from "../common";
 import { FallbackRender } from "@sentry/react";
 
 const ErrorFallback: FallbackRender = ({ error }) => {
-  const message = "There was an error!";
-  const button = null;
-
+  let message = "An unexpected error occurred.";
   // eslint-disable-next-line no-console
   console.error(error);
 
-  if (error instanceof ClickUpError) {
-    //...
+  if (error instanceof ClickUpError && typeof error.data.err === "string" && error.data.err.trim() !== "") {
+    message = error.data.err
+  } else if (error instanceof Error && error.message.trim() !== "") {
+    message = error.message
   }
 
   return (
@@ -21,7 +21,6 @@ const ErrorFallback: FallbackRender = ({ error }) => {
         text={(
           <Stack gap={6} vertical style={{ padding: "8px" }}>
             {message}
-            {button}
           </Stack>
         )}
       />

@@ -53,6 +53,24 @@ export type TicketContext = Context<TicketData, Maybe<Settings>>;
 
 export type NavigateToChangePage = { type: "changePage", path: To };
 
+interface SuccessResult<TData = unknown> {
+  success: true;
+  message?: string;
+  data: TData;
+}
+
+type ErrorCode = "auth-error"
+interface FailResult<TError = unknown> {
+  success: false;
+  message: string;
+  errorCode?: ErrorCode;
+  error: TError;
+}
+
+export type Result<TData = unknown, TError = unknown> =
+  | SuccessResult<TData>
+  | FailResult<TError>;
+
 export type EventPayload =
   | NavigateToChangePage
   | { type: "logout" }
