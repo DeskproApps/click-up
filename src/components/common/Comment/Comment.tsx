@@ -1,13 +1,13 @@
-import React from "react";
-import styled from "styled-components";
-import ReactTimeAgo from "react-time-ago";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { Avatar, TSpan, P11, Stack } from "@deskpro/deskpro-ui";
-import type { FC, ReactNode } from "react";
+import { DeskproAppTheme } from "@deskpro/app-sdk";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import ReactTimeAgo from "react-time-ago";
+import styled from "styled-components";
 import type { AnyIcon } from "@deskpro/deskpro-ui";
+import type { FC, ReactNode } from "react";
 import type { Maybe } from "../../../types";
 
-const TimeAgo = styled(ReactTimeAgo)`
+const TimeAgo = styled(ReactTimeAgo)<DeskproAppTheme>`
   color: ${({theme}) => theme.colors.grey80};
 `;
 

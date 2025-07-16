@@ -3,6 +3,7 @@ import { Stack } from "@deskpro/deskpro-ui";
 import { Property } from "./Property";
 import type { FC } from "react";
 import type { Props as PropertyProps } from "./types";
+import { DeskproAppTheme } from "@deskpro/app-sdk";
 
 export type Props = {
   marginBottom?: number,
@@ -19,15 +20,15 @@ const Container = styled(Stack)`
   margin-bottom: -1px;
 `;
 
-const Side = styled.div<Pick<Props, "marginBottom"> & { withDivider?: boolean,  }>`
+const Side = styled.div<Pick<Props, "marginBottom"> & { withDivider?: boolean } & DeskproAppTheme>`
   display: inline-block;
   margin-bottom: ${({ marginBottom }) => `${marginBottom}px`};
 
-  ${({withDivider}) => withDivider
-    ? css`
+  ${({ withDivider }) => withDivider
+    ? css<DeskproAppTheme>`
       width: calc(50% - 6px - 1px);
       padding-left: 10px;
-      border-left: 1px solid ${({theme}) => theme.colors.grey20};
+      border-left: 1px solid ${({ theme }) => theme.colors.grey20};
     `
     : css`
       width: calc(50% - 6px - 10px);
