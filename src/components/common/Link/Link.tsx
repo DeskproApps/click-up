@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import type { FC } from "react";
 import type { IconProps, AnyIcon, ThemeColors } from "@deskpro/deskpro-ui";
+import { DeskproAppTheme } from "@deskpro/app-sdk";
 
 export type Props = {
   href: string,
@@ -10,7 +11,7 @@ export type Props = {
   size?: IconProps["size"];
 };
 
-const Link = styled.a<{ color?: keyof ThemeColors }>`
+const Link = styled.a<{ color?: keyof ThemeColors } & DeskproAppTheme>`
   color: ${({ theme, color = "cyan100" }) => theme.colors[color]};
   text-decoration: none;
 `;
