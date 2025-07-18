@@ -2,9 +2,9 @@ import { useMemo, useCallback } from "react";
 import get from "lodash/get";
 import find from "lodash/find";
 import size from "lodash/size";
-import { Stack } from "@deskpro/deskpro-ui";
+import { LoadingBlock, Stack } from "@deskpro/deskpro-ui";
 import { Title } from "@deskpro/app-sdk";
-import { useExternalLink } from "../../hooks";
+import { useExternalLink, useTaskRelationships } from "../../hooks";
 import { format } from "../../utils/date";
 import {
   Tag,
@@ -19,6 +19,7 @@ import {
 } from "../common";
 import type { FC, MouseEvent } from "react";
 import type { Task, Workspace, Space } from "../../services/clickUp/types";
+import { RelationshipItem } from "../RelationshipItem/RelationshipItem";
 
 type Props = {
   task: Task,
@@ -51,6 +52,7 @@ const TaskItem: FC<Props> = ({ task, spaces, workspaces, onClickTitle }) => {
       />
     );
   }, [task, getProjectUrl]);
+  const { relationships, isLoading } = useTaskRelationships(task);
 
   const onClick = useCallback((e: MouseEvent) => {
     e.preventDefault();
@@ -119,6 +121,26 @@ const TaskItem: FC<Props> = ({ task, spaces, workspaces, onClickTitle }) => {
               {tags.map((tag) => (<Tag key={get(tag, ["name"])} tag={tag} />))}
             </Stack>
           )}
+        />
+      )}
+      {(isLoading || relationships.length > 0) && (
+        <Property
+          label='Relationships'
+          text={
+            isLoading ? (
+              <LoadingBlock />
+            ) : (
+              <>
+                {relationships.map(relationship => (
+                  <RelationshipItem
+                    key={relationship.id}
+                    task={task}
+                    relationship={relationship}
+                  />
+                ))}
+              </>
+            )
+          }
         />
       )}
     </>

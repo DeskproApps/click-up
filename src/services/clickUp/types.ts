@@ -199,8 +199,16 @@ export type Task = {
   points: null,
   time_estimate: null,
   custom_fields: [],
-  dependencies: [],
-  linked_tasks: [],
+  dependencies: {
+    date_created: Timestamp;
+    task_id: string;
+    depends_on: string;
+  }[],
+  linked_tasks: {
+    date_created: Timestamp;
+    task_id: string;
+    link_id: string;
+  }[],
   sharing: object,
   permission_level: "create",
   list: {

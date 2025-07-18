@@ -68,4 +68,33 @@ export type EntityMetadata = {
   list: List["name"],
 };
 
-/** Entities */
+export type RelationshipType = 'link' | 'waitingOn' | 'blocking';
+
+export type Relationship = {
+  id: string;
+  type: RelationshipType;
+  source: {
+    id: string;
+    name: string;
+  };
+  destination: {
+    id: string;
+    name: string;
+  };
+  isSource: boolean;
+};
+
+export const RELATIONSHIP_LABELS: Record<RelationshipType, string> = {
+  link: 'Linked to',
+  waitingOn: 'Waiting on',
+  blocking: 'Blocking'
+};
+
+export const RELATIONSHIP_OPTIONS: {
+  value: RelationshipType;
+  label: string;
+}[] = [
+    {value: 'link', label: RELATIONSHIP_LABELS.link},
+    {value: 'waitingOn', label: RELATIONSHIP_LABELS.waitingOn},
+    {value: 'blocking', label: RELATIONSHIP_LABELS.blocking}
+] as const;

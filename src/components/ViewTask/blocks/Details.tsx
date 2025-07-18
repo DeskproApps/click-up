@@ -50,7 +50,6 @@ const Details: FC<Props> = ({ task, workspaces, space }) => {
       />
     );
   }, [task, getProjectUrl]);
-
   return (
     <Container>
       <Title

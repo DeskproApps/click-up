@@ -13,6 +13,7 @@ import type {
   Workspace,
   CheckListItem,
 } from "../../services/clickUp/types";
+import { Relationships } from './blocks/Relationships';
 
 type Props = {
   task: Maybe<Task>,
@@ -43,6 +44,8 @@ const ViewTask: FC<Props> = ({
     <>
       <Details task={task} workspaces={workspaces} space={space} />
       <HorizontalDivider/>
+      <Relationships task={task} />
+      <HorizontalDivider />
       <SubTasks
         subTasks={get(task, ["subtasks"])}
         statuses={statuses}
