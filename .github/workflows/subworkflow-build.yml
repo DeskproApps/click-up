@@ -107,6 +107,10 @@ jobs:
             # Tag
             MILESTONE=$(echo "$LABELS" | grep -E 'major-version|minor-version' | head -1)
             VERSION_NEW=$(pnpm run bumpManifestVer "$MILESTONE" "$VERSION" | tail -n 1)
+            if [ "$PUSH_TAG" != "true" ]; then
+              # Remove serveUrl if not pushing as it wont be deployed to the CDN.
+              jq 'del(.serveUrl)' manifest.json > manifest.json.tmp && mv manifest.json.tmp manifest.json
+            fi
             pnpm prettier --write manifest.json
             git tag -a $VERSION_NEW -m "Version $VERSION_NEW"
 
