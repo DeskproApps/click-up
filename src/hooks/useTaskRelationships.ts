@@ -13,19 +13,36 @@ async function getTaskRelationships(client: IDeskproClient, task: Task): Promise
     const linkRelationships = await Promise.all(
         linkedTasks.map(async relatedTask => {
             const isSource = relatedTask.task_id === task.id;
-            const sourceTask = await getTaskService(client, relatedTask.task_id);
-            const destinationTask = await getTaskService(client, relatedTask.link_id);
+            const sourceTask = await (async () => {
+                const data = await getTaskService(client, relatedTask.task_id);
+
+                if (data.success) {
+                    return data.data;
+                }
+
+                return null;
+            })()
+            const destinationTask = await (async () => {
+                const data = await getTaskService(client, relatedTask.link_id);
+
+                if (data.success) {
+                    return data.data;
+                }
+
+                return null;
+            })()
+
 
             return {
                 id: relatedTask.date_created,
                 type: 'link' as RelationshipType,
                 source: {
                     id: relatedTask.task_id,
-                    name: sourceTask.name
+                    name: sourceTask?.name ?? ""
                 },
                 destination: {
                     id: relatedTask.link_id,
-                    name: destinationTask.name
+                    name: destinationTask?.name ?? ""
                 },
                 isSource
             };
@@ -35,8 +52,26 @@ async function getTaskRelationships(client: IDeskproClient, task: Task): Promise
     const dependencyRelationships = await Promise.all(
         dependencies.map(async dependency => {
             const isSource = dependency.task_id === task.id;
-            const waitingTask = await getTaskService(client, dependency.task_id);
-            const blockingTask = await getTaskService(client, dependency.depends_on);
+            const waitingTask = await (async () => {
+                const data = await getTaskService(client, dependency.task_id);
+
+                if (data.success) {
+                    return data.data;
+                }
+
+                return null;
+            })() 
+            
+            const blockingTask = await (async () => {
+                const data = await getTaskService(client, dependency.depends_on);
+
+                if (data.success) {
+                    return data.data;
+                }
+
+                return null;
+            })()
+
             const type: RelationshipType = isSource ? 'waitingOn' : 'blocking';
 
             return {
@@ -44,11 +79,11 @@ async function getTaskRelationships(client: IDeskproClient, task: Task): Promise
                 type,
                 source: {
                     id: dependency.task_id,
-                    name: waitingTask.name
+                    name: waitingTask?.name ?? ""
                 },
                 destination: {
                     id: dependency.depends_on,
-                    name: blockingTask.name
+                    name: blockingTask?.name ?? ""
                 },
                 isSource
             };
@@ -66,7 +101,7 @@ export const useTaskRelationships = (task: Maybe<Task>) => {
         if (!task?.id) {
             setRelationships([]);
             setIsLoading(false);
-            
+
             return;
         };
 
