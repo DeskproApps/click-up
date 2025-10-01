@@ -75,6 +75,6 @@
     "styled-components": "^6.1.19",
     "ts-jest": "^29.4.0",
     "typescript": "^5.8.3",
-    "vite": "^6.3.5"
+    "vite": "^6.3.6"
   }
 }
