@@ -41,7 +41,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@jest/globals": "^29.7.0",
+    "@jest/globals": "^30.0.5",
     "@swc/core": "^1.12.14",
     "@swc/helpers": "^0.5.17",
     "@swc/jest": "^0.2.39",
