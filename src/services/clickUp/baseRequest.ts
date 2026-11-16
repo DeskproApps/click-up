@@ -44,10 +44,18 @@ const baseRequest: Request = async (client, {
   const res = await dpFetch(requestUrl, options);
 
   if (res.status < 200 || res.status > 399) {
-    throw new ClickUpError({
-      status: res.status,
-      data: await res.json(),
-    });
+    // ClickUp errors are usually JSON, but its gateway answers some (e.g. an unknown
+    // route) with plain text such as "404 page not found"
+    const body = await res.text();
+    let data;
+
+    try {
+      data = JSON.parse(body);
+    } catch (e) {
+      data = { err: body.trim() || res.statusText, ECODE: "" };
+    }
+
+    throw new ClickUpError({ status: res.status, data });
   }
 
   try {

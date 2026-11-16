@@ -42,6 +42,27 @@ describe("ClickUp API compliance", () => {
     expect(options.method).toBe(method);
   });
 
+  test("should turn a plain-text error response into a ClickUpError", async () => {
+    fetchSpy.mockResolvedValue({ status: 404, statusText: "Not Found", text: async () => "404 page not found\n" });
+
+    await expect(addTagToTaskService(client, "task1", "a/b")).rejects.toMatchObject({
+      status: 404,
+      data: { err: "404 page not found" },
+    });
+  });
+
+  test("should keep the JSON body of an error response", async () => {
+    fetchSpy.mockResolvedValue({
+      status: 401,
+      text: async () => JSON.stringify({ err: "Oauth token not found", ECODE: "OAUTH_019" }),
+    });
+
+    await expect(baseRequest(client, { url: "/user" })).rejects.toMatchObject({
+      status: 401,
+      data: { err: "Oauth token not found", ECODE: "OAUTH_019" },
+    });
+  });
+
   test.each([
     [new ClickUpError({ status: 401, data: { err: "Oauth token not found", ECODE: "OAUTH_019" } }), true],
     [new ClickUpError({ status: 400, data: { err: "Authorization header required", ECODE: "OAUTH_017" } }), true],
