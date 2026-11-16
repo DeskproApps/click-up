@@ -21,7 +21,8 @@ const baseRequest: Request = async (client, {
   const options: RequestInit = {
     method,
     headers: {
-      "Authorization": placeholders.TOKEN,
+      // ClickUp expects OAuth access tokens as a Bearer token
+      "Authorization": `Bearer ${placeholders.TOKEN}`,
       ...customHeaders,
     },
   };
