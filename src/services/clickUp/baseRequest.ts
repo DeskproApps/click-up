@@ -1,5 +1,6 @@
 import { BASE_URL, placeholders } from "../../constants";
-import { ClickUpError } from "./ClickUpError";
+import { ClickUpError, isAuthError } from "./ClickUpError";
+import { notifyAuthError } from "./authErrorEvents";
 import { getQueryParams } from "../../utils";
 import { proxyFetch } from "@deskpro/app-sdk";
 import isEmpty from "lodash/isEmpty";
@@ -55,7 +56,13 @@ const baseRequest: Request = async (client, {
       data = { err: body.trim() || res.statusText, ECODE: "" };
     }
 
-    throw new ClickUpError({ status: res.status, data });
+    const error = new ClickUpError({ status: res.status, data });
+
+    if (isAuthError(error)) {
+      notifyAuthError();
+    }
+
+    throw error;
   }
 
   try {

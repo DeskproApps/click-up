@@ -1,4 +1,5 @@
-export { ClickUpError } from "./ClickUpError";
+export { ClickUpError, isAuthError } from "./ClickUpError";
+export { onAuthError } from "./authErrorEvents";
 export { getAccessTokenService } from "./getAccessTokenService";
 export { getCurrentUserService } from "./getCurrentUserService";
 export { getWorkspacesService } from "./getWorkspacesService";

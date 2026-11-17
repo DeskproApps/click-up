@@ -2,6 +2,7 @@ import { baseRequest } from "../baseRequest";
 import { addTagToTaskService } from "../addTagToTaskService";
 import { removeTagFromTaskService } from "../removeTagFromTaskService";
 import { ClickUpError, isAuthError } from "../ClickUpError";
+import { onAuthError } from "../authErrorEvents";
 import type { IDeskproClient } from "@deskpro/app-sdk";
 
 const client = {} as IDeskproClient;
@@ -61,6 +62,21 @@ describe("ClickUp API compliance", () => {
       status: 401,
       data: { err: "Oauth token not found", ECODE: "OAUTH_019" },
     });
+  });
+
+  test.each([
+    [401, JSON.stringify({ err: "Oauth token not found", ECODE: "OAUTH_019" }), 1],
+    [400, JSON.stringify({ err: "Authorization header required", ECODE: "OAUTH_017" }), 1],
+    [404, "404 page not found", 0],
+  ])("should notify auth error listeners for a %p response only when the token is rejected", async (status, body, calls) => {
+    const listener = jest.fn();
+    const unsubscribe = onAuthError(listener);
+    fetchSpy.mockResolvedValue({ status, text: async () => body });
+
+    await expect(baseRequest(client, { url: "/user" })).rejects.toBeInstanceOf(ClickUpError);
+    unsubscribe();
+
+    expect(listener).toHaveBeenCalledTimes(calls);
   });
 
   test.each([
