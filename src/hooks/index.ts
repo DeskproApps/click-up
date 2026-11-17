@@ -4,6 +4,7 @@ export { useSetBadgeCount } from "./useSetBadgeCount";
 export { useQueriesWithClient } from "./useQueriesWithClient";
 export { useLinkedTasks } from "./useLinkedTasks";
 export { useLogout } from "./useLogout";
+export { useAuthErrorRedirect, shouldRedirectToLogin } from "./useAuthErrorRedirect";
 export { useUnlinkTask } from "./useUnlinkTask";
 export { useExternalLink } from "./useExternalLink";
 export { useLinkedAutoComment } from "./useLinkedAutoComment";

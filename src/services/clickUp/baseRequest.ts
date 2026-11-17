@@ -1,5 +1,6 @@
 import { BASE_URL, placeholders } from "../../constants";
-import { ClickUpError } from "./ClickUpError";
+import { ClickUpError, isAuthError } from "./ClickUpError";
+import { notifyAuthError } from "./authErrorEvents";
 import { getQueryParams } from "../../utils";
 import { proxyFetch } from "@deskpro/app-sdk";
 import isEmpty from "lodash/isEmpty";
@@ -21,7 +22,8 @@ const baseRequest: Request = async (client, {
   const options: RequestInit = {
     method,
     headers: {
-      "Authorization": placeholders.TOKEN,
+      // ClickUp expects OAuth access tokens as a Bearer token
+      "Authorization": `Bearer ${placeholders.TOKEN}`,
       ...customHeaders,
     },
   };
@@ -43,10 +45,24 @@ const baseRequest: Request = async (client, {
   const res = await dpFetch(requestUrl, options);
 
   if (res.status < 200 || res.status > 399) {
-    throw new ClickUpError({
-      status: res.status,
-      data: await res.json(),
-    });
+    // ClickUp errors are usually JSON, but its gateway answers some (e.g. an unknown
+    // route) with plain text such as "404 page not found"
+    const body = await res.text();
+    let data;
+
+    try {
+      data = JSON.parse(body);
+    } catch (e) {
+      data = { err: body.trim() || res.statusText, ECODE: "" };
+    }
+
+    const error = new ClickUpError({ status: res.status, data });
+
+    if (isAuthError(error)) {
+      notifyAuthError();
+    }
+
+    throw error;
   }
 
   try {

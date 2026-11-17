@@ -13,7 +13,12 @@ import { useSetTitle, useAsyncError } from "../../hooks";
 import { useTask } from "./hooks";
 import { getEntityMetadata } from "../../utils";
 import { EditTask } from "../../components";
-import { getTaskValues, getAssigneesToUpdate, getTagsToUpdate } from "../../components/TaskForm";
+import {
+  getTaskValues,
+  getTagsToUpdate,
+  getAssigneesToUpdate,
+  getUnsupportedTagChanges,
+} from "../../components/TaskForm";
 import type { FC } from "react";
 import type { Maybe, Settings, TicketData } from "../../types";
 import type { Workspace, Space } from "../../services/clickUp/types";
@@ -48,12 +53,21 @@ const EditTaskPage: FC = () => {
 
     setError(null);
 
+    const tagChanges = getTagsToUpdate(task, values);
+    const unsupportedTags = getUnsupportedTagChanges(tagChanges);
+
+    // Check before saving anything, so the task is not left partly updated
+    if (unsupportedTags.length) {
+      setError(`ClickUp does not allow tags containing "/" to be added or removed through its API. Change ${unsupportedTags.map((name) => `"${name}"`).join(", ")} in ClickUp instead.`);
+      return Promise.resolve();
+    }
+
     const data = { ...getTaskValues(values), assignees: getAssigneesToUpdate(task, values) };
 
     return updateTaskService(client, taskId, data)
       .then((task) => Promise.all([
         setEntityService(client, ticketId, task.id, getEntityMetadata(task, workspaces, spaces)),
-        ...updateTaskTagsService(client, taskId, getTagsToUpdate(task, values)),
+        ...updateTaskTagsService(client, taskId, tagChanges),
       ]))
       .then(() => navigate(`/view/${taskId}`))
       .catch((err) => {

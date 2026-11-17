@@ -7,7 +7,7 @@ import {
   useDeskproAppClient,
   useDeskproAppEvents,
 } from "@deskpro/app-sdk";
-import { useLogout, useUnlinkTask } from "./hooks";
+import { useLogout, useUnlinkTask, useAuthErrorRedirect } from "./hooks";
 import { isNavigatePayload } from "./utils";
 import {
   HomePage,
@@ -29,6 +29,7 @@ const App: FC = () => {
   const { client } = useDeskproAppClient();
   const { logout, isLoading: isLoadingLogout } = useLogout();
   const { unlink, isLoading: isLoadingUnlink } = useUnlinkTask();
+  useAuthErrorRedirect();
   const isLoading = [isLoadingLogout, isLoadingUnlink].some((isLoading) => isLoading);
 
   const debounceElementEvent = useDebouncedCallback((_, __, payload: EventPayload) => {

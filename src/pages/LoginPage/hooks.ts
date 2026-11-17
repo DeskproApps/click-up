@@ -2,6 +2,7 @@ import { getAccessTokenService, } from "../../services/clickUp";
 import { getEntityListService, } from "../../services/deskpro";
 import { IOAuth2, OAuth2Result, useDeskproLatestAppContext, useInitialisedDeskproAppClient, } from "@deskpro/app-sdk";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState, useCallback } from "react";
 import type { Settings, TicketData } from "../../types";
 
@@ -22,6 +23,7 @@ const useLogin: UseLogin = () => {
   const { context } = useDeskproLatestAppContext<TicketData, Settings>();
 
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const ticketId = context?.data?.ticket.id;
 
@@ -88,6 +90,9 @@ const useLogin: UseLogin = () => {
           await client.setUserState("oauth2/refresh_token", result.data.refresh_token, { backend: true })
         }
 
+        // Refetch anything that was loaded (and came back empty) while logged out
+        await queryClient.invalidateQueries()
+
         const linkedTickets = await getEntityListService(client, ticketId)
 
         if (linkedTickets.length > 0) {
@@ -107,7 +112,7 @@ const useLogin: UseLogin = () => {
     if (isPolling) {
       startPolling()
     }
-  }, [isPolling, ticketId, oauth2Context, navigate])
+  }, [isPolling, ticketId, oauth2Context, navigate, queryClient])
 
 
 

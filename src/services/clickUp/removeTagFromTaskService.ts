@@ -8,7 +8,7 @@ const removeTagFromTaskService = (
   tagName: Tag["name"],
 ) => {
   return baseRequest<void>(client, {
-    url: `/task/${taskId}/tag/${tagName}`,
+    url: `/task/${taskId}/tag/${encodeURIComponent(tagName)}`,
     method: "DELETE",
   });
 };

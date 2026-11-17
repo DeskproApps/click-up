@@ -2,6 +2,7 @@
   "name": "@deskpro-apps/click-up",
   "version": "0.0.0",
   "license": "BSD-3-Clause",
+  "packageManager": "pnpm@9.15.4",
   "scripts": {
     "start": "vite",
     "build": "rm -rf ./dist/ && tsc && vite build",

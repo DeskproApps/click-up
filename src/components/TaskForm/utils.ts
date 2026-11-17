@@ -97,6 +97,18 @@ const getTagsToUpdate = (
   };
 };
 
+/**
+ * Tag names the ClickUp API cannot add to or remove from a task. ClickUp's API gateway
+ * decodes "%2F" back to "/" before routing (and rejects double-encoding), so a tag name
+ * containing a slash can never be addressed by `/task/{task_id}/tag/{tag_name}`.
+ */
+const getUnsupportedTagChanges = ({ add, rem }: {
+  add: Array<TagType["name"]>,
+  rem: Array<TagType["name"]>,
+}): Array<TagType["name"]> => {
+  return [...add, ...rem].filter((name) => name.includes("/"));
+};
+
 const getTagOptions = (tags?: TagType[]): Array<Option<TagType["name"]>> => {
   if (!Array.isArray(tags) || !size(tags)) {
     return [];
@@ -178,6 +190,7 @@ export {
   getUserOptions,
   getListOptions,
   getTagsToUpdate,
+  getUnsupportedTagChanges,
   getSpaceOptions,
   getStatusOptions,
   validationSchema,

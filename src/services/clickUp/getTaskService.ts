@@ -1,5 +1,5 @@
 import { baseRequest } from "./baseRequest";
-import { ClickUpError } from "./ClickUpError";
+import { isAuthError } from "./ClickUpError";
 import { Result } from "../../types";
 import type { IDeskproClient } from "@deskpro/app-sdk";
 import type { Task } from "./types";
@@ -20,7 +20,7 @@ export async function getTaskService(client: IDeskproClient, taskId: Task["id"])
 
     let errorCode = undefined
 
-    if (e instanceof ClickUpError && e.data.err === "Authorization header required") {
+    if (isAuthError(e)) {
       errorCode = "auth-error" as const
     }
 
